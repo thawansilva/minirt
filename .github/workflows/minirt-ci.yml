@@ -20,7 +20,6 @@ jobs:
       - name: make
         run: make && echo "Build ok"
   norminette:
-    needs: build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -56,3 +55,32 @@ jobs:
             exit 1
           fi
           echo "✅ Norminette check passed!"
+  tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Set up enviroment
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential cmake curl valgrind
+
+      - name: Cache CMocka
+        uses: actions/cache@v4
+        with:
+          path: cmocka
+          key: cmocka-1.1.7-${{ runner.os }}
+
+      - name: Build tests
+        run: |
+          cd tests
+          make run
+
+      - name: Run Valgrind
+        run: |
+          cd tests
+          make valgrind-ci
