@@ -16,7 +16,7 @@ jobs:
           submodules: recursive
           persist-credentials: true
       - name: update
-        run: sudo apt-get update
+        run: sudo apt-get update && sudo apt install libx11-dev libxext-dev libbsd-dev
       - name: make
         run: make && echo "Build ok"
   norminette:
