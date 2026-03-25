@@ -18,7 +18,7 @@ jobs:
       - name: update
         run: sudo apt-get update
       - name: make
-        run: make
+        run: make && echo "Build ok"
   norminette:
     needs: build
     runs-on: ubuntu-latest
@@ -52,7 +52,7 @@ jobs:
           echo "Errors: $error_count, Warnings: $warning_count"
           # Fail if any errors or warnings found
           if [ "$error_count" -gt 0 ] || [ "$warning_count" -gt 0 ]; then
-          echo "❌ Norminette found $error_count errors and $warning_count warnings!"
-          exit 1
+            echo "❌ Norminette found $error_count errors and $warning_count warnings!"
+            exit 1
           fi
           echo "✅ Norminette check passed!"
