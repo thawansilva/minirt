@@ -33,7 +33,7 @@ TEST_BIN = run_tests
 PROJECT_OBJ = $(SRC_FILES:%.c=$(TEST_OBJ_DIR)/project/%.o)
 PROJECT_OBJ := $(filter-out $(TEST_OBJ_DIR)/project/main.o, $(PROJECT_OBJ))
 
-TEST_LIBS = -L$(CMOCKA_BUILD)/src -lcmocka -L$(LIBFT_PATH) -lft -lreadline
+TEST_LIBS = -L$(CMOCKA_BUILD)/src -lcmocka -L$(LIBFT_PATH) -lft
 
 GREEN = \033[0;32m
 YELLOW = \033[0;33m
