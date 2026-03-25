@@ -16,7 +16,7 @@ $(LIBFT):
 	@make -C $(LIBFT_DIR)
 
 $(NAME): $(LIBFT) $(OBJ)
-	$(CC) $(CFLAGS) $(OBJ) -L$(LIBFT_DIR) $(LIBS) -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJ) -o $(NAME)
 	@echo "[OK] $(NAME) compiled successfully"
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
@@ -24,7 +24,7 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 bonus: $(LIBFT) $(BONUS_OBJ)
-	$(CC) $(CFLAGS) $(BONUS_OBJ) -L$(LIBFT_DIR) $(LIBS) -o $(NAME)
+	$(CC) $(CFLAGS) $(BONUS_OBJ) -L$(LIBFT_DIR) -o $(NAME)
 	@echo "[OK] $(NAME) bonus compiled successfully"
 
 $(BONUS_OBJ_DIR)/%.o: $(BONUS_DIR)/%.c
