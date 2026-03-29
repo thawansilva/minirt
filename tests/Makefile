@@ -110,7 +110,6 @@ clean:
 
 fclean: clean
 	@rm -f $(TEST_BIN)
-	@rm -rf $(CMOCKA_DIR)
 	@echo "$(GREEN)[OK] Test files removed$(RESET)"
 
 re: fclean all
