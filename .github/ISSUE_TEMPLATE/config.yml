@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: 🤔 Question or Discussion
+    url: https://github.com/thaperei-hermarti/minirt/issues
+    about: Ask questions or discuss ideas about the miniRT project
+  - name: 💬 42 Slack Channel
+    url: https://42born2code.slack.com
+    about: Join the 42 community discussions
