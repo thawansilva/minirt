@@ -12,7 +12,7 @@ OBJS := $(SRC:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 OBJ_BONUS := $(SRC_BONUS:$(SRC_BONUS_DIR)/%.c=$(OBJ_BONUS_DIR)/%.o)
 
 # Libs
-LIBS := ft mlx
+LIBS := ft mlx m Xext X11
 LIBS_TARGET := lib/libft/libft.a lib/minilibx-linux/libmlx.a
 
 # Flags
