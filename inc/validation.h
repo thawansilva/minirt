@@ -12,6 +12,7 @@
 
 #ifndef VALIDATION_H
 # define VALIDATION_H
+# include "libft.h"
 
 typedef struct s_vec3
 {
@@ -75,16 +76,20 @@ typedef struct s_cylinder
 
 typedef struct s_scene
 {
-	t_obj			*obj;
-	char			**lines;
+	t_list			*objs;
+}	t_scene;
+
+typedef struct s_obj_count
+{
 	unsigned char	count_camera;
 	unsigned char	count_ambient;
 	unsigned char	count_light;
 	unsigned char	count_sphere;
 	unsigned char	count_plane;
 	unsigned char	count_cylinder;
-}	t_scene;
+}
 
 void	validate_input(char *file, t_scene *scene);
+void	read_file(char *file, t_scene *scene);
 int		is_valid_extension(char *file);
 #endif
