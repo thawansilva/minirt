@@ -87,9 +87,12 @@ typedef struct s_obj_count
 	unsigned char	count_sphere;
 	unsigned char	count_plane;
 	unsigned char	count_cylinder;
-}
+}	t_obj_count;
 
 void	validate_input(char *file, t_scene *scene);
-void	read_file(char *file, t_scene *scene);
+int		read_file(char *file, t_scene *scene);
 int		is_valid_extension(char *file);
+// Validate properties
+int		is_valid_ratio(char *str);
+int		is_valid_color(char *str);
 #endif

@@ -14,13 +14,14 @@
 
 int	is_valid_ambient(char **arr)
 {
-	// Validate light ratio
-	// Validate color
+	if (!is_valid_ratio(arr[0]) || !is_valid_color(arr[1]))
+		return (0);
 	return (1);
 }
 
 int	is_valid_camera(char **arr)
 {
+	(void) arr;
 	// Validate coordinate
 	// Validate normalized vector
 	return (1);
@@ -28,6 +29,7 @@ int	is_valid_camera(char **arr)
 
 int	is_valid_light(char **arr)
 {
+	(void) arr;
 	// Validate coordinate
 	// Validate bright ratio
 	// Validate color
@@ -36,6 +38,7 @@ int	is_valid_light(char **arr)
 
 int	is_valid_sphere(char **arr)
 {
+	(void) arr;
 	// Validate coordinate
 	// Validate diameter
 	// Validate color
@@ -44,6 +47,7 @@ int	is_valid_sphere(char **arr)
 
 int	is_valid_plane(char **arr)
 {
+	(void) arr;
 	// Validate coordinate
 	// Validate normalized vector
 	// Validate color
@@ -52,6 +56,7 @@ int	is_valid_plane(char **arr)
 
 int	is_valid_cylinder(char **arr)
 {
+	(void) arr;
 	// Validate coordinate
 	// Validate normalized vector
 	// Validate diameter
