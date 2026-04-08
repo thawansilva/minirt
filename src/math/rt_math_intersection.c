@@ -6,15 +6,16 @@
 /*   By: hermarti <hermarti@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/31 13:43:13 by hermarti          #+#    #+#             */
-/*   Updated: 2026/03/31 13:53:46 by hermarti         ###   ########.fr       */
+/*   Updated: 2026/04/08 16:17:59 by hermarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft.h"
 #include "objects.h"
 #include "rt_math.h"
 #include <math.h>
 
-static float	calculate_a_val(t_ray *ray, t_surface *surf)
+static double	calculate_a_val(t_ray *ray, t_surface *surf)
 {
 	t_vec4	tmp_a;
 
@@ -22,7 +23,7 @@ static float	calculate_a_val(t_ray *ray, t_surface *surf)
 	return (vec4_dot_prod(tmp_a, ray->dir));
 }
 
-static float	calculate_b_val(t_ray *ray, t_surface *surf)
+static double	calculate_b_val(t_ray *ray, t_surface *surf)
 {
 	t_vec4	tmp_b;
 
@@ -30,7 +31,7 @@ static float	calculate_b_val(t_ray *ray, t_surface *surf)
 	return (2.0f * vec4_dot_prod(tmp_b, ray->orig));
 }
 
-static float	calculate_c_val(t_ray *ray, t_surface *surf)
+static double	calculate_c_val(t_ray *ray, t_surface *surf)
 {
 	t_vec4	tmp_c;
 
@@ -38,35 +39,30 @@ static float	calculate_c_val(t_ray *ray, t_surface *surf)
 	return (vec4_dot_prod(tmp_c, ray->orig));
 }
 
-float	intersection(t_ray *ray, t_surface *surf)
+double	intersection(t_ray *ray, t_surface *surf)
 {
-	float	a;
-	float	b;
-	float	c;
-	float	delta;
-	float	x1;
-	float	x2;
+	t_intersection_vars	vars;
+	double				x1;
+	double				x2;
 
-	a = calculate_a_val(ray, surf);
-	b = calculate_b_val(ray, surf);
-	c = calculate_c_val(ray, surf);
-	if (a == 0.0f)
-	{
-		if (b == 0.0f)
-			return (NAN);
-		x1 = -c / b;
-		if (x1 > 0.0f)
-			return (x1);
+	ft_memset(&vars, 0, sizeof(t_intersection_vars));
+	vars.a = calculate_a_val(ray, surf);
+	vars.b = calculate_b_val(ray, surf);
+	vars.c = calculate_c_val(ray, surf);
+	if (vars.a == 0.0 && vars.b == 0.0)
 		return (NAN);
-	}
-	delta = powf(b, 2.0f) - (4.0f * a * c);
-	if (delta < 0)
+	if (vars.a == 0.0 && (-vars.c / vars.b) > 0.0)
+		return (-vars.c / vars.b);
+	if (vars.a == 0.0)
 		return (NAN);
-	x1 = (-b + sqrtf(delta)) / (2.0f * a);
-	x2 = (-b - sqrtf(delta)) / (2.0f * a);
-	if (x2 > 0)
+	vars.delta = (vars.b * vars.b) - (4.0 * vars.a * vars.c);
+	if (vars.delta < 0.0)
+		return (NAN);
+	x1 = (-vars.b + sqrt(vars.delta)) / (2.0 * vars.a);
+	x2 = (-vars.b - sqrt(vars.delta)) / (2.0 * vars.a);
+	if (x2 > 0.0)
 		return (x2);
-	if (x1 > 0)
+	if (x1 > 0.0)
 		return (x1);
 	return (NAN);
 }

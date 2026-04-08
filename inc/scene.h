@@ -17,7 +17,7 @@
 
 typedef struct s_ambient
 {
-	float			lightness;
+	double			lightness;
 	t_color			color;
 }					t_ambient;
 
@@ -32,7 +32,14 @@ typedef struct s_light
 {
 	t_vec4			coordinate;
 	t_color			color;
-	float			brightness;
+	double			brightness;
 }					t_light;
+
+typedef struct s_specular
+{
+	double			strenght;
+	t_color			color;
+	t_vec4			reflect_coordinate;
+}				t_specular;
 
 #endif

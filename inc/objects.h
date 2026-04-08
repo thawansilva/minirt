@@ -13,26 +13,19 @@
 #ifndef OBJECTS_H
 # define OBJECTS_H
 
-typedef struct s_vec3
-{
-	float			x;
-	float			y;
-	float			z;
-}					t_vec3;
-
 typedef struct s_vec4
 {
-	float			x;
-	float			y;
-	float			z;
-	float			k;
+	double			x;
+	double			y;
+	double			z;
+	double			k;
 }					t_vec4;
 
 typedef struct s_ray
 {
 	t_vec4			dir;
 	t_vec4			orig;
-	float			t;
+	double			t;
 }					t_ray;
 
 typedef struct s_color
@@ -44,7 +37,7 @@ typedef struct s_color
 
 typedef struct s_obj
 {
-	float			mat[4][4];
+	double			mat[4][4];
 	t_color			color;
 }					t_obj;
 
@@ -63,12 +56,12 @@ typedef struct s_surface
 
 typedef struct s_surface_parameters
 {
-	t_vec3			c;
-	t_vec3			w;
-	t_vec3			l;
-	float			k;
+	t_vec4			c;
+	t_vec4			w;
+	t_vec4			l;
+	double			k;
 }					t_surface_parameters;
 
 t_surface			create_surface(t_surface_parameters p);
-t_vec3				get_surface_normal(t_surface s, t_vec3 hit_point);
+t_vec4				get_surface_normal(t_surface s, t_vec4 hit_point);
 #endif

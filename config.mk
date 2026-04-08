@@ -11,5 +11,6 @@ MATH_DIR = math
 
 SRC = main.c \
 	  $(MATH_DIR)/rt_math.c \
+	  $(MATH_DIR)/rt_math2.c \
 	  $(MATH_DIR)/rt_math_intersection.c \
 	  $(MATH_DIR)/surface.c
