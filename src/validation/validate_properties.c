@@ -6,10 +6,11 @@
 /*   By: thaperei <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/05 13:29:00 by thaperei          #+#    #+#             */
-/*   Updated: 2026/04/05 16:35:26 by thaperei         ###   ########.fr       */
+/*   Updated: 2026/04/09 20:58:40 by thaperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "validation.h"
 #include "libft.h"
 #include <ctype.h>
 #include <math.h>
@@ -73,37 +74,44 @@
 //    return sign * result;
 //}
 
-static void	free_arr(char **arr)
+int	is_valid_float(const char *str)
 {
-	int	i;
+	int has_digits_before;
+	int has_digits_after;
+	int has_dot;
 
-	i = 0;
-	while (arr[i])
+	has_digits_before = 0;
+	has_digits_after = 0;
+	has_dot = 0;
+	if (*str == '+' || *str == '-')
+		str++;
+	while (ft_isdigit(*str))
 	{
-		free(arr[i]);
-		arr[i] = NULL;
-		i++;
+		has_digits_before = 1;
+		str++;
 	}
-	free(arr);
-	arr = NULL;
+	if (*str++ == '.')
+		has_dot = 1;
+	else
+		return 0;
+	while (ft_isdigit(*str))
+	{
+		has_digits_after = 1;
+		str++;
+	}
+	if (has_digits_before && has_dot && has_digits_after)
+		return 1;
+	return 0;
 }
 
 int	is_valid_ratio(char *str)
 {
 	float	value;
-	int		i;
 
-	i = 0;
-	if (str == NULL || str[i] == '\0')
+	if (str == NULL || str[0] == '\0')
 		return (0);
-	while (str[i])
-	{
-		if (!ft_isdigit(str[i]) && str[i] != '.')
-			return (0);
-		i++;
-	}
 	value = ft_atof(str);
-	if (value < 0.0 || value > 1.0)
+	if (is_valid_float(str) || value < 0.0 || value > 1.0)
 		return (0);
 	return (1);
 }
@@ -154,8 +162,8 @@ int	is_valid_coordinates(char *str)
 	coordinates = ft_split(str, ',');
 	if (coordinates == NULL)
 		return (0);
-	i = 0;
-	while (coordinates[i])
+	i = -1;
+	while (coordinates[++i])
 	{
 		value = ft_atoi(str);
 		if (value < 0 || value > 255)
@@ -163,10 +171,9 @@ int	is_valid_coordinates(char *str)
 			free_arr(coordinates);
 			return (0);
 		}
-		i++;
 	}
 	free_arr(coordinates);
-	if (--i != 3)
+	if (i != 3)
 		return (0);
 	return (1);
 }
@@ -175,24 +182,45 @@ int	is_valid_normalized_vector(char *str)
 {
 	int		i;
 	int		value;
-	char	**colors;
+	char	**vectors;
 
-	colors = ft_split(str, ',');
-	if (colors == NULL)
+	if (str == NULL || str[0] == '\0')
 		return (0);
-	i = 0;
-	while (colors[i])
+	i = -1;
+	vectors = ft_split(str, ',');
+	if (vectors == NULL)
+		return (0);
+	while (vectors[++i])
 	{
-		value = ft_atoi(str);
-		if (value < 0 || value > 255)
+		value = ft_atof(vectors[i]);
+		if (!is_valid_float(str) || value < -1.0 || value > 1.0)
 		{
-			free_arr(colors);
+			free_arr(vectors);
 			return (0);
 		}
+	}
+	free_arr(vectors);
+	if (i != 3)
+		return (0);
+	return (1);
+}
+
+int	is_valid_fov(char *str)
+{
+	int	i;
+	int	fov;
+
+	if (str == NULL || str[0] == '\0')
+		return (0);
+	i = 0;
+	while (str[i])
+	{
+		if (!ft_isdigit(str[i]))
+			return (0);
 		i++;
 	}
-	free_arr(colors);
-	if (--i != 3)
+	fov = ft_atoi(str);
+	if (fov < 0 || fov > 180)
 		return (0);
 	return (1);
 }

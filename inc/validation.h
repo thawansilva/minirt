@@ -6,7 +6,7 @@
 /*   By: thaperei <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/15 16:00:03 by thaperei          #+#    #+#             */
-/*   Updated: 2026/03/16 19:36:54 by thaperei         ###   ########.fr       */
+/*   Updated: 2026/04/09 21:00:46 by thaperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,12 @@ void	validate_input(char *file, t_scene *scene);
 int		read_file(char *file, t_scene *scene);
 int		is_valid_extension(char *file);
 // Validate properties
+int		is_valid_float(const char *str);
+int		is_valid_coordinates(char *str);
 int		is_valid_ratio(char *str);
 int		is_valid_color(char *str);
+int		is_valid_fov(char *str);
+int		is_valid_normalized_vector(char *str);
+// Free Memory
+void	free_arr(char **arr);
 #endif

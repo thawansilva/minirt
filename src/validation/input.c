@@ -6,7 +6,7 @@
 /*   By: thaperei <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/05 10:11:05 by thaperei          #+#    #+#             */
-/*   Updated: 2026/04/05 13:21:58 by thaperei         ###   ########.fr       */
+/*   Updated: 2026/04/08 18:15:23 by thaperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,21 +56,6 @@ int	read_file(char *file, t_scene *scene)
 	}
 	close(fd);
 	return (0);
-}
-
-void	free_arr(char **arr)
-{
-	int	i;
-
-	i = 0;
-	while (arr[i])
-	{
-		free(arr[i]);
-		arr[i] = NULL;
-		i++;
-	}
-	free(arr);
-	arr = NULL;
 }
 
 void	free_content(void *content)
