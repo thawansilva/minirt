@@ -5,7 +5,6 @@ include $(ROOT_DIR)/config.mk
 INC_MINIRT = inc
 
 LIBFT_DIR := lib/libft
-LIBFT = $(LIBFT_DIR)/libft.a
 CFLAGS += -g2 -O0
 
 LIBFT_PATH := $(ROOT_DIR)/$(LIBFT_DIR)
@@ -15,6 +14,7 @@ INCLUDES := -I$(ROOT_DIR)/$(INC_MINIRT) -I$(LIBFT_PATH)/inc
 
 TEST_OBJ_DIR = obj
 TEST_INC_DIR = inc
+TEST_VALIDATION_DIR = validation
 
 # CMocka
 CMOCKA_DIR = $(ROOT_DIR)/lib/cmocka
@@ -26,11 +26,12 @@ CMOCKA_VERSION = 1.1.7
 INCLUDES += -I$(CMOCKA_INCLUDE) -I$(TEST_INC_DIR)
 
 TEST_FILES = test_main.c \
+			 $(TEST_VALIDATION_DIR)/test_validation.c
 
 TEST_OBJ = $(TEST_FILES:%.c=$(TEST_OBJ_DIR)/%.o)
 TEST_BIN = run_tests
 
-PROJECT_OBJ = $(SRC_FILES:%.c=$(TEST_OBJ_DIR)/project/%.o)
+PROJECT_OBJ = $(SRC:%.c=$(TEST_OBJ_DIR)/project/%.o)
 PROJECT_OBJ := $(filter-out $(TEST_OBJ_DIR)/project/main.o, $(PROJECT_OBJ))
 
 TEST_LIBS = -L$(CMOCKA_BUILD)/src -lcmocka -L$(LIBFT_PATH) -lft
