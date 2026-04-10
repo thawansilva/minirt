@@ -29,7 +29,7 @@ DUP_DIR = mkdir -p $(@D)
 all: $(NAME)
 
 $(NAME): $(OBJS) $(LIBS_TARGET)
-	$(CC) $(OBJS) $(LDFLAGS) $(LDLIBS) -o $(NAME)
+	$(CC) $(OBJS) $(CFLAGS) $(LDFLAGS) $(LDLIBS) -o $(NAME)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	$(DUP_DIR)
