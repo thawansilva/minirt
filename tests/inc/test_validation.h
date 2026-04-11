@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   test_validation.h                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: thaperei <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/04/11 08:54:36 by thaperei          #+#    #+#             */
+/*   Updated: 2026/04/11 15:25:58 by thaperei         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef TEST_VALIDATION_H
 # define TEST_VALIDATION_H
 
@@ -28,11 +40,24 @@ void test_valid_color_boundary_zero(void **state);
 void test_valid_color_boundary_max(void **state);
 void test_valid_color_non_numeric(void **state);
 void test_valid_color_empty_string(void **state);
-void test_valid_vector(void **state);
+// Validate Coordinates
+void test_valid_coordinates_valid(void **state);
+void test_valid_coordinates_valid_int_values(void **state);
+void test_valid_coordinates_null(void **state);
+void test_valid_coordinates_too_few(void **state);
+void test_valid_coordinates_too_many(void **state);
+void test_valid_coordinates_negative(void **state);
+void test_valid_coordinates_without_decimal(void **state);
+void test_valid_coordinates_decimal(void **state);
+void test_valid_coordinates_numeric_with_non_numeric(void **state);
+void test_valid_coordinates_non_numeric(void **state);
+void test_valid_coordinates_empty_string(void **state);
+// Validate normal vector
+void test_valid_normal(void **state);
 void test_invalid_normal(void **state);
-void test_fov(void **state);
-void test_ratio(void **state);
-void test_rgb(void **state);
+// Validate fov
+void test_valid_fov(void **state);
+void test_invalid_fov(void **state);
 void test_valid_ambient(void **state);
 void test_duplicate_ambient(void **state);
 void test_valid_camera(void **state);

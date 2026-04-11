@@ -6,7 +6,7 @@
 /*   By: thaperei <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/05 13:29:00 by thaperei          #+#    #+#             */
-/*   Updated: 2026/04/09 20:58:40 by thaperei         ###   ########.fr       */
+/*   Updated: 2026/04/11 15:10:18 by thaperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,34 +74,67 @@
 //    return sign * result;
 //}
 
-int	is_valid_float(const char *str)
-{
-	int has_digits_before;
-	int has_digits_after;
-	int has_dot;
+//int	is_valid_float(const char *str)
+//{
+//	int has_digits_before;
+//	int has_digits_after;
+//	int has_dot;
+//
+//	has_digits_before = 0;
+//	has_digits_after = 0;
+//	has_dot = 0;
+//	if (*str == '+' || *str == '-')
+//		str++;
+//	while (ft_isdigit(*str))
+//	{
+//		has_digits_before = 1;
+//		str++;
+//	}
+//	if (*str++ == '.')
+//		has_dot = 1;
+//	else
+//		return 0;
+//	while (ft_isdigit(*str))
+//	{
+//		has_digits_after = 1;
+//		str++;
+//	}
+//	if (has_digits_before && has_dot && has_digits_after)
+//		return 1;
+//	return 0;
+//}
 
-	has_digits_before = 0;
-	has_digits_after = 0;
-	has_dot = 0;
+int is_valid_float(const char *str)
+{
+	int has_digits;
+
+	has_digits = 0;
 	if (*str == '+' || *str == '-')
 		str++;
 	while (ft_isdigit(*str))
 	{
-		has_digits_before = 1;
+		has_digits = 1;
 		str++;
 	}
-	if (*str++ == '.')
-		has_dot = 1;
-	else
-		return 0;
-	while (ft_isdigit(*str))
+	if (*str == '.')
 	{
-		has_digits_after = 1;
 		str++;
+		while (ft_isdigit(*str))
+		{
+			has_digits = 1;
+			str++;
+		}
 	}
-	if (has_digits_before && has_dot && has_digits_after)
-		return 1;
-	return 0;
+	return (has_digits && *str == '\0');
+}
+
+int	is_valid_int(char *str)
+{
+	if (str == NULL || *str == '\0')
+		return (0);
+	while (ft_isdigit(*str))
+		str++;
+	return (*str == '\0');
 }
 
 int	is_valid_ratio(char *str)
@@ -111,7 +144,7 @@ int	is_valid_ratio(char *str)
 	if (str == NULL || str[0] == '\0')
 		return (0);
 	value = ft_atof(str);
-	if (is_valid_float(str) || value < 0.0 || value > 1.0)
+	if (!is_valid_float(str) || value < 0.0 || value > 1.0)
 		return (0);
 	return (1);
 }
@@ -154,7 +187,6 @@ int	is_valid_color(char *str)
 int	is_valid_coordinates(char *str)
 {
 	int		i;
-	float	value;
 	char	**coordinates;
 
 	if (str == NULL)
@@ -162,15 +194,15 @@ int	is_valid_coordinates(char *str)
 	coordinates = ft_split(str, ',');
 	if (coordinates == NULL)
 		return (0);
-	i = -1;
-	while (coordinates[++i])
+	i = 0;
+	while (coordinates[i])
 	{
-		value = ft_atoi(str);
-		if (value < 0 || value > 255)
+		if (!is_valid_float(coordinates[i]))
 		{
 			free_arr(coordinates);
 			return (0);
 		}
+		i++;
 	}
 	free_arr(coordinates);
 	if (i != 3)
@@ -193,7 +225,7 @@ int	is_valid_normalized_vector(char *str)
 	while (vectors[++i])
 	{
 		value = ft_atof(vectors[i]);
-		if (!is_valid_float(str) || value < -1.0 || value > 1.0)
+		if (!is_valid_float(vectors[i]) || value < -1.0 || value > 1.0)
 		{
 			free_arr(vectors);
 			return (0);

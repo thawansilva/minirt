@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   test_validation.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: thaperei <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/04/11 08:54:51 by thaperei          #+#    #+#             */
+/*   Updated: 2026/04/11 15:17:30 by thaperei         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <stdarg.h>
 #include <stddef.h>
 #include <setjmp.h>
@@ -18,33 +30,33 @@ void	free_node(void *line)
 
 void test_valid_extension(void **state)
 {
-    (void)state;
-    assert_true(is_valid_extension("scene.rt"));
-    assert_true(is_valid_extension("test_file.rt"));
+	(void)state;
+	assert_true(is_valid_extension("scene.rt"));
+	assert_true(is_valid_extension("test_file.rt"));
 }
 
 void test_invalid_extension(void **state)
 {
-    (void)state;
-    assert_false(is_valid_extension("scene.txt"));
-    assert_false(is_valid_extension("scene.rt.bak"));
-    assert_false(is_valid_extension(".rt"));
-    assert_false(is_valid_extension("scene"));
-    assert_false(is_valid_extension(NULL));
+	(void)state;
+	assert_false(is_valid_extension("scene.txt"));
+	assert_false(is_valid_extension("scene.rt.bak"));
+	assert_false(is_valid_extension(".rt"));
+	assert_false(is_valid_extension("scene"));
+	assert_false(is_valid_extension(NULL));
 }
 
 /* TOKENIZER / SPLIT BEHAVIOR TESTS */
 
 void test_split_spaces(void **state)
 {
-    (void)state;
+	(void)state;
 
-    char **tokens = ft_split_charset("  A \t\t\t 0.2\t255,255,255  ", " \t");
+	char **tokens = ft_split_charset("  A \t\t\t 0.2\t255,255,255  ", " \t");
 
-    assert_non_null(tokens);
-    assert_string_equal(tokens[0], "A");
-    assert_string_equal(tokens[1], "0.2");
-    assert_string_equal(tokens[2], "255,255,255");
+	assert_non_null(tokens);
+	assert_string_equal(tokens[0], "A");
+	assert_string_equal(tokens[1], "0.2");
+	assert_string_equal(tokens[2], "255,255,255");
 	for (int i = 0; i < 3; ++i)
 		free(tokens[i]);
 	free(tokens);
@@ -109,7 +121,7 @@ void test_read_invalid_file(void **state)
 {
 	(void)state;
 
-    t_scene scene;
+	t_scene scene;
 	scene.objs = NULL;
 	read_file("nonexistent", &scene);
 	assert_null(scene.objs);
@@ -120,119 +132,181 @@ void test_read_invalid_file(void **state)
 
 void    test_valid_ratio_zero(void **state)
 {
-    (void)state;
-    assert_int_equal(is_valid_ratio("0.0"), 1);
+	(void)state;
+	assert_int_equal(is_valid_ratio("0.0"), 1);
 }
 
 void    test_valid_ratio_one(void **state)
 {
-    (void)state;
-    assert_int_equal(is_valid_ratio("1.0"), 1);
+	(void)state;
+	assert_int_equal(is_valid_ratio("1.0"), 1);
 }
 
 void    test_valid_ratio_mid(void **state)
 {
-    (void)state;
-    assert_int_equal(is_valid_ratio("0.5"), 1);
+	(void)state;
+	assert_int_equal(is_valid_ratio("0.5"), 1);
 }
 
 void    test_valid_ratio_negative(void **state)
 {
-    (void)state;
-    assert_int_equal(is_valid_ratio("-0.1"), 0);
+	(void)state;
+	assert_int_equal(is_valid_ratio("-0.1"), 0);
 }
 
 void    test_valid_ratio_above_one(void **state)
 {
-    (void)state;
-    assert_int_equal(is_valid_ratio("1.1"), 0);
+	(void)state;
+	assert_int_equal(is_valid_ratio("1.1"), 0);
 }
 
 void    test_valid_ratio_null(void **state)
 {
-    (void)state;
-    assert_int_equal(is_valid_ratio(NULL), 0);
+	(void)state;
+	assert_int_equal(is_valid_ratio(NULL), 0);
 }
 
 void    test_valid_ratio_non_numeric(void **state)
 {
-    (void)state;
-    assert_int_equal(is_valid_ratio("abc"), 0);
+	(void)state;
+	assert_int_equal(is_valid_ratio("abc"), 0);
 }
 
 void    test_valid_ratio_empty_string(void **state)
 {
-    (void)state;
-    assert_int_equal(is_valid_ratio(""), 0);
+	(void)state;
+	assert_int_equal(is_valid_ratio(""), 0);
 }
 
 /* COLOR VALIDATION TESTS */
 
 void    test_valid_color_valid(void **state)
 {
-    (void)state;
-    assert_int_equal(is_valid_color("0,128,255"), 1);
+	(void)state;
+	assert_int_equal(is_valid_color("0,128,255"), 1);
 }
 
 void    test_valid_color_null(void **state)
 {
-    (void)state;
-    assert_int_equal(is_valid_color(NULL), 0);
+	(void)state;
+	assert_int_equal(is_valid_color(NULL), 0);
 }
 
 void    test_valid_color_too_few_components(void **state)
 {
-    (void)state;
-    assert_int_equal(is_valid_color("0,128"), 0);
+	(void)state;
+	assert_int_equal(is_valid_color("0,128"), 0);
 }
 
 void    test_valid_color_too_many_components(void **state)
 {
-    (void)state;
-    assert_int_equal(is_valid_color("0,128,255,64"), 0);
+	(void)state;
+	assert_int_equal(is_valid_color("0,128,255,64"), 0);
 }
 
 void    test_valid_color_out_of_range_high(void **state)
 {
-    (void)state;
-    assert_int_equal(is_valid_color("256,0,0"), 0);
+	(void)state;
+	assert_int_equal(is_valid_color("256,0,0"), 0);
 }
 
 void    test_valid_color_out_of_range_low(void **state)
 {
-    (void)state;
-    assert_int_equal(is_valid_color("-1,0,0"), 0);
+	(void)state;
+	assert_int_equal(is_valid_color("-1,0,0"), 0);
 }
 
 void    test_valid_color_boundary_zero(void **state)
 {
-    (void)state;
-    assert_int_equal(is_valid_color("0,0,0"), 1);
+	(void)state;
+	assert_int_equal(is_valid_color("0,0,0"), 1);
 }
 
 void    test_valid_color_boundary_max(void **state)
 {
-    (void)state;
-    assert_int_equal(is_valid_color("255,255,255"), 1);
+	(void)state;
+	assert_int_equal(is_valid_color("255,255,255"), 1);
 }
 
 void    test_valid_color_non_numeric(void **state)
 {
-    (void)state;
-    assert_int_equal(is_valid_color("128abc,128,255"), 0);
+	(void)state;
+	assert_int_equal(is_valid_color("128abc,128,255"), 0);
 }
 
-/* Empty string — ft_split on "" may return empty array,
-   loop never runs, --i == -1 != 3, returns 0. */
 void    test_valid_color_empty_string(void **state)
 {
-    (void)state;
-    assert_int_equal(is_valid_color(""), 0);
+	(void)state;
+	assert_int_equal(is_valid_color(""), 0);
 }
 
-/* ========================================================= */
-/* COMPONENT VALIDATION TESTS */
-/* ========================================================= */
+/* COORDINATES VALIDATION TESTS */
+
+void    test_valid_coordinates_valid(void **state)
+{
+	(void)state;
+	assert_int_equal(is_valid_coordinates("0.0,128.0,255.0"), 1);
+}
+
+void    test_valid_coordinates_valid_int_values(void **state)
+{
+	(void)state;
+	assert_int_equal(is_valid_coordinates("0,128,255"), 1);
+}
+
+void    test_valid_coordinates_null(void **state)
+{
+	(void)state;
+	assert_int_equal(is_valid_coordinates(NULL), 0);
+}
+
+void    test_valid_coordinates_too_few(void **state)
+{
+	(void)state;
+	assert_int_equal(is_valid_coordinates("0,128"), 0);
+}
+
+void    test_valid_coordinates_too_many(void **state)
+{
+	(void)state;
+	assert_int_equal(is_valid_coordinates("0,128,255,64"), 0);
+}
+
+void    test_valid_coordinates_negative(void **state)
+{
+	(void)state;
+	assert_int_equal(is_valid_coordinates("-1,0,0.0"), 1);
+}
+
+void    test_valid_coordinates_without_decimal(void **state)
+{
+	(void)state;
+	assert_int_equal(is_valid_coordinates("-1,0,0.,1.0"), 0);
+}
+
+void    test_valid_coordinates_decimal(void **state)
+{
+	(void)state;
+	assert_int_equal(is_valid_coordinates("1.5,0.0,3.7"), 1);
+}
+
+void    test_valid_coordinates_non_numeric(void **state)
+{
+	(void)state;
+	assert_int_equal(is_valid_coordinates("abc,def,ghi"), 0);
+}
+
+void    test_valid_coordinates_numeric_with_non_numeric(void **state)
+{
+	(void)state;
+	assert_int_equal(is_valid_coordinates("2.0abc,-3.0def,0ghi"), 0);
+}
+
+void    test_valid_coordinates_empty_string(void **state)
+{
+	(void)state;
+	assert_int_equal(is_valid_coordinates(""), 0);
+}
 
 /* ---------- VECTOR ---------- */
 
@@ -253,37 +327,46 @@ void    test_valid_color_empty_string(void **state)
 //    assert_false(validate_vector("1.0,2.0", &v));
 //}
 //
-///* ---------- NORMAL ---------- */
-//
-//void test_valid_normal(void **state)
-//{
-//    (void)state;
-//
-//    t_vec3 n;
-//    assert_true(validate_normal("0.0,1.0,0.0", &n));
-//}
-//
-//void test_invalid_normal(void **state)
-//{
-//    (void)state;
-//
-//    t_vec3 n;
-//    assert_false(validate_normal("2,0,0", &n)); // out of range
-//    assert_false(validate_normal("0,0,0", &n)); // zero vector
-//}
-//
-///* ---------- FOV ---------- */
-//
-//void test_fov(void **state)
-//{
-//    (void)state;
-//
-//    int fov;
-//    assert_true(validate_fov("0", &fov));
-//    assert_true(validate_fov("180", &fov));
-//    assert_false(validate_fov("181", &fov));
-//}
-//
+/* ---------- NORMAL VECTOR ---------- */
+
+void test_valid_normal(void **state)
+{
+	(void)state;
+
+	assert_int_equal(is_valid_normalized_vector("0.0,1.0,0.0"), 1);
+	assert_int_equal(is_valid_normalized_vector("0.0,0.0,0.0"), 1);
+	assert_int_equal(is_valid_normalized_vector("-1.0,0.0,-1.0"), 1);
+}
+
+void test_invalid_normal(void **state)
+{
+	(void)state;
+	// out of range
+	assert_int_equal(is_valid_normalized_vector("2.0,1.0,0.0"), 0);
+	assert_int_equal(is_valid_normalized_vector("-2.0,0.0,0.0"), 0);
+}
+
+/* ---------- FOV ---------- */
+
+void test_valid_fov(void **state)
+{
+	(void)state;
+
+	assert_int_equal(is_valid_fov("0"), 1);
+	assert_int_equal(is_valid_fov("90"), 1);
+	assert_int_equal(is_valid_fov("180"), 1);
+}
+
+void test_invalid_fov(void **state)
+{
+	(void)state;
+
+	assert_int_equal(is_valid_fov("181"), 0);
+	assert_int_equal(is_valid_fov("-1"), 0);
+	assert_int_equal(is_valid_fov(""), 0);
+	assert_int_equal(is_valid_fov(NULL), 0);
+}
+
 ///* ---------- RATIO ---------- */
 //
 //void test_ratio(void **state)

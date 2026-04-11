@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   test_main.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: thaperei <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/04/11 08:54:40 by thaperei          #+#    #+#             */
+/*   Updated: 2026/04/11 15:16:32 by thaperei         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <stdarg.h>
 #include <stddef.h>
 #include <setjmp.h>
@@ -36,6 +48,21 @@ static int	run_validation_tests(void)
 		cmocka_unit_test(test_valid_color_boundary_max),
 		cmocka_unit_test(test_valid_color_non_numeric),
 		cmocka_unit_test(test_valid_color_empty_string),
+		cmocka_unit_test(test_valid_coordinates_valid),
+		cmocka_unit_test(test_valid_coordinates_valid_int_values),
+		cmocka_unit_test(test_valid_coordinates_null),
+		cmocka_unit_test(test_valid_coordinates_too_few),
+		cmocka_unit_test(test_valid_coordinates_too_many),
+		cmocka_unit_test(test_valid_coordinates_negative),
+		cmocka_unit_test(test_valid_coordinates_without_decimal),
+		cmocka_unit_test(test_valid_coordinates_decimal),
+		cmocka_unit_test(test_valid_coordinates_non_numeric),
+		cmocka_unit_test(test_valid_coordinates_numeric_with_non_numeric),
+		cmocka_unit_test(test_valid_coordinates_empty_string),
+		cmocka_unit_test(test_valid_normal),
+		cmocka_unit_test(test_invalid_normal),
+		cmocka_unit_test(test_valid_fov),
+		cmocka_unit_test(test_invalid_fov),
 	};
 	printf("\n--- Validation Tests ---\n");
 	return (cmocka_run_group_tests(tests, NULL, NULL));
