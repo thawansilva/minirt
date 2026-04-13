@@ -1,10 +1,5 @@
 include config.mk
 
-DEBUG ?= 0
-ifeq ($(DEBUG), 1)
-    CFLAGS += -g2 -O0
-endif
-
 # Source files and Objects
 SRC := $(SRC:%=$(SRC_DIR)/%)
 SRC_BONUS := $(SRC_BONUS:%=$(SRC_BONUS_DIR)/%)
@@ -17,10 +12,15 @@ LIBS_TARGET := lib/libft/libft.a lib/minilibx-linux/libmlx.a
 
 # Flags
 CC := cc
-CFLAGS := -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror
 CPPFLAGS := $(addprefix -I, $(INC_DIR))
 LDFLAGS := $(addprefix -L, $(dir $(LIBS_TARGET)))
 LDLIBS := $(addprefix -l, $(LIBS))
+
+DEBUG ?= 0
+ifeq ($(DEBUG), 1)
+    CFLAGS += -g2 -O0
+endif
 
 RM := rm -f
 RMDIR := rm -fr
