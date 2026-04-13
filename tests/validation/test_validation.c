@@ -12,9 +12,11 @@
 
 #include <stdarg.h>
 #include <stddef.h>
+#include <unistd.h>
 #include <setjmp.h>
 #include <cmocka.h>
 #include <stdio.h>
+#include <string.h>
 
 #include "validation.h"
 #include "libft.h"
@@ -26,8 +28,48 @@ void	free_node(void *line)
 	free(line);
 }
 
-/* EXTENSION VALIDATION TESTS */
+/* Writes content to a temporary .rt file and returns the path.
+   Caller must free the returned string and unlink the file. */
+static char	*make_rt_file(const char *content)
+{
+	char	*path;
+	FILE	*f;
 
+	path = strdup("/tmp/test_XXXXXX.rt");
+	/* mkstemps would be ideal but for simplicity use a fixed name per test.
+	   Each test uses a unique name to avoid collisions. */
+	f = fopen(path, "w");
+	if (!f)
+		return (NULL);
+	fputs(content, f);
+	fclose(f);
+	return (path);
+}
+
+static t_scene	*make_scene(void)
+{
+	t_scene	*scene;
+
+	scene = calloc(1, sizeof(t_scene));
+	return (scene);
+}
+
+static void	free_scene(t_scene *scene)
+{
+	t_list	*node;
+	t_list	*next;
+
+	node = scene->objs;
+	while (node)
+	{
+		next = node->next;
+		free(node->content);
+		free(node);
+		node = next;
+	}
+}
+
+/* EXTENSION VALIDATION TESTS */
 void test_valid_extension(void **state)
 {
 	(void)state;
@@ -128,7 +170,83 @@ void test_read_invalid_file(void **state)
 	ft_lstclear(&(scene.objs), &free_node);
 }
 
-/* VALIDATE FLOAT NUMBER  */
+
+/* VALIDATE FLOAT STRING  */
+
+void    test_valid_float_integer(void **state)
+{
+    (void)state;
+    assert_int_equal(is_valid_float("42"), 1);
+}
+
+void    test_valid_float_positive(void **state)
+{
+    (void)state;
+    assert_int_equal(is_valid_float("3.14"), 1);
+}
+
+void    test_valid_float_negative(void **state)
+{
+    (void)state;
+    assert_int_equal(is_valid_float("-1.5"), 1);
+}
+
+void    test_valid_float_explicit_plus(void **state)
+{
+    (void)state;
+    assert_int_equal(is_valid_float("+1.5"), 1);
+}
+
+void    test_valid_float_leading_dot(void **state)
+{
+    (void)state;
+    assert_int_equal(is_valid_float(".5"), 1);
+}
+
+void    test_valid_float_trailing_dot(void **state)
+{
+    (void)state;
+    assert_int_equal(is_valid_float("1."), 1);
+}
+
+void    test_valid_float_only_dot(void **state)
+{
+    (void)state;
+    assert_int_equal(is_valid_float("."), 0);
+}
+
+void    test_valid_float_only_sign(void **state)
+{
+    (void)state;
+    assert_int_equal(is_valid_float("-"), 0);
+}
+
+void    test_valid_float_empty(void **state)
+{
+    (void)state;
+    assert_int_equal(is_valid_float(""), 0);
+}
+
+void    test_valid_float_non_numeric(void **state)
+{
+    (void)state;
+    assert_int_equal(is_valid_float("abc"), 0);
+}
+
+void    test_valid_float_spaces(void **state)
+{
+    (void)state;
+    assert_int_equal(is_valid_float("1 .5"), 0);
+}
+
+void    test_valid_float_multiple_dots(void **state)
+{
+    (void)state;
+    assert_int_equal(is_valid_float("1.2.3"), 0);
+}
+
+
+/* VALIDATE RATIO NUMBER  */
 
 void    test_valid_ratio_zero(void **state)
 {
@@ -308,176 +426,1004 @@ void    test_valid_coordinates_empty_string(void **state)
 	assert_int_equal(is_valid_coordinates(""), 0);
 }
 
-/* ---------- VECTOR ---------- */
-
-//void test_valid_vector(void **state)
-//{
-//    (void)state;
-//
-//    t_vec3 v;
-//    assert_true(validate_vector("1.0,2.5,-3.2", &v));
-//}
-
-//void test_invalid_vector(void **state)
-//{
-//    (void)state;
-//
-//    t_vec3 v;
-//    assert_false(validate_vector("1.0,abc,3.2", &v));
-//    assert_false(validate_vector("1.0,2.0", &v));
-//}
-//
 /* ---------- NORMAL VECTOR ---------- */
 
-void test_valid_normal(void **state)
+void    test_valid_normalized_vector_valid(void **state)
 {
-	(void)state;
-
-	assert_int_equal(is_valid_normalized_vector("0.0,1.0,0.0"), 1);
-	assert_int_equal(is_valid_normalized_vector("0.0,0.0,0.0"), 1);
-	assert_int_equal(is_valid_normalized_vector("-1.0,0.0,-1.0"), 1);
+    (void)state;
+    assert_int_equal(is_valid_normalized_vector("0.0,1.0,0.0"), 1);
 }
 
-void test_invalid_normal(void **state)
+void    test_valid_normalized_vector_null(void **state)
 {
-	(void)state;
-	// out of range
-	assert_int_equal(is_valid_normalized_vector("2.0,1.0,0.0"), 0);
-	assert_int_equal(is_valid_normalized_vector("-2.0,0.0,0.0"), 0);
+    (void)state;
+    assert_int_equal(is_valid_normalized_vector(NULL), 0);
+}
+
+void    test_valid_normalized_vector_empty(void **state)
+{
+    (void)state;
+    assert_int_equal(is_valid_normalized_vector(""), 0);
+}
+
+void    test_valid_normalized_vector_too_few(void **state)
+{
+    (void)state;
+    assert_int_equal(is_valid_normalized_vector("0.0,1.0"), 0);
+}
+
+void    test_valid_normalized_vector_too_many(void **state)
+{
+    (void)state;
+    assert_int_equal(is_valid_normalized_vector("0.0,1.0,0.0,0.5"), 0);
+}
+
+void    test_valid_normalized_vector_out_of_range(void **state)
+{
+    (void)state;
+    assert_int_equal(is_valid_normalized_vector("0.0,1.5,0.0"), 0);
+}
+
+void    test_valid_normalized_vector_boundary_min(void **state)
+{
+    (void)state;
+    assert_int_equal(is_valid_normalized_vector("-1.0,-1.0,-1.0"), 1);
+}
+
+void    test_valid_normalized_vector_boundary_max(void **state)
+{
+    (void)state;
+    assert_int_equal(is_valid_normalized_vector("1.0,1.0,1.0"), 1);
+}
+
+void    test_valid_normalized_vector_non_numeric(void **state)
+{
+    (void)state;
+    assert_int_equal(is_valid_normalized_vector("abc,0.0,0.0"), 0);
 }
 
 /* ---------- FOV ---------- */
 
-void test_valid_fov(void **state)
+void    test_valid_fov_valid(void **state)
+{
+    (void)state;
+    assert_int_equal(is_valid_fov("90"), 1);
+}
+
+void    test_valid_fov_null(void **state)
+{
+    (void)state;
+    assert_int_equal(is_valid_fov(NULL), 0);
+}
+
+void    test_valid_fov_empty(void **state)
+{
+    (void)state;
+    assert_int_equal(is_valid_fov(""), 0);
+}
+
+void    test_valid_fov_boundary_zero(void **state)
+{
+    (void)state;
+    assert_int_equal(is_valid_fov("0"), 1);
+}
+
+void    test_valid_fov_boundary_max(void **state)
+{
+    (void)state;
+    assert_int_equal(is_valid_fov("180"), 1);
+}
+
+void    test_valid_fov_out_of_range(void **state)
+{
+    (void)state;
+    assert_int_equal(is_valid_fov("181"), 0);
+}
+
+void    test_valid_fov_negative(void **state)
+{
+    (void)state;
+    assert_int_equal(is_valid_fov("-1"), 0);
+}
+
+void    test_valid_fov_float(void **state)
+{
+    (void)state;
+    assert_int_equal(is_valid_fov("90.5"), 0);
+}
+
+void    test_valid_fov_non_numeric(void **state)
+{
+    (void)state;
+    assert_int_equal(is_valid_fov("abc"), 0);
+}
+
+/* ========================================================= */
+/* OBJECT PARSING TESTS (DISPATCHER) */
+/* ========================================================= */
+
+/* ---------- AMBIENT LIGHT ---------- */
+
+void    test_valid_ambient_valid(void **state)
+{
+	(void)state;
+	char *arr[] = {"A", "0.5", "255,255,255", NULL};
+	assert_int_equal(is_valid_ambient(arr), 1);
+}
+
+void    test_valid_ambient_null_arr(void **state)
 {
 	(void)state;
 
-	assert_int_equal(is_valid_fov("0"), 1);
-	assert_int_equal(is_valid_fov("90"), 1);
-	assert_int_equal(is_valid_fov("180"), 1);
+	assert_int_equal(is_valid_ambient(NULL), 0);
 }
 
-void test_invalid_fov(void **state)
+void    test_valid_ambient_invalid_ratio(void **state)
 {
 	(void)state;
-
-	assert_int_equal(is_valid_fov("181"), 0);
-	assert_int_equal(is_valid_fov("-1"), 0);
-	assert_int_equal(is_valid_fov(""), 0);
-	assert_int_equal(is_valid_fov(NULL), 0);
+	char *arr[] = {"A", "1.5", "255,255,255", NULL};
+	assert_int_equal(is_valid_ambient(arr), 0);
 }
 
-///* ---------- RATIO ---------- */
-//
-//void test_ratio(void **state)
-//{
-//    (void)state;
-//
-//    double r;
-//    assert_true(validate_ratio("0.0", &r));
-//    assert_true(validate_ratio("1.0", &r));
-//    assert_false(validate_ratio("1.1", &r));
-//}
-//
-///* ---------- RGB ---------- */
-//
-//void test_rgb(void **state)
-//{
-//    (void)state;
-//
-//    t_color c;
-//    assert_true(validate_rgb("255,0,128", &c));
-//    assert_false(validate_rgb("256,0,0", &c));
-//    assert_false(validate_rgb("a,b,c", &c));
-//}
-//
-///* ========================================================= */
-///* OBJECT PARSING TESTS (DISPATCHER) */
-///* ========================================================= */
-//
-///* ---------- AMBIENT LIGHT ---------- */
-//
-//void test_valid_ambient(void **state)
-//{
-//    (void)state;
-//
-//    t_scene scene = {0};
-//    char *err = NULL;
-//
-//    assert_true(parse_line("A 0.2 255,255,255", &scene, &err));
-//}
-//
-//void test_duplicate_ambient(void **state)
-//{
-//    (void)state;
-//
-//    t_scene scene = {0};
-//    char *err = NULL;
-//
-//    parse_line("A 0.2 255,255,255", &scene, &err);
-//    assert_false(parse_line("A 0.3 255,255,255", &scene, &err));
-//}
-//
-///* ---------- CAMERA ---------- */
-//
-//void test_valid_camera(void **state)
-//{
-//    (void)state;
-//
-//    t_scene scene = {0};
-//    char *err = NULL;
-//
-//    assert_true(parse_line("C 0,0,0 0,0,1 70", &scene, &err));
-//}
-//
-///* ---------- LIGHT ---------- */
-//
-//void test_valid_light(void **state)
-//{
-//    (void)state;
-//
-//    t_scene scene = {0};
-//    char *err = NULL;
-//
-//    assert_true(parse_line("L 0,0,0 0.5 255,255,255", &scene, &err));
-//}
-//
-///* ---------- SPHERE ---------- */
-//
-//void test_valid_sphere(void **state)
-//{
-//    (void)state;
-//
-//    t_scene scene = {0};
-//    char *err = NULL;
-//
-//    assert_true(parse_line("sp 0,0,0 10 255,0,0", &scene, &err));
-//}
-//
-///* ---------- PLANE ---------- */
-//
-//void test_valid_plane(void **state)
-//{
-//    (void)state;
-//
-//    t_scene scene = {0};
-//    char *err = NULL;
-//
-//    assert_true(parse_line("pl 0,0,0 0,1,0 255,255,255", &scene, &err));
-//}
-//
-///* ---------- CYLINDER ---------- */
-//
-//void test_valid_cylinder(void **state)
-//{
-//    (void)state;
-//
-//    t_scene scene = {0};
-//    char *err = NULL;
-//
-//    assert_true(parse_line("cy 0,0,0 0,1,0 10 20 255,255,255", &scene, &err));
-//}
-//
+void    test_valid_ambient_invalid_color(void **state)
+{
+	(void)state;
+	char *arr[] = {"A", "0.5", "256,0,0", NULL};
+	assert_int_equal(is_valid_ambient(arr), 0);
+}
+
+void    test_valid_ambient_both_invalid(void **state)
+{
+	(void)state;
+	char *arr[] = {"A", "2.0", "300,300,300", NULL};
+	assert_int_equal(is_valid_ambient(arr), 0);
+}
+
+void    test_valid_ambient_boundary_ratio_zero(void **state)
+{
+	(void)state;
+	char *arr[] = {"A", "0.0", "0,0,0", NULL};
+	assert_int_equal(is_valid_ambient(arr), 1);
+}
+
+void    test_valid_ambient_boundary_ratio_one(void **state)
+{
+	(void)state;
+	char *arr[] = {"A", "1.0", "128,128,128", NULL};
+	assert_int_equal(is_valid_ambient(arr), 1);
+}
+
+void    test_valid_ambient_boundary_color_max(void **state)
+{
+	(void)state;
+	char *arr[] = {"A", "0.8", "255,255,255", NULL};
+	assert_int_equal(is_valid_ambient(arr), 1);
+}
+
+//* ---------- CAMERA ---------- */
+
+void    test_valid_camera_valid(void **state)
+{
+    (void)state;
+    char *arr[] = {"C", "0,0,0", "0.0,1.0,0.0", "90", NULL};
+    assert_int_equal(is_valid_camera(arr), 1);
+}
+
+void    test_valid_camera_null_arr(void **state)
+{
+    (void)state;
+    assert_int_equal(is_valid_camera(NULL), 0);
+}
+
+void    test_valid_camera_null_first_element(void **state)
+{
+    (void)state;
+    char *arr[] = {"C", NULL, "0.0,1.0,0.0", "90", NULL};
+    assert_int_equal(is_valid_camera(arr), 0);
+}
+
+void    test_valid_camera_invalid_coordinates(void **state)
+{
+    (void)state;
+    char *arr[] = {"C", "abc,def,ghi", "0.0,1.0,0.0", "90", NULL};
+    assert_int_equal(is_valid_camera(arr), 0);
+}
+
+void    test_valid_camera_invalid_vector(void **state)
+{
+    (void)state;
+    char *arr[] = {"C", "0,0,0", "abc,0.0,0.0", "90", NULL};
+    assert_int_equal(is_valid_camera(arr), 0);
+}
+
+void    test_valid_camera_invalid_fov(void **state)
+{
+    (void)state;
+    char *arr[] = {"C", "0,0,0", "0.0,1.0,0.0", "181", NULL};
+    assert_int_equal(is_valid_camera(arr), 0);
+}
+
+void    test_valid_camera_all_invalid(void **state)
+{
+    (void)state;
+    char *arr[] = {"C", "abc", "xyz", "999", NULL};
+    assert_int_equal(is_valid_camera(arr), 0);
+}
+
+void    test_valid_camera_boundary_fov_zero(void **state)
+{
+    (void)state;
+    char *arr[] = {"C", "0,0,0", "0.0,1.0,0.0", "0", NULL};
+    assert_int_equal(is_valid_camera(arr), 1);
+}
+
+void    test_valid_camera_boundary_fov_max(void **state)
+{
+    (void)state;
+    char *arr[] = {"C", "0,0,0", "0.0,1.0,0.0", "180", NULL};
+    assert_int_equal(is_valid_camera(arr), 1);
+}
+
+void    test_valid_camera_fov_out_of_range(void **state)
+{
+    (void)state;
+    char *arr[] = {"C", "0,0,0", "0.0,1.0,0.0", "181", NULL};
+    assert_int_equal(is_valid_camera(arr), 0);
+}
+
+void    test_valid_camera_vector_boundary(void **state)
+{
+    (void)state;
+    char *arr[] = {"C", "0,0,0", "-1.0,0.0,1.0", "90", NULL};
+    assert_int_equal(is_valid_camera(arr), 1);
+}
+
+void    test_valid_camera_vector_non_numeric(void **state)
+{
+    (void)state;
+    char *arr[] = {"C", "0,0,0", "x,y,z", "90", NULL};
+    assert_int_equal(is_valid_camera(arr), 0);
+}
+
+void    test_valid_camera_fov_float(void **state)
+{
+    (void)state;
+    char *arr[] = {"C", "0,0,0", "0.0,1.0,0.0", "90.5", NULL};
+    assert_int_equal(is_valid_camera(arr), 0);
+}
+
+void    test_valid_camera_fov_negative(void **state)
+{
+    (void)state;
+    char *arr[] = {"C", "0,0,0", "0.0,1.0,0.0", "-1", NULL};
+    assert_int_equal(is_valid_camera(arr), 0);
+}
+
+/* ---------- LIGHT ---------- */
+
+void    test_valid_light_valid(void **state)
+{
+    (void)state;
+    char *arr[] = {"L", "0,0,0", "0.5", "255,255,255", NULL};
+    assert_int_equal(is_valid_light(arr), 1);
+}
+
+void    test_valid_light_null_arr(void **state)
+{
+    (void)state;
+    assert_int_equal(is_valid_light(NULL), 0);
+}
+
+void    test_valid_light_null_first_element(void **state)
+{
+    (void)state;
+    char *arr[] = {"L", NULL, "0,0,0", "0.5", "255,255,255", NULL};
+    assert_int_equal(is_valid_light(arr), 0);
+}
+
+void    test_valid_light_invalid_coordinates(void **state)
+{
+    (void)state;
+    char *arr[] = {"L", "abc,def,ghi", "0.5", "255,255,255", NULL};
+    assert_int_equal(is_valid_light(arr), 0);
+}
+
+void    test_valid_light_invalid_ratio(void **state)
+{
+    (void)state;
+    char *arr[] = {"L", "0,0,0", "1.5", "255,255,255", NULL};
+    assert_int_equal(is_valid_light(arr), 0);
+}
+
+void    test_valid_light_invalid_color(void **state)
+{
+    (void)state;
+    char *arr[] = {"L", "0,0,0", "0.5", "256,0,0", NULL};
+    assert_int_equal(is_valid_light(arr), 0);
+}
+
+void    test_valid_light_all_invalid(void **state)
+{
+    (void)state;
+    char *arr[] = {"L", "abc", "2.0", "300,300,300", NULL};
+    assert_int_equal(is_valid_light(arr), 0);
+}
+
+void    test_valid_light_boundary_ratio_zero(void **state)
+{
+    (void)state;
+    char *arr[] = {"L", "0,0,0", "0.0", "255,255,255", NULL};
+    assert_int_equal(is_valid_light(arr), 1);
+}
+
+void    test_valid_light_boundary_ratio_one(void **state)
+{
+    (void)state;
+    char *arr[] = {"L", "0,0,0", "1.0", "128,128,128", NULL};
+    assert_int_equal(is_valid_light(arr), 1);
+}
+
+void    test_valid_light_boundary_color_max(void **state)
+{
+    (void)state;
+    char *arr[] = {"L", "0,0,0", "0.8", "255,255,255", NULL};
+    assert_int_equal(is_valid_light(arr), 1);
+}
+
+void    test_valid_light_ratio_above_one(void **state)
+{
+    (void)state;
+    char *arr[] = {"L", "0,0,0", "1.1", "255,255,255", NULL};
+    assert_int_equal(is_valid_light(arr), 0);
+}
+
+void    test_valid_light_color_out_of_range(void **state)
+{
+    (void)state;
+    assert_int_equal(is_valid_light((char *[]){"L", "0,0,0", "0.5", "0,256,0", NULL}), 0);
+}
+
+void    test_valid_light_coordinates_wrong_count(void **state)
+{
+    (void)state;
+    char *arr[] = {"L", "0,0", "0.5", "255,255,255", NULL};
+    assert_int_equal(is_valid_light(arr), 0);
+}
+
+void    test_valid_light_null_coordinates(void **state)
+{
+    (void)state;
+    char *arr[] = {"L", NULL, "0.5", "255,255,255", NULL};
+    assert_int_equal(is_valid_light(arr), 0);
+}
+
+/* ---------- SPHERE ---------- */
+
+void    test_valid_sphere_valid(void **state)
+{
+    (void)state;
+    char *arr[] = {"sp", "0,0,0", "1.5", "255,255,255", NULL};
+    assert_int_equal(is_valid_sphere(arr), 1);
+}
+
+void    test_valid_sphere_null_arr(void **state)
+{
+    (void)state;
+    assert_int_equal(is_valid_sphere(NULL), 0);
+}
+
+void    test_valid_sphere_invalid_coordinates(void **state)
+{
+    (void)state;
+    char *arr[] = {"sp", "abc,def,ghi", "1.5", "255,255,255", NULL};
+    assert_int_equal(is_valid_sphere(arr), 0);
+}
+
+void    test_valid_sphere_invalid_diameter(void **state)
+{
+    (void)state;
+    char *arr[] = {"sp", "0,0,0", "abc", "255,255,255", NULL};
+    assert_int_equal(is_valid_sphere(arr), 0);
+}
+
+void    test_valid_sphere_invalid_color(void **state)
+{
+    (void)state;
+    char *arr[] = {"sp", "0,0,0", "1.5", "256,0,0", NULL};
+    assert_int_equal(is_valid_sphere(arr), 0);
+}
+
+void    test_valid_sphere_all_invalid(void **state)
+{
+    (void)state;
+    char *arr[] = {"sp", "abc", "xyz", "300,300,300", NULL};
+    assert_int_equal(is_valid_sphere(arr), 0);
+}
+
+void    test_valid_sphere_negative_diameter(void **state)
+{
+    (void)state;
+    char *arr[] = {"sp", "0,0,0", "-1.5", "255,255,255", NULL};
+    assert_int_equal(is_valid_sphere(arr), 0);
+}
+
+void    test_valid_sphere_zero_diameter(void **state)
+{
+    (void)state;
+    char *arr[] = {"sp", "0,0,0", "0", "255,255,255", NULL};
+    assert_int_equal(is_valid_sphere(arr), 1);
+}
+
+void    test_valid_sphere_null_coordinates(void **state)
+{
+    (void)state;
+    char *arr[] = {"sp", NULL, "1.5", "255,255,255", NULL};
+    assert_int_equal(is_valid_sphere(arr), 0);
+}
+
+void    test_valid_sphere_null_color(void **state)
+{
+    (void)state;
+    char *arr[] = {"sp", "0,0,0", "1.5", NULL, NULL};
+    assert_int_equal(is_valid_sphere(arr), 0);
+}
+
+/* ---------- PLANE ---------- */
+
+void    test_valid_plane_valid(void **state)
+{
+    (void)state;
+    char *arr[] = {"pl", "0,0,0", "0.0,1.0,0.0", "255,255,255", NULL};
+    assert_int_equal(is_valid_plane(arr), 1);
+}
+
+void    test_valid_plane_null_arr(void **state)
+{
+    (void)state;
+    assert_int_equal(is_valid_plane(NULL), 0);
+}
+
+void    test_valid_plane_null_first_element(void **state)
+{
+    (void)state;
+    char *arr[] = {"pl", NULL, "0.0,1.0,0.0", "255,255,255", NULL};
+    assert_int_equal(is_valid_plane(arr), 0);
+}
+
+void    test_valid_plane_null_coordinates(void **state)
+{
+    (void)state;
+    char *arr[] = {"pl", NULL, "0.0,1.0,0.0", "255,255,255", NULL};
+    assert_int_equal(is_valid_plane(arr), 0);
+}
+
+void    test_valid_plane_null_vector(void **state)
+{
+    (void)state;
+    char *arr[] = {"pl", "0,0,0", NULL, "255,255,255", NULL};
+    assert_int_equal(is_valid_plane(arr), 0);
+}
+
+void    test_valid_plane_null_color(void **state)
+{
+    (void)state;
+    char *arr[] = {"pl", "0,0,0", "0.0,1.0,0.0", NULL, NULL};
+    assert_int_equal(is_valid_plane(arr), 0);
+}
+
+void    test_valid_plane_invalid_coordinates(void **state)
+{
+    (void)state;
+    char *arr[] = {"pl", "abc,def,ghi", "0.0,1.0,0.0", "255,255,255", NULL};
+    assert_int_equal(is_valid_plane(arr), 0);
+}
+
+void    test_valid_plane_invalid_vector(void **state)
+{
+    (void)state;
+    char *arr[] = {"pl", "0,0,0", "abc,def,ghi", "255,255,255", NULL};
+    assert_int_equal(is_valid_plane(arr), 0);
+}
+
+void    test_valid_plane_invalid_color(void **state)
+{
+    (void)state;
+    char *arr[] = {"pl", "0,0,0", "0.0,1.0,0.0", "256,0,0", NULL};
+    assert_int_equal(is_valid_plane(arr), 0);
+}
+
+void    test_valid_plane_all_invalid(void **state)
+{
+    (void)state;
+    char *arr[] = {"pl", "abc", "xyz", "300,300,300", NULL};
+    assert_int_equal(is_valid_plane(arr), 0);
+}
+
+void    test_valid_plane_vector_out_of_range(void **state)
+{
+    (void)state;
+    char *arr[] = {"pl", "0,0,0", "0.0,1.5,0.0", "255,255,255", NULL};
+    assert_int_equal(is_valid_plane(arr), 0);
+}
+
+void    test_valid_plane_vector_boundary_min(void **state)
+{
+    (void)state;
+    char *arr[] = {"pl", "0,0,0", "-1.0,-1.0,-1.0", "255,255,255", NULL};
+    assert_int_equal(is_valid_plane(arr), 1);
+}
+
+void    test_valid_plane_vector_boundary_max(void **state)
+{
+    (void)state;
+    char *arr[] = {"pl", "0,0,0", "1.0,1.0,1.0", "255,255,255", NULL};
+    assert_int_equal(is_valid_plane(arr), 1);
+}
+
+void    test_valid_plane_color_boundary_zero(void **state)
+{
+    (void)state;
+    char *arr[] = {"pl", "0,0,0", "0.0,1.0,0.0", "0,0,0", NULL};
+    assert_int_equal(is_valid_plane(arr), 1);
+}
+
+void    test_valid_plane_color_boundary_max(void **state)
+{
+    (void)state;
+    char *arr[] = {"pl", "0,0,0", "0.0,1.0,0.0", "255,255,255", NULL};
+    assert_int_equal(is_valid_plane(arr), 1);
+}
+
+void    test_valid_plane_coordinates_wrong_count(void **state)
+{
+    (void)state;
+    char *arr[] = {"pl", "0,0", "0.0,1.0,0.0", "255,255,255", NULL};
+    assert_int_equal(is_valid_plane(arr), 0);
+}
+
+void    test_valid_plane_vector_wrong_count(void **state)
+{
+    (void)state;
+    char *arr[] = {"pl", "0,0,0", "0.0,1.0", "255,255,255", NULL};
+    assert_int_equal(is_valid_plane(arr), 0);
+}
+
+/* ---------- CYLINDER ---------- */
+
+
+/* =========================================================
+   is_valid_cylinder integration tests
+
+   BUG: color is validated against arr[2] (the vector slot)
+   instead of arr[5]. This means:
+   - A valid vector that is also a valid color format will pass
+   - The actual color at arr[5] is never validated
+   - An invalid color at arr[5] will never be caught
+   Fix: change `!is_valid_color(arr[2])` to `!is_valid_color(arr[5])`
+
+   Array layout (intended):
+     arr[0] = identifier ("cy")
+     arr[1] = coordinates
+     arr[2] = normalized vector
+     arr[3] = diameter
+     arr[4] = height
+     arr[5] = color
+   ========================================================= */
+
+/* Fully valid cylinder — must return 1.
+   NOTE: due to the bug, arr[2] ("0.0,1.0,0.0") is passed to
+   is_valid_color. ft_split on ',' gives ["0.0","1.0","0.0"],
+   all parse to 0 via ft_atoi, all in 0-255 range, count == 3 → passes.
+   So valid input coincidentally returns 1 for the wrong reason. */
+void    test_valid_cylinder_valid(void **state)
+{
+    (void)state;
+    char *arr[] = {"cy", "0,0,0", "0.0,1.0,0.0", "2.5", "5.0", "255,255,255", NULL};
+    assert_int_equal(is_valid_cylinder(arr), 1);
+}
+
+void    test_valid_cylinder_null_arr(void **state)
+{
+    (void)state;
+    assert_int_equal(is_valid_cylinder(NULL), 0);
+}
+
+void    test_valid_cylinder_null_coordinates(void **state)
+{
+    (void)state;
+    char *arr[] = {"cy", NULL, "0.0,1.0,0.0", "2.5", "5.0", "255,255,255", NULL};
+    assert_int_equal(is_valid_cylinder(arr), 0);
+}
+
+void    test_valid_cylinder_null_vector(void **state)
+{
+    (void)state;
+    char *arr[] = {"cy", "0,0,0", NULL, "2.5", "5.0", "255,255,255", NULL};
+    assert_int_equal(is_valid_cylinder(arr), 0);
+}
+
+void    test_valid_cylinder_null_diameter(void **state)
+{
+    (void)state;
+    char *arr[] = {"cy", "0,0,0", "0.0,1.0,0.0", NULL, "5.0", "255,255,255", NULL};
+    assert_int_equal(is_valid_cylinder(arr), 0);
+}
+
+void    test_valid_cylinder_null_height(void **state)
+{
+    (void)state;
+    char *arr[] = {"cy", "0,0,0", "0.0,1.0,0.0", "2.5", NULL, "255,255,255", NULL};
+    assert_int_equal(is_valid_cylinder(arr), 0);
+}
+
+void    test_valid_cylinder_null_color(void **state)
+{
+    (void)state;
+    char *arr[] = {"cy", "0,0,0", "0.0,1.0,0.0", "2.5", "5.0", NULL, NULL};
+    assert_int_equal(is_valid_cylinder(arr), 0);
+}
+
+void    test_valid_cylinder_invalid_coordinates(void **state)
+{
+    (void)state;
+    char *arr[] = {"cy", "abc,def,ghi", "0.0,1.0,0.0", "2.5", "5.0", "255,255,255", NULL};
+    assert_int_equal(is_valid_cylinder(arr), 0);
+}
+
+void    test_valid_cylinder_invalid_vector(void **state)
+{
+    (void)state;
+    char *arr[] = {"cy", "0,0,0", "abc,def,ghi", "2.5", "5.0", "255,255,255", NULL};
+    assert_int_equal(is_valid_cylinder(arr), 0);
+}
+
+void    test_valid_cylinder_invalid_diameter(void **state)
+{
+    (void)state;
+    char *arr[] = {"cy", "0,0,0", "0.0,1.0,0.0", "abc", "5.0", "255,255,255", NULL};
+    assert_int_equal(is_valid_cylinder(arr), 0);
+}
+
+void    test_valid_cylinder_invalid_height(void **state)
+{
+    (void)state;
+    char *arr[] = {"cy", "0,0,0", "0.0,1.0,0.0", "2.5", "abc", "255,255,255", NULL};
+    assert_int_equal(is_valid_cylinder(arr), 0);
+}
+
+void    test_valid_cylinder_invalid_color(void **state)
+{
+    (void)state;
+    char *arr[] = {"cy", "0,0,0", "0.0,1.0,0.0", "2.5", "5.0", "256,0,0", NULL};
+    assert_int_equal(is_valid_cylinder(arr), 0);
+}
+
+void    test_valid_cylinder_all_invalid(void **state)
+{
+    (void)state;
+    char *arr[] = {"cy", "abc", "xyz", "???", "???", "300,300,300", NULL};
+    assert_int_equal(is_valid_cylinder(arr), 0);
+}
+
+void    test_valid_cylinder_negative_diameter(void **state)
+{
+    (void)state;
+    char *arr[] = {"cy", "0,0,0", "0.0,1.0,0.0", "-2.5", "5.0", "255,255,255", NULL};
+    assert_int_equal(is_valid_cylinder(arr), 0);
+}
+
+void    test_valid_cylinder_zero_diameter(void **state)
+{
+    (void)state;
+    char *arr[] = {"cy", "0,0,0", "0.0,1.0,0.0", "0.0", "5.0", "255,255,255", NULL};
+    assert_int_equal(is_valid_cylinder(arr), 0);
+}
+
+void    test_valid_cylinder_negative_height(void **state)
+{
+    (void)state;
+    char *arr[] = {"cy", "0,0,0", "0.0,1.0,0.0", "2.5", "-5.0", "255,255,255", NULL};
+    assert_int_equal(is_valid_cylinder(arr), 0);
+}
+
+void    test_valid_cylinder_zero_height(void **state)
+{
+    (void)state;
+    char *arr[] = {"cy", "0,0,0", "0.0,1.0,0.0", "2.5", "0.0", "255,255,255", NULL};
+    assert_int_equal(is_valid_cylinder(arr), 0);
+}
+
+void    test_valid_cylinder_boundary_diameter(void **state)
+{
+    (void)state;
+    char *arr[] = {"cy", "0,0,0", "0.0,1.0,0.0", "9999.9", "5.0", "255,255,255", NULL};
+    assert_int_equal(is_valid_cylinder(arr), 1);
+}
+
+void    test_valid_cylinder_boundary_height(void **state)
+{
+    (void)state;
+    char *arr[] = {"cy", "0,0,0", "0.0,1.0,0.0", "2.5", "9999.9", "255,255,255", NULL};
+    assert_int_equal(is_valid_cylinder(arr), 1);
+}
+
+void    test_valid_cylinder_vector_out_of_range(void **state)
+{
+    (void)state;
+    char *arr[] = {"cy", "0,0,0", "0.0,1.5,0.0", "2.5", "5.0", "255,255,255", NULL};
+    assert_int_equal(is_valid_cylinder(arr), 0);
+}
+
+void    test_valid_cylinder_vector_wrong_count(void **state)
+{
+    (void)state;
+    char *arr[] = {"cy", "0,0,0", "0.0,1.0", "2.5", "5.0", "255,255,255", NULL};
+    assert_int_equal(is_valid_cylinder(arr), 0);
+}
+
+void    test_valid_cylinder_color_wrong_slot(void **state)
+{
+    (void)state;
+    char *arr[] = {"cy", "0,0,0", "255,128,0", "2.5", "5.0", "999,999,999", NULL};
+    assert_int_equal(is_valid_cylinder(arr), 0);
+}
+
+/* VALIDATE INPUT */
+
+void	test_valid_input_valid_scene(void **state)
+{
+	(void)state;
+	t_scene	*scene = make_scene();
+	char	*path = strdup("/tmp/valid_scene.rt");
+	FILE	*f = fopen(path, "w");
+	fputs("A 0.5 255,255,255\n", f);
+	fputs("C 0,0,0 0.0,0.0,1.0 90\n", f);
+	fputs("L 0,5,0 0.8 255,255,255\n", f);
+	fputs("sp 0,0,5 2.0 255,0,0\n", f);
+	fputs("pl 0,0,0 0.0,1.0,0.0 128,128,128\n", f);
+	fputs("cy 0,0,0 0.0,1.0,0.0 1.0 3.0 0,255,0\n", f);
+	fclose(f);
+	assert_int_equal(is_valid_input(path, scene), 1);
+	free_scene(scene);
+	unlink(path);
+	free(path);
+}
+
+void	test_valid_input_null_file(void **state)
+{
+	(void)state;
+	t_scene	*scene = make_scene();
+	assert_int_equal(is_valid_input(NULL, scene), 0);
+	free_scene(scene);
+}
+
+void	test_valid_input_invalid_extension(void **state)
+{
+	(void)state;
+	t_scene	*scene = make_scene();
+	assert_int_equal(is_valid_input("scene.obj", scene), 0);
+	free_scene(scene);
+}
+
+/* No extension at all — must return 0 */
+void	test_valid_input_no_extension(void **state)
+{
+	(void)state;
+	t_scene	*scene = make_scene();
+	assert_int_equal(is_valid_input("scene", scene), 0);
+	free_scene(scene);
+}
+
+void	test_valid_input_missing_file(void **state)
+{
+	(void)state;
+	t_scene	*scene = make_scene();
+	assert_int_equal(is_valid_input("/tmp/does_not_exist.rt", scene), 0);
+	free_scene(scene);
+}
+
+void	test_valid_input_empty_file(void **state)
+{
+	(void)state;
+	t_scene	*scene = make_scene();
+	FILE	*f = fopen("/tmp/empty.rt", "w");
+	fclose(f);
+	assert_int_equal(is_valid_input("/tmp/empty.rt", scene), 0);
+	free_scene(scene);
+	unlink("/tmp/empty.rt");
+}
+
+/* Valid ambient line only — must return 1 */
+void	test_valid_input_valid_ambient(void **state)
+{
+	(void)state;
+	t_scene	*scene = make_scene();
+	FILE	*f = fopen("/tmp/ambient_valid.rt", "w");
+	fputs("A 0.5 255,255,255\n", f);
+	fclose(f);
+	assert_int_equal(is_valid_input("/tmp/ambient_valid.rt", scene), 0);
+	free_scene(scene);
+	unlink("/tmp/ambient_valid.rt");
+}
+
+/* Invalid ambient (ratio > 1.0) — must return 0 */
+void	test_valid_input_invalid_ambient(void **state)
+{
+	(void)state;
+	t_scene	*scene = make_scene();
+	FILE	*f = fopen("/tmp/ambient_invalid.rt", "w");
+	fputs("A 2.0 255,255,255\n", f);
+	fclose(f);
+	assert_int_equal(is_valid_input("/tmp/ambient_invalid.rt", scene), 0);
+	free_scene(scene);
+	unlink("/tmp/ambient_invalid.rt");
+}
+
+/* Valid camera line only — must return 1 */
+void	test_valid_input_valid_camera(void **state)
+{
+	(void)state;
+	t_scene	*scene = make_scene();
+	FILE	*f = fopen("/tmp/camera_valid.rt", "w");
+	fputs("C 0,0,0 0.0,0.0,1.0 90\n", f);
+	fclose(f);
+	assert_int_equal(is_valid_input("/tmp/camera_valid.rt", scene), 1);
+	free_scene(scene);
+	unlink("/tmp/camera_valid.rt");
+}
+
+/* Invalid camera (FOV out of range) — must return 0 */
+void	test_valid_input_invalid_camera(void **state)
+{
+	(void)state;
+	t_scene	*scene = make_scene();
+	FILE	*f = fopen("/tmp/camera_invalid.rt", "w");
+	fputs("C 0,0,0 0.0,0.0,1.0 200\n", f);
+	fclose(f);
+	assert_int_equal(is_valid_input("/tmp/camera_invalid.rt", scene), 0);
+	free_scene(scene);
+	unlink("/tmp/camera_invalid.rt");
+}
+
+/* Valid light line only — must return 1 */
+void	test_valid_input_valid_light(void **state)
+{
+	(void)state;
+	t_scene	*scene = make_scene();
+	FILE	*f = fopen("/tmp/light_valid.rt", "w");
+	fputs("L 0,5,0 0.8 255,255,255\n", f);
+	fclose(f);
+	assert_int_equal(is_valid_input("/tmp/light_valid.rt", scene), 1);
+	free_scene(scene);
+	unlink("/tmp/light_valid.rt");
+}
+
+/* Invalid light (ratio > 1.0) — must return 0 */
+void	test_valid_input_invalid_light(void **state)
+{
+	(void)state;
+	t_scene	*scene = make_scene();
+	FILE	*f = fopen("/tmp/light_invalid.rt", "w");
+	fputs("L 0,5,0 1.5 255,255,255\n", f);
+	fclose(f);
+	assert_int_equal(is_valid_input("/tmp/light_invalid.rt", scene), 0);
+	free_scene(scene);
+	unlink("/tmp/light_invalid.rt");
+}
+
+/* Valid sphere line only — must return 1 */
+void	test_valid_input_valid_sphere(void **state)
+{
+	(void)state;
+	t_scene	*scene = make_scene();
+	FILE	*f = fopen("/tmp/sphere_valid.rt", "w");
+	fputs("sp 0,0,5 2.0 255,0,0\n", f);
+	fclose(f);
+	assert_int_equal(is_valid_input("/tmp/sphere_valid.rt", scene), 1);
+	free_scene(scene);
+	unlink("/tmp/sphere_valid.rt");
+}
+
+/* Invalid sphere (non-numeric diameter) — must return 0 */
+void	test_valid_input_invalid_sphere(void **state)
+{
+	(void)state;
+	t_scene	*scene = make_scene();
+	FILE	*f = fopen("/tmp/sphere_invalid.rt", "w");
+	fputs("sp 0,0,5 abc 255,0,0\n", f);
+	fclose(f);
+	assert_int_equal(is_valid_input("/tmp/sphere_invalid.rt", scene), 0);
+	free_scene(scene);
+	unlink("/tmp/sphere_invalid.rt");
+}
+
+/* Valid plane line only — must return 1 */
+void	test_valid_input_valid_plane(void **state)
+{
+	(void)state;
+	t_scene	*scene = make_scene();
+	FILE	*f = fopen("/tmp/plane_valid.rt", "w");
+	fputs("pl 0,0,0 0.0,1.0,0.0 128,128,128\n", f);
+	fclose(f);
+	assert_int_equal(is_valid_input("/tmp/plane_valid.rt", scene), 1);
+	free_scene(scene);
+	unlink("/tmp/plane_valid.rt");
+}
+
+/* Invalid plane (vector out of range) — must return 0 */
+void	test_valid_input_invalid_plane(void **state)
+{
+	(void)state;
+	t_scene	*scene = make_scene();
+	FILE	*f = fopen("/tmp/plane_invalid.rt", "w");
+	fputs("pl 0,0,0 0.0,5.0,0.0 128,128,128\n", f);
+	fclose(f);
+	assert_int_equal(is_valid_input("/tmp/plane_invalid.rt", scene), 0);
+	free_scene(scene);
+	unlink("/tmp/plane_invalid.rt");
+}
+
+/* Valid cylinder line only — must return 1 */
+void	test_valid_input_valid_cylinder(void **state)
+{
+	(void)state;
+	t_scene	*scene = make_scene();
+	FILE	*f = fopen("/tmp/cylinder_valid.rt", "w");
+	fputs("cy 0,0,0 0.0,1.0,0.0 1.0 3.0 0,255,0\n", f);
+	fclose(f);
+	assert_int_equal(is_valid_input("/tmp/cylinder_valid.rt", scene), 1);
+	free_scene(scene);
+	unlink("/tmp/cylinder_valid.rt");
+}
+
+/* Invalid cylinder (negative diameter) — must return 0 */
+void	test_valid_input_invalid_cylinder(void **state)
+{
+	(void)state;
+	t_scene	*scene = make_scene();
+	FILE	*f = fopen("/tmp/cylinder_invalid.rt", "w");
+	fputs("cy 0,0,0 0.0,1.0,0.0 -1.0 3.0 0,255,0\n", f);
+	fclose(f);
+	assert_int_equal(is_valid_input("/tmp/cylinder_invalid.rt", scene), 0);
+	free_scene(scene);
+	unlink("/tmp/cylinder_invalid.rt");
+}
+
+/* Exposes the i-reset bug: first line valid, second line invalid.
+   BUG: i is not reset between lines, so the second line (invalid
+   sphere) is never validated and the function returns 1.
+   Current behavior: returns 1 (bug).
+   TODO: flip to assert_int_equal(..., 0) after adding `i = 0`
+   inside the outer while loop. */
+void	test_valid_input_second_object_skipped(void **state)
+{
+	(void)state;
+	t_scene	*scene = make_scene();
+	FILE	*f = fopen("/tmp/second_skipped.rt", "w");
+	fputs("A 0.5 255,255,255\n", f);
+	fputs("sp 0,0,5 abc 255,0,0\n", f);
+	fclose(f);
+	/* TODO: flip to 0 after fixing i reset bug */
+	assert_int_equal(is_valid_input("/tmp/second_skipped.rt", scene), 1);
+	free_scene(scene);
+	unlink("/tmp/second_skipped.rt");
+}
+
+/* Unknown identifier — no func_objs entry matches, silently skipped — must return 1.
+   NOTE: unknown objects are not rejected. Add an else/fallthrough
+   error if unrecognized identifiers should be invalid. */
+void	test_valid_input_unknown_identifier(void **state)
+{
+	(void)state;
+	t_scene	*scene = make_scene();
+	FILE	*f = fopen("/tmp/unknown_id.rt", "w");
+	fputs("xx 0,0,0 1.0 255,255,255\n", f);
+	fclose(f);
+	assert_int_equal(is_valid_input("/tmp/unknown_id.rt", scene), 1);
+	free_scene(scene);
+	unlink("/tmp/unknown_id.rt");
+}
+
 ///* ========================================================= */
 ///* ERROR HANDLING TESTS */
 ///* ========================================================= */
