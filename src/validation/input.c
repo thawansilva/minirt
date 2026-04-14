@@ -6,7 +6,7 @@
 /*   By: thaperei <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/05 10:11:05 by thaperei          #+#    #+#             */
-/*   Updated: 2026/04/13 20:46:13 by thaperei         ###   ########.fr       */
+/*   Updated: 2026/04/13 22:12:07 by thaperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,12 +71,12 @@ int	is_valid_input(char *file, t_scene *scene)
 	char		**arr;
 	int			i;
 	t_obj_count	obj_count;
-	const t_hash_item	func_objs[] = {{ "A", &is_valid_ambient,
-		"Invalid ambient"}, { "C", &is_valid_camera, "Invalid camera"},
-		 { "L", &is_valid_light, "Invalid light"},
-		 { "sp", &is_valid_sphere, "Invalid sphere"},
-		 { "pl", &is_valid_plane, "Invalid plane"},
-		 { "cy", &is_valid_cylinder, "Invalid cylinder"}, {NULL, NULL, NULL}};
+	const t_hash_item	func_objs[] = {{"A", &is_valid_ambient,
+	"Invalid ambient"}, {"C", &is_valid_camera, "Invalid camera"},
+	{"L", &is_valid_light, "Invalid light"},
+	{"sp", &is_valid_sphere, "Invalid sphere"},
+	{"pl", &is_valid_plane, "Invalid plane"},
+	{"cy", &is_valid_cylinder, "Invalid cylinder"}, {NULL, NULL, NULL}};
 
 	obj_count.ambient = 0;
 	obj_count.camera = 0;

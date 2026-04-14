@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils_validation.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: thaperei <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/04/13 22:07:36 by thaperei          #+#    #+#             */
+/*   Updated: 2026/04/13 22:09:42 by thaperei         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "libft.h"
 
-int is_valid_float(const char *str)
+int	is_valid_float(const char *str)
 {
-	int has_digits;
+	int	has_digits;
 
 	has_digits = 0;
 	if (*str == '+' || *str == '-')
@@ -39,4 +51,3 @@ void	free_content(void *content)
 {
 	free(content);
 }
-
