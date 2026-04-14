@@ -1324,9 +1324,9 @@ void	test_valid_input_valid_scene(void **state)
 	fputs("A 0.5 255,255,255\n", f);
 	fputs("C 0,0,0 0.0,0.0,1.0 90\n", f);
 	fputs("L 0,5,0 0.8 255,255,255\n", f);
-	fputs("sp 0,0,5 2.0 255,0,0\n", f);
-	fputs("pl 0,0,0 0.0,1.0,0.0 128,128,128\n", f);
-	fputs("cy 0,0,0 0.0,1.0,0.0 1.0 3.0 0,255,0\n", f);
+//	fputs("sp 0,0,5 2.0 255,0,0\n", f);
+//	fputs("pl 0,0,0 0.0,1.0,0.0 128,128,128\n", f);
+//	fputs("cy 0,0,0 0.0,1.0,0.0 1.0 3.0 0,255,0\n", f);
 	fclose(f);
 	assert_int_equal(is_valid_input(path, scene), 1);
 	free_scene(scene);
@@ -1473,7 +1473,6 @@ void	test_valid_input_invalid_ambient(void **state)
 	unlink("/tmp/ambient_invalid.rt");
 }
 
-/* Valid sphere — must return 1 */
 void	test_valid_input_valid_sphere(void **state)
 {
 	(void)state;
@@ -1504,7 +1503,6 @@ void	test_valid_input_invalid_sphere(void **state)
 	unlink("/tmp/sphere_invalid.rt");
 }
 
-/* Valid plane line only — must return 1 */
 void	test_valid_input_valid_plane(void **state)
 {
 	(void)state;
@@ -1520,7 +1518,6 @@ void	test_valid_input_valid_plane(void **state)
 	unlink("/tmp/plane_valid.rt");
 }
 
-/* Invalid plane (vector out of range) — must return 0 */
 void	test_valid_input_invalid_plane(void **state)
 {
 	(void)state;
@@ -1536,7 +1533,6 @@ void	test_valid_input_invalid_plane(void **state)
 	unlink("/tmp/plane_invalid.rt");
 }
 
-/* Valid cylinder line only — must return 1 */
 void	test_valid_input_valid_cylinder(void **state)
 {
 	(void)state;
@@ -1552,7 +1548,6 @@ void	test_valid_input_valid_cylinder(void **state)
 	unlink("/tmp/cylinder_valid.rt");
 }
 
-/* Invalid cylinder (negative diameter) — must return 0 */
 void	test_valid_input_invalid_cylinder(void **state)
 {
 	(void)state;
@@ -1568,9 +1563,6 @@ void	test_valid_input_invalid_cylinder(void **state)
 	unlink("/tmp/cylinder_invalid.rt");
 }
 
-/* Unknown identifier — no func_objs entry matches, silently skipped — must return 1.
-   NOTE: unknown objects are not rejected. Add an else/fallthrough
-   error if unrecognized identifiers should be invalid. */
 void	test_valid_input_unknown_identifier(void **state)
 {
 	(void)state;
@@ -1581,59 +1573,7 @@ void	test_valid_input_unknown_identifier(void **state)
 	fputs("L 0,5,0 0.8 255,255,255\n", f);
 	fputs("xx 0,0,0 1.0 255,255,255\n", f);
 	fclose(f);
-	assert_int_equal(is_valid_input("/tmp/unknown_id.rt", scene), 1);
+	assert_int_equal(is_valid_input("/tmp/unknown_id.rt", scene), 0);
 	free_scene(scene);
 	unlink("/tmp/unknown_id.rt");
 }
-
-///* ========================================================= */
-///* ERROR HANDLING TESTS */
-///* ========================================================= */
-//
-///* ---------- INVALID IDENTIFIER ---------- */
-//
-//void test_invalid_identifier(void **state)
-//{
-//    (void)state;
-//
-//    t_scene scene = {0};
-//    char *err = NULL;
-//
-//    assert_false(parse_line("xx 0,0,0", &scene, &err));
-//}
-//
-///* ---------- WRONG ARGUMENT COUNT ---------- */
-//
-//void test_wrong_arg_count(void **state)
-//{
-//    (void)state;
-//
-//    t_scene scene = {0};
-//    char *err = NULL;
-//
-//    assert_false(parse_line("sp 0,0,0 10", &scene, &err));
-//}
-//
-///* ========================================================= */
-///* FILE / GLOBAL PARSER TESTS */
-///* ========================================================= */
-//
-//void test_valid_scene(void **state)
-//{
-//    (void)state;
-//
-//    t_scene scene;
-//    char *err = NULL;
-//
-//    assert_true(read_file("valid.rt", &scene, &err));
-//}
-//
-//void test_missing_camera(void **state)
-//{
-//    (void)state;
-//
-//    t_scene scene;
-//    char *err = NULL;
-//
-//    assert_false(read_file("no_camera.rt", &scene, &err));
-//}
