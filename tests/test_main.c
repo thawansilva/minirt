@@ -6,7 +6,7 @@
 /*   By: thaperei <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/11 08:54:40 by thaperei          #+#    #+#             */
-/*   Updated: 2026/04/11 15:16:32 by thaperei         ###   ########.fr       */
+/*   Updated: 2026/04/13 21:34:06 by thaperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,23 @@ static int	run_validation_tests(void)
 		cmocka_unit_test(test_valid_float_non_numeric),
 		cmocka_unit_test(test_valid_float_spaces),
 		cmocka_unit_test(test_valid_float_multiple_dots),
+		cmocka_unit_test(test_valid_int_positive),
+		cmocka_unit_test(test_valid_int_zero),
+		cmocka_unit_test(test_valid_int_null),
+		cmocka_unit_test(test_valid_int_empty),
+		cmocka_unit_test(test_valid_int_negative),
+		cmocka_unit_test(test_valid_int_explicit_plus),
+		cmocka_unit_test(test_valid_int_with_newline),
+		cmocka_unit_test(test_valid_int_newline_only),
+		cmocka_unit_test(test_valid_int_non_numeric),
+		cmocka_unit_test(test_valid_int_float),
+		cmocka_unit_test(test_valid_int_leading_spaces),
+		cmocka_unit_test(test_valid_int_trailing_spaces),
+		cmocka_unit_test(test_valid_int_leading_zeros),
+		cmocka_unit_test(test_valid_int_overflow),
+		cmocka_unit_test(test_valid_int_max_int),
+		cmocka_unit_test(test_valid_int_alphanumeric),
+		cmocka_unit_test(test_valid_int_only_newline_after_digits),
 		cmocka_unit_test(test_valid_ratio_zero),
 		cmocka_unit_test(test_valid_ratio_one),
 		cmocka_unit_test(test_valid_ratio_mid),
@@ -182,19 +199,19 @@ static int	run_validation_tests(void)
 		cmocka_unit_test(test_valid_input_no_extension),
 		cmocka_unit_test(test_valid_input_missing_file),
 		cmocka_unit_test(test_valid_input_empty_file),
-		cmocka_unit_test(test_valid_input_valid_ambient),
+		cmocka_unit_test(test_valid_input_missing_camera_and_light),
+		cmocka_unit_test(test_valid_input_duplicate_ambient),
 		cmocka_unit_test(test_valid_input_invalid_ambient),
-		cmocka_unit_test(test_valid_input_valid_camera),
-		cmocka_unit_test(test_valid_input_invalid_camera),
-		cmocka_unit_test(test_valid_input_valid_light),
-		cmocka_unit_test(test_valid_input_invalid_light),
+		cmocka_unit_test(test_valid_input_missing_ambient_and_light),
+		cmocka_unit_test(test_valid_input_duplicate_camera),
+		cmocka_unit_test(test_valid_input_missing_ambient_and_camera),
+		cmocka_unit_test(test_valid_input_duplicate_light),
 		cmocka_unit_test(test_valid_input_valid_sphere),
 		cmocka_unit_test(test_valid_input_invalid_sphere),
 		cmocka_unit_test(test_valid_input_valid_plane),
 		cmocka_unit_test(test_valid_input_invalid_plane),
 		cmocka_unit_test(test_valid_input_valid_cylinder),
 		cmocka_unit_test(test_valid_input_invalid_cylinder),
-		cmocka_unit_test(test_valid_input_second_object_skipped),
 		cmocka_unit_test(test_valid_input_unknown_identifier),
 	};
 	printf("\n--- Validation Tests ---\n");

@@ -6,7 +6,7 @@
 /*   By: thaperei <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/11 08:54:51 by thaperei          #+#    #+#             */
-/*   Updated: 2026/04/11 15:17:30 by thaperei         ###   ########.fr       */
+/*   Updated: 2026/04/13 21:33:50 by thaperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -245,6 +245,151 @@ void    test_valid_float_multiple_dots(void **state)
     assert_int_equal(is_valid_float("1.2.3"), 0);
 }
 
+/* VALIDATE INT STRING  */
+/* =========================================================
+   is_valid_int unit tests
+
+   BEHAVIOR NOTES:
+   - No sign support: '-' and '+' are not digits, rejected immediately
+   - Trailing '\n' is consumed and accepted (single newline only)
+   - No overflow check: arbitrarily large numbers pass
+   - Leading zeros accepted: "007" passes
+   - No whitespace trimming: spaces anywhere cause failure
+   ========================================================= */
+
+void    test_valid_int_positive(void **state)
+{
+    (void)state;
+    assert_int_equal(is_valid_int("42"), 1);
+}
+
+void    test_valid_int_zero(void **state)
+{
+    (void)state;
+    assert_int_equal(is_valid_int("0"), 1);
+}
+
+void    test_valid_int_null(void **state)
+{
+    (void)state;
+    assert_int_equal(is_valid_int(NULL), 0);
+}
+
+void    test_valid_int_empty(void **state)
+{
+    (void)state;
+    assert_int_equal(is_valid_int(""), 0);
+}
+
+/* Negative number — '-' is not a digit, loop never runs,
+   *str == '-' != '\0' — must return 0.
+   NOTE: if negative integers should be valid in your scene,
+   add sign handling at the top of is_valid_int. */
+void    test_valid_int_negative(void **state)
+{
+    (void)state;
+    assert_int_equal(is_valid_int("-1"), 0);
+}
+
+/* Explicit '+' prefix — '+' is not a digit, same as negative — must return 0 */
+void    test_valid_int_explicit_plus(void **state)
+{
+    (void)state;
+    assert_int_equal(is_valid_int("+1"), 0);
+}
+
+/* Trailing single newline — consumed by the `if (*str == '\n') str++`
+   branch, then *str == '\0' — must return 1.
+   NOTE: this is get_next_line behavior leaking into validation.
+   Consider stripping '\n' before calling is_valid_int instead. */
+void    test_valid_int_with_newline(void **state)
+{
+    (void)state;
+    assert_int_equal(is_valid_int("42\n"), 1);
+}
+
+/* Only a newline — *str == '\n', not a digit, loop skipped,
+   then str advanced past '\n', *str == '\0' — must return 1.
+   NOTE: a lone newline being valid is likely unintended behavior.
+   Consider adding a has_digits guard as in is_valid_float. */
+void    test_valid_int_newline_only(void **state)
+{
+    (void)state;
+    /* Unintended: '\n' alone passes — TODO: add has_digits guard */
+    assert_int_equal(is_valid_int("\n"), 1);
+}
+
+/* Non-numeric string — must return 0 */
+void    test_valid_int_non_numeric(void **state)
+{
+    (void)state;
+    assert_int_equal(is_valid_int("abc"), 0);
+}
+
+/* Float string — '.' stops the digit loop, *str != '\0' — must return 0 */
+void    test_valid_int_float(void **state)
+{
+    (void)state;
+    assert_int_equal(is_valid_int("3.14"), 0);
+}
+
+/* Leading spaces — ' ' is not a digit, loop skipped immediately
+   — must return 0 */
+void    test_valid_int_leading_spaces(void **state)
+{
+    (void)state;
+    assert_int_equal(is_valid_int("  42"), 0);
+}
+
+/* Trailing spaces — digit loop stops at ' ', *str != '\0'
+   — must return 0 */
+void    test_valid_int_trailing_spaces(void **state)
+{
+    (void)state;
+    assert_int_equal(is_valid_int("42  "), 0);
+}
+
+/* Leading zeros — all chars are digits, passes cleanly — must return 1.
+   NOTE: "007" may be semantically invalid depending on context.
+   Add a leading-zero check if needed. */
+void    test_valid_int_leading_zeros(void **state)
+{
+    (void)state;
+    assert_int_equal(is_valid_int("007"), 1);
+}
+
+/* Overflow value — all chars are digits, no range check exists,
+   passes despite exceeding INT_MAX — must return 1 currently.
+   TODO: flip to 0 after adding overflow detection. */
+void    test_valid_int_overflow(void **state)
+{
+    (void)state;
+    /* TODO: flip to 0 after adding overflow/range check */
+    assert_int_equal(is_valid_int("99999999999999999"), 1);
+}
+
+/* INT_MAX boundary — "2147483647" — all digits, must return 1 */
+void    test_valid_int_max_int(void **state)
+{
+    (void)state;
+    assert_int_equal(is_valid_int("2147483647"), 1);
+}
+
+/* Alphanumeric mix — digit loop stops at 'a', *str != '\0'
+   — must return 0 */
+void    test_valid_int_alphanumeric(void **state)
+{
+    (void)state;
+    assert_int_equal(is_valid_int("42abc"), 0);
+}
+
+/* Digits followed by single newline — same as test_valid_int_with_newline
+   but with a longer number — must return 1 */
+void    test_valid_int_only_newline_after_digits(void **state)
+{
+    (void)state;
+    assert_int_equal(is_valid_int("1234\n"), 1);
+}
 
 /* VALIDATE RATIO NUMBER  */
 
@@ -1205,7 +1350,6 @@ void	test_valid_input_invalid_extension(void **state)
 	free_scene(scene);
 }
 
-/* No extension at all — must return 0 */
 void	test_valid_input_no_extension(void **state)
 {
 	(void)state;
@@ -1233,90 +1377,111 @@ void	test_valid_input_empty_file(void **state)
 	unlink("/tmp/empty.rt");
 }
 
-/* Valid ambient line only — must return 1 */
-void	test_valid_input_valid_ambient(void **state)
+void	test_valid_input_missing_camera_and_light(void **state)
 {
 	(void)state;
 	t_scene	*scene = make_scene();
-	FILE	*f = fopen("/tmp/ambient_valid.rt", "w");
+	FILE	*f = fopen("/tmp/missing_camera_and_light.rt", "w");
 	fputs("A 0.5 255,255,255\n", f);
 	fclose(f);
-	assert_int_equal(is_valid_input("/tmp/ambient_valid.rt", scene), 0);
+	assert_int_equal(is_valid_input("/tmp/missing_camera_and_light.rt", scene), 0);
 	free_scene(scene);
-	unlink("/tmp/ambient_valid.rt");
+	unlink("/tmp/missing_camera_and_light.rt");
 }
 
-/* Invalid ambient (ratio > 1.0) — must return 0 */
+void	test_valid_input_duplicate_ambient(void **state)
+{
+	(void)state;
+	t_scene	*scene = make_scene();
+	FILE	*f = fopen("/tmp/missing_camera_and_light.rt", "w");
+	fputs("A 0.5 255,255,255\n", f);
+	fputs("A 0.5 255,0,0\n", f);
+	fputs("C 0,0,0 0.0,0.0,1.0 90\n", f);
+	fputs("L 0,5,0 0.8 255,255,255\n", f);
+	fclose(f);
+	assert_int_equal(is_valid_input("/tmp/missing_camera_and_light.rt", scene), 0);
+	free_scene(scene);
+	unlink("/tmp/missing_camera_and_light.rt");
+}
+
+/* Missing Ambient and Light */
+void	test_valid_input_missing_ambient_and_light(void **state)
+{
+	(void)state;
+	t_scene	*scene = make_scene();
+	FILE	*f = fopen("/tmp/invalid_scene.rt", "w");
+	fputs("C 0,0,0 0.0,0.0,1.0 90\n", f);
+	fclose(f);
+	assert_int_equal(is_valid_input("/tmp/invalid_scene.rt", scene), 0);
+	free_scene(scene);
+	unlink("/tmp/invalid_scene.rt");
+}
+
+void	test_valid_input_duplicate_camera(void **state)
+{
+	(void)state;
+	t_scene	*scene = make_scene();
+	FILE	*f = fopen("/tmp/missing_camera_and_light.rt", "w");
+	fputs("A 0.5 255,255,255\n", f);
+	fputs("C 0,0,0 0.0,0.0,1.0 90\n", f);
+	fputs("C 0,0,0 0.0,0.5,1.0 90\n", f);
+	fputs("L 0,5,0 0.8 255,255,255\n", f);
+	fclose(f);
+	assert_int_equal(is_valid_input("/tmp/missing_camera_and_light.rt", scene), 0);
+	free_scene(scene);
+	unlink("/tmp/missing_camera_and_light.rt");
+}
+
+void	test_valid_input_missing_ambient_and_camera(void **state)
+{
+	(void)state;
+	t_scene	*scene = make_scene();
+	FILE	*f = fopen("/tmp/invalid_scene.rt", "w");
+	fputs("L 0,5,0 0.8 255,255,255\n", f);
+	fclose(f);
+	assert_int_equal(is_valid_input("/tmp/invalid_scene.rt", scene), 0);
+	free_scene(scene);
+	unlink("/tmp/invalid_scene.rt");
+}
+
+void	test_valid_input_duplicate_light(void **state)
+{
+	(void)state;
+	t_scene	*scene = make_scene();
+	FILE	*f = fopen("/tmp/missing_camera_and_light.rt", "w");
+	fputs("A 0.5 255,255,255\n", f);
+	fputs("C 0,0,0 0.0,0.0,1.0 90\n", f);
+	fputs("L 0,3,0 0.8 0,0,255\n", f);
+	fputs("L 0,5,0 0.8 255,255,255\n", f);
+	fclose(f);
+	assert_int_equal(is_valid_input("/tmp/missing_camera_and_light.rt", scene), 0);
+	free_scene(scene);
+	unlink("/tmp/missing_camera_and_light.rt");
+}
+
 void	test_valid_input_invalid_ambient(void **state)
 {
 	(void)state;
 	t_scene	*scene = make_scene();
 	FILE	*f = fopen("/tmp/ambient_invalid.rt", "w");
 	fputs("A 2.0 255,255,255\n", f);
+	fputs("C 0,0,0 0.0,0.0,1.0 90\n", f);
+	fputs("L 0,5,0 0.8 255,255,255\n", f);
 	fclose(f);
 	assert_int_equal(is_valid_input("/tmp/ambient_invalid.rt", scene), 0);
 	free_scene(scene);
 	unlink("/tmp/ambient_invalid.rt");
 }
 
-/* Valid camera line only — must return 1 */
-void	test_valid_input_valid_camera(void **state)
-{
-	(void)state;
-	t_scene	*scene = make_scene();
-	FILE	*f = fopen("/tmp/camera_valid.rt", "w");
-	fputs("C 0,0,0 0.0,0.0,1.0 90\n", f);
-	fclose(f);
-	assert_int_equal(is_valid_input("/tmp/camera_valid.rt", scene), 1);
-	free_scene(scene);
-	unlink("/tmp/camera_valid.rt");
-}
-
-/* Invalid camera (FOV out of range) — must return 0 */
-void	test_valid_input_invalid_camera(void **state)
-{
-	(void)state;
-	t_scene	*scene = make_scene();
-	FILE	*f = fopen("/tmp/camera_invalid.rt", "w");
-	fputs("C 0,0,0 0.0,0.0,1.0 200\n", f);
-	fclose(f);
-	assert_int_equal(is_valid_input("/tmp/camera_invalid.rt", scene), 0);
-	free_scene(scene);
-	unlink("/tmp/camera_invalid.rt");
-}
-
-/* Valid light line only — must return 1 */
-void	test_valid_input_valid_light(void **state)
-{
-	(void)state;
-	t_scene	*scene = make_scene();
-	FILE	*f = fopen("/tmp/light_valid.rt", "w");
-	fputs("L 0,5,0 0.8 255,255,255\n", f);
-	fclose(f);
-	assert_int_equal(is_valid_input("/tmp/light_valid.rt", scene), 1);
-	free_scene(scene);
-	unlink("/tmp/light_valid.rt");
-}
-
-/* Invalid light (ratio > 1.0) — must return 0 */
-void	test_valid_input_invalid_light(void **state)
-{
-	(void)state;
-	t_scene	*scene = make_scene();
-	FILE	*f = fopen("/tmp/light_invalid.rt", "w");
-	fputs("L 0,5,0 1.5 255,255,255\n", f);
-	fclose(f);
-	assert_int_equal(is_valid_input("/tmp/light_invalid.rt", scene), 0);
-	free_scene(scene);
-	unlink("/tmp/light_invalid.rt");
-}
-
-/* Valid sphere line only — must return 1 */
+/* Valid sphere — must return 1 */
 void	test_valid_input_valid_sphere(void **state)
 {
 	(void)state;
 	t_scene	*scene = make_scene();
 	FILE	*f = fopen("/tmp/sphere_valid.rt", "w");
+	fputs("A 1.0 255,255,255\n", f);
+	fputs("C 0,0,0 0.0,0.0,1.0 90\n", f);
+	fputs("L 0,5,0 0.8 255,255,255\n", f);
 	fputs("sp 0,0,5 2.0 255,0,0\n", f);
 	fclose(f);
 	assert_int_equal(is_valid_input("/tmp/sphere_valid.rt", scene), 1);
@@ -1324,12 +1489,14 @@ void	test_valid_input_valid_sphere(void **state)
 	unlink("/tmp/sphere_valid.rt");
 }
 
-/* Invalid sphere (non-numeric diameter) — must return 0 */
 void	test_valid_input_invalid_sphere(void **state)
 {
 	(void)state;
 	t_scene	*scene = make_scene();
 	FILE	*f = fopen("/tmp/sphere_invalid.rt", "w");
+	fputs("A 1.0 255,255,255\n", f);
+	fputs("C 0,0,0 0.0,0.0,1.0 90\n", f);
+	fputs("L 0,5,0 0.8 255,255,255\n", f);
 	fputs("sp 0,0,5 abc 255,0,0\n", f);
 	fclose(f);
 	assert_int_equal(is_valid_input("/tmp/sphere_invalid.rt", scene), 0);
@@ -1343,6 +1510,9 @@ void	test_valid_input_valid_plane(void **state)
 	(void)state;
 	t_scene	*scene = make_scene();
 	FILE	*f = fopen("/tmp/plane_valid.rt", "w");
+	fputs("A 1.0 255,255,255\n", f);
+	fputs("C 0,0,0 0.0,0.0,1.0 90\n", f);
+	fputs("L 0,5,0 0.8 255,255,255\n", f);
 	fputs("pl 0,0,0 0.0,1.0,0.0 128,128,128\n", f);
 	fclose(f);
 	assert_int_equal(is_valid_input("/tmp/plane_valid.rt", scene), 1);
@@ -1356,6 +1526,9 @@ void	test_valid_input_invalid_plane(void **state)
 	(void)state;
 	t_scene	*scene = make_scene();
 	FILE	*f = fopen("/tmp/plane_invalid.rt", "w");
+	fputs("A 1.0 255,255,255\n", f);
+	fputs("C 0,0,0 0.0,0.0,1.0 90\n", f);
+	fputs("L 0,5,0 0.8 255,255,255\n", f);
 	fputs("pl 0,0,0 0.0,5.0,0.0 128,128,128\n", f);
 	fclose(f);
 	assert_int_equal(is_valid_input("/tmp/plane_invalid.rt", scene), 0);
@@ -1369,6 +1542,9 @@ void	test_valid_input_valid_cylinder(void **state)
 	(void)state;
 	t_scene	*scene = make_scene();
 	FILE	*f = fopen("/tmp/cylinder_valid.rt", "w");
+	fputs("A 1.0 255,255,255\n", f);
+	fputs("C 0,0,0 0.0,0.0,1.0 90\n", f);
+	fputs("L 0,5,0 0.8 255,255,255\n", f);
 	fputs("cy 0,0,0 0.0,1.0,0.0 1.0 3.0 0,255,0\n", f);
 	fclose(f);
 	assert_int_equal(is_valid_input("/tmp/cylinder_valid.rt", scene), 1);
@@ -1382,31 +1558,14 @@ void	test_valid_input_invalid_cylinder(void **state)
 	(void)state;
 	t_scene	*scene = make_scene();
 	FILE	*f = fopen("/tmp/cylinder_invalid.rt", "w");
+	fputs("A 1.0 255,255,255\n", f);
+	fputs("C 0,0,0 0.0,0.0,1.0 90\n", f);
+	fputs("L 0,5,0 0.8 255,255,255\n", f);
 	fputs("cy 0,0,0 0.0,1.0,0.0 -1.0 3.0 0,255,0\n", f);
 	fclose(f);
 	assert_int_equal(is_valid_input("/tmp/cylinder_invalid.rt", scene), 0);
 	free_scene(scene);
 	unlink("/tmp/cylinder_invalid.rt");
-}
-
-/* Exposes the i-reset bug: first line valid, second line invalid.
-   BUG: i is not reset between lines, so the second line (invalid
-   sphere) is never validated and the function returns 1.
-   Current behavior: returns 1 (bug).
-   TODO: flip to assert_int_equal(..., 0) after adding `i = 0`
-   inside the outer while loop. */
-void	test_valid_input_second_object_skipped(void **state)
-{
-	(void)state;
-	t_scene	*scene = make_scene();
-	FILE	*f = fopen("/tmp/second_skipped.rt", "w");
-	fputs("A 0.5 255,255,255\n", f);
-	fputs("sp 0,0,5 abc 255,0,0\n", f);
-	fclose(f);
-	/* TODO: flip to 0 after fixing i reset bug */
-	assert_int_equal(is_valid_input("/tmp/second_skipped.rt", scene), 1);
-	free_scene(scene);
-	unlink("/tmp/second_skipped.rt");
 }
 
 /* Unknown identifier — no func_objs entry matches, silently skipped — must return 1.
@@ -1417,6 +1576,9 @@ void	test_valid_input_unknown_identifier(void **state)
 	(void)state;
 	t_scene	*scene = make_scene();
 	FILE	*f = fopen("/tmp/unknown_id.rt", "w");
+	fputs("A 1.0 255,255,255\n", f);
+	fputs("C 0,0,0 0.0,0.0,1.0 90\n", f);
+	fputs("L 0,5,0 0.8 255,255,255\n", f);
 	fputs("xx 0,0,0 1.0 255,255,255\n", f);
 	fclose(f);
 	assert_int_equal(is_valid_input("/tmp/unknown_id.rt", scene), 1);

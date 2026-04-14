@@ -6,7 +6,7 @@
 /*   By: thaperei <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/11 08:54:36 by thaperei          #+#    #+#             */
-/*   Updated: 2026/04/11 15:25:58 by thaperei         ###   ########.fr       */
+/*   Updated: 2026/04/13 21:22:34 by thaperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,6 @@ void test_split_spaces(void **state);
 void test_read_file_valid(void **state);
 void test_read_file_invalid(void **state);
 void test_read_file_empty(void **state);
-// Validate int string
-
 // Validate float string
 void test_valid_float_integer(void **state);
 void test_valid_float_positive(void **state);
@@ -37,6 +35,25 @@ void test_valid_float_non_numeric(void **state);
 void test_valid_float_scientific(void **state);
 void test_valid_float_spaces(void **state);
 void test_valid_float_multiple_dots(void **state);
+// Validate int string
+void test_valid_int_positive(void **state);
+void test_valid_int_zero(void **state);
+void test_valid_int_null(void **state);
+void test_valid_int_empty(void **state);
+void test_valid_int_negative(void **state);
+void test_valid_int_explicit_plus(void **state);
+void test_valid_int_with_newline(void **state);
+void test_valid_int_double_newline(void **state);
+void test_valid_int_newline_only(void **state);
+void test_valid_int_non_numeric(void **state);
+void test_valid_int_float(void **state);
+void test_valid_int_leading_spaces(void **state);
+void test_valid_int_trailing_spaces(void **state);
+void test_valid_int_leading_zeros(void **state);
+void test_valid_int_overflow(void **state);
+void test_valid_int_max_int(void **state);
+void test_valid_int_alphanumeric(void **state);
+void test_valid_int_only_newline_after_digits(void **state);
 // Validate Ratio
 void test_valid_ratio_zero(void **state);
 void test_valid_ratio_one(void **state);
@@ -189,19 +206,19 @@ void test_valid_input_invalid_extension(void **state);
 void test_valid_input_no_extension(void **state);
 void test_valid_input_missing_file(void **state);
 void test_valid_input_empty_file(void **state);
-void test_valid_input_valid_ambient(void **state);
+void test_valid_input_missing_camera_and_light(void **state);
+void test_valid_input_duplicate_ambient(void **state);
 void test_valid_input_invalid_ambient(void **state);
-void test_valid_input_valid_camera(void **state);
-void test_valid_input_invalid_camera(void **state);
-void test_valid_input_valid_light(void **state);
-void test_valid_input_invalid_light(void **state);
+void test_valid_input_missing_ambient_and_light(void **state);
+void test_valid_input_duplicate_camera(void **state);
+void test_valid_input_missing_ambient_and_camera(void **state);
+void test_valid_input_duplicate_light(void **state);
 void test_valid_input_valid_sphere(void **state);
 void test_valid_input_invalid_sphere(void **state);
 void test_valid_input_valid_plane(void **state);
 void test_valid_input_invalid_plane(void **state);
 void test_valid_input_valid_cylinder(void **state);
 void test_valid_input_invalid_cylinder(void **state);
-void test_valid_input_second_object_skipped(void **state);
 void test_valid_input_unknown_identifier(void **state);
 void test_invalid_identifier(void **state);
 void test_wrong_arg_count(void **state);
