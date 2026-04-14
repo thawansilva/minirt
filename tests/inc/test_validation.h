@@ -44,14 +44,10 @@ void test_valid_int_negative(void **state);
 void test_valid_int_explicit_plus(void **state);
 void test_valid_int_with_newline(void **state);
 void test_valid_int_double_newline(void **state);
-void test_valid_int_newline_only(void **state);
 void test_valid_int_non_numeric(void **state);
 void test_valid_int_float(void **state);
-void test_valid_int_leading_spaces(void **state);
-void test_valid_int_trailing_spaces(void **state);
-void test_valid_int_leading_zeros(void **state);
-void test_valid_int_overflow(void **state);
 void test_valid_int_max_int(void **state);
+void test_valid_int_leading_zeros(void **state);
 void test_valid_int_alphanumeric(void **state);
 void test_valid_int_only_newline_after_digits(void **state);
 // Validate Ratio

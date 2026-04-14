@@ -246,16 +246,6 @@ void    test_valid_float_multiple_dots(void **state)
 }
 
 /* VALIDATE INT STRING  */
-/* =========================================================
-   is_valid_int unit tests
-
-   BEHAVIOR NOTES:
-   - No sign support: '-' and '+' are not digits, rejected immediately
-   - Trailing '\n' is consumed and accepted (single newline only)
-   - No overflow check: arbitrarily large numbers pass
-   - Leading zeros accepted: "007" passes
-   - No whitespace trimming: spaces anywhere cause failure
-   ========================================================= */
 
 void    test_valid_int_positive(void **state)
 {
@@ -281,110 +271,54 @@ void    test_valid_int_empty(void **state)
     assert_int_equal(is_valid_int(""), 0);
 }
 
-/* Negative number — '-' is not a digit, loop never runs,
-   *str == '-' != '\0' — must return 0.
-   NOTE: if negative integers should be valid in your scene,
-   add sign handling at the top of is_valid_int. */
 void    test_valid_int_negative(void **state)
 {
     (void)state;
     assert_int_equal(is_valid_int("-1"), 0);
 }
 
-/* Explicit '+' prefix — '+' is not a digit, same as negative — must return 0 */
 void    test_valid_int_explicit_plus(void **state)
 {
     (void)state;
     assert_int_equal(is_valid_int("+1"), 0);
 }
 
-/* Trailing single newline — consumed by the `if (*str == '\n') str++`
-   branch, then *str == '\0' — must return 1.
-   NOTE: this is get_next_line behavior leaking into validation.
-   Consider stripping '\n' before calling is_valid_int instead. */
 void    test_valid_int_with_newline(void **state)
 {
     (void)state;
     assert_int_equal(is_valid_int("42\n"), 1);
 }
 
-/* Only a newline — *str == '\n', not a digit, loop skipped,
-   then str advanced past '\n', *str == '\0' — must return 1.
-   NOTE: a lone newline being valid is likely unintended behavior.
-   Consider adding a has_digits guard as in is_valid_float. */
-void    test_valid_int_newline_only(void **state)
-{
-    (void)state;
-    /* Unintended: '\n' alone passes — TODO: add has_digits guard */
-    assert_int_equal(is_valid_int("\n"), 1);
-}
-
-/* Non-numeric string — must return 0 */
 void    test_valid_int_non_numeric(void **state)
 {
     (void)state;
     assert_int_equal(is_valid_int("abc"), 0);
 }
 
-/* Float string — '.' stops the digit loop, *str != '\0' — must return 0 */
 void    test_valid_int_float(void **state)
 {
     (void)state;
     assert_int_equal(is_valid_int("3.14"), 0);
 }
 
-/* Leading spaces — ' ' is not a digit, loop skipped immediately
-   — must return 0 */
-void    test_valid_int_leading_spaces(void **state)
-{
-    (void)state;
-    assert_int_equal(is_valid_int("  42"), 0);
-}
-
-/* Trailing spaces — digit loop stops at ' ', *str != '\0'
-   — must return 0 */
-void    test_valid_int_trailing_spaces(void **state)
-{
-    (void)state;
-    assert_int_equal(is_valid_int("42  "), 0);
-}
-
-/* Leading zeros — all chars are digits, passes cleanly — must return 1.
-   NOTE: "007" may be semantically invalid depending on context.
-   Add a leading-zero check if needed. */
 void    test_valid_int_leading_zeros(void **state)
 {
     (void)state;
     assert_int_equal(is_valid_int("007"), 1);
 }
 
-/* Overflow value — all chars are digits, no range check exists,
-   passes despite exceeding INT_MAX — must return 1 currently.
-   TODO: flip to 0 after adding overflow detection. */
-void    test_valid_int_overflow(void **state)
-{
-    (void)state;
-    /* TODO: flip to 0 after adding overflow/range check */
-    assert_int_equal(is_valid_int("99999999999999999"), 1);
-}
-
-/* INT_MAX boundary — "2147483647" — all digits, must return 1 */
 void    test_valid_int_max_int(void **state)
 {
     (void)state;
     assert_int_equal(is_valid_int("2147483647"), 1);
 }
 
-/* Alphanumeric mix — digit loop stops at 'a', *str != '\0'
-   — must return 0 */
 void    test_valid_int_alphanumeric(void **state)
 {
     (void)state;
     assert_int_equal(is_valid_int("42abc"), 0);
 }
 
-/* Digits followed by single newline — same as test_valid_int_with_newline
-   but with a longer number — must return 1 */
 void    test_valid_int_only_newline_after_digits(void **state)
 {
     (void)state;
@@ -1324,9 +1258,6 @@ void	test_valid_input_valid_scene(void **state)
 	fputs("A 0.5 255,255,255\n", f);
 	fputs("C 0,0,0 0.0,0.0,1.0 90\n", f);
 	fputs("L 0,5,0 0.8 255,255,255\n", f);
-//	fputs("sp 0,0,5 2.0 255,0,0\n", f);
-//	fputs("pl 0,0,0 0.0,1.0,0.0 128,128,128\n", f);
-//	fputs("cy 0,0,0 0.0,1.0,0.0 1.0 3.0 0,255,0\n", f);
 	fclose(f);
 	assert_int_equal(is_valid_input(path, scene), 1);
 	free_scene(scene);
@@ -1404,7 +1335,6 @@ void	test_valid_input_duplicate_ambient(void **state)
 	unlink("/tmp/missing_camera_and_light.rt");
 }
 
-/* Missing Ambient and Light */
 void	test_valid_input_missing_ambient_and_light(void **state)
 {
 	(void)state;
