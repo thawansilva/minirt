@@ -6,7 +6,7 @@
 /*   By: thaperei <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/15 16:00:03 by thaperei          #+#    #+#             */
-/*   Updated: 2026/04/11 09:27:43 by thaperei         ###   ########.fr       */
+/*   Updated: 2026/04/13 22:00:35 by thaperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,12 +81,9 @@ typedef struct s_scene
 
 typedef struct s_obj_count
 {
-	unsigned char	count_camera;
-	unsigned char	count_ambient;
-	unsigned char	count_light;
-	unsigned char	count_sphere;
-	unsigned char	count_plane;
-	unsigned char	count_cylinder;
+	unsigned char	camera;
+	unsigned char	ambient;
+	unsigned char	light;
 }	t_obj_count;
 
 typedef struct s_hash_item

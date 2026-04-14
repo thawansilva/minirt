@@ -30,6 +30,8 @@ int	is_valid_int(const char *str)
 		return (0);
 	while (ft_isdigit(*str))
 		str++;
+	if (*str == '\n')
+		str++;
 	return (*str == '\0');
 }
 

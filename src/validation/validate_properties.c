@@ -6,7 +6,7 @@
 /*   By: thaperei <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/05 13:29:00 by thaperei          #+#    #+#             */
-/*   Updated: 2026/04/11 15:10:18 by thaperei         ###   ########.fr       */
+/*   Updated: 2026/04/13 18:45:26 by thaperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,18 +107,10 @@ int	is_valid_normalized_vector(char *str)
 
 int	is_valid_fov(char *str)
 {
-	int	i;
 	int	fov;
 
-	if (str == NULL || str[0] == '\0')
+	if (str == NULL || str[0] == '\0' || !is_valid_int(str))
 		return (0);
-	i = 0;
-	while (str[i])
-	{
-		if (!ft_isdigit(str[i]))
-			return (0);
-		i++;
-	}
 	fov = ft_atoi(str);
 	if (fov < 0 || fov > 180)
 		return (0);
