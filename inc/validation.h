@@ -96,6 +96,7 @@ typedef struct s_hash_item
 int		is_valid_input(char *file, t_scene *scene);
 int		read_file(char *file, t_scene *scene);
 int		is_valid_extension(char *file);
+void	show_error(char *msg);
 // Validate properties
 int		is_valid_float(const char *str);
 int		is_valid_coordinates(char *str);

@@ -47,7 +47,9 @@ int	is_valid_int(const char *str)
 	return (*str == '\0');
 }
 
-void	free_content(void *content)
+void	show_error(char *msg)
 {
-	free(content);
+	ft_putstr_fd("Error\n", 2);
+	ft_putstr_fd(msg, 2);
+	ft_putstr_fd("\n", 2);
 }

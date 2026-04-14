@@ -12,6 +12,11 @@
 
 #include <stdlib.h>
 
+void	free_content(void *content)
+{
+	free(content);
+}
+
 void	free_arr(char **arr)
 {
 	int	i;

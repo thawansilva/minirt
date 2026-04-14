@@ -18,13 +18,6 @@
 #include <stdio.h>
 #include <unistd.h>
 
-static void	print_error(char *msg)
-{
-	ft_putstr_fd("Error\n", 2);
-	ft_putstr_fd(msg, 2);
-	ft_putstr_fd("\n", 2);
-}
-
 int	is_valid_extension(char *file)
 {
 	int		len;
@@ -32,14 +25,14 @@ int	is_valid_extension(char *file)
 
 	if (!file)
 	{
-		print_error("Invalid file");
+		show_error("Invalid file");
 		return (0);
 	}
 	len = ft_strlen(file);
 	extension = ft_strrchr(file, '.');
 	if (!extension || len <= 3 || ft_strcmp(".rt", extension) != 0)
 	{
-		print_error("Invalid extension");
+		show_error("Invalid extension");
 		return (0);
 	}
 	return (1);
@@ -52,13 +45,13 @@ int	read_file(char *file, t_scene *scene)
 
 	if (!file || !scene)
 	{
-		print_error("Missing file or invalid scene");
+		show_error("Missing file or invalid scene");
 		return (0);
 	}
 	fd = open(file, O_RDONLY);
 	if (fd < 0)
 	{
-		print_error(strerror(errno));
+		show_error(strerror(errno));
 		return (0);
 	}
 	line = get_next_line(fd);
@@ -71,10 +64,8 @@ int	read_file(char *file, t_scene *scene)
 	return (1);
 }
 
-int	has_valid_objects(t_list *objs, t_obj_count *obj_count)
+int	is_allowed_object(char **arr, int idx)
 {
-	char				**arr;
-	int					i;
 	const t_hash_item	func_objs[] = {{"A", &is_valid_ambient,
 	"Invalid ambient"}, {"C", &is_valid_camera, "Invalid camera"},
 	{"L", &is_valid_light, "Invalid light"},
@@ -82,29 +73,34 @@ int	has_valid_objects(t_list *objs, t_obj_count *obj_count)
 	{"pl", &is_valid_plane, "Invalid plane"},
 	{"cy", &is_valid_cylinder, "Invalid cylinder"},
 	{NULL, NULL, "Non-existent object"}};
-	
+
+	while (func_objs[idx].key)
+	{
+		if (ft_strcmp(func_objs[idx].key, arr[0]) == 0)
+		{
+			if (!func_objs[idx].is_valid_obj(arr))
+				return (show_error(func_objs[idx].error_msg), 0);
+			break ;
+		}
+		idx++;
+	}
+	if (func_objs[idx].key == NULL)
+		return (show_error(func_objs[idx].error_msg), 0);
+	return (1);
+}
+
+int	is_valid_object(t_list *objs, t_obj_count *obj_count)
+{
+	char	**arr;
+	int		i;
+
 	arr = ft_split(objs->content, ' ');
 	if (!arr)
 		return (0);
 	i = 0;
-	while (func_objs[i].key)
-	{
-		if (ft_strcmp(func_objs[i].key, arr[0]) == 0)
-		{
-			if (!func_objs[i].is_valid_obj(arr))
-			{
-				free_arr(arr);
-				print_error(func_objs[i].error_msg);
-				return (0);
-			}
-			break ;
-		}
-		i++;
-	}
-	if (func_objs[i].key == NULL)
+	if (!is_allowed_object(arr, i))
 	{
 		free_arr(arr);
-		print_error(func_objs[i].error_msg);
 		return (0);
 	}
 	if (ft_strcmp(arr[0], "A") == 0)
@@ -125,13 +121,11 @@ int	is_valid_input(char *file, t_scene *scene)
 	if (!is_valid_extension(file) || read_file(file, scene) == 0 ||
 			!scene->objs)
 		return (0);
-	obj_count.ambient = 0;
-	obj_count.camera = 0;
-	obj_count.light = 0;
+	obj_count = (t_obj_count) {.ambient = 0, .camera = 0 , .light = 0};
 	aux = scene->objs;
 	while (aux)
 	{
-		if (!has_valid_objects(aux, &obj_count))
+		if (!is_valid_object(aux, &obj_count))
 			return (0);
 		aux = aux->next;
 	}
