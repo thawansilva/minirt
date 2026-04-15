@@ -37,7 +37,11 @@ typedef struct s_color
 
 typedef struct s_obj
 {
+	t_vec4			axis;
+	t_vec4			center;
 	double			mat[4][4];
+	double			min;
+	double			max;
 	t_color			color;
 }					t_obj;
 
@@ -51,6 +55,7 @@ typedef enum e_surface_type
 typedef struct s_surface
 {
 	t_obj			obj;
+	int				is_bounded;
 	t_surface_type	type;
 }					t_surface;
 
@@ -60,6 +65,7 @@ typedef struct s_surface_parameters
 	t_vec4			w;
 	t_vec4			l;
 	double			k;
+	double			height;
 }					t_surface_parameters;
 
 t_surface			create_surface(t_surface_parameters p);

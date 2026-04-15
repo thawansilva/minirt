@@ -27,6 +27,18 @@ t_surface_parameters	set_surface_parameters(t_vec4 c, t_vec4 w, t_vec4 l,
 	return (parameters);
 }
 
+void	set_surface_axis(t_surface *surface, t_surface_parameters p)
+{
+	if (p.w.z != p.w.x && p.w.z != p.w.y)
+		surface->obj.axis = (t_vec4){0, 0, 1, 0};
+	else if (p.w.y != p.w.x && p.w.y != p.w.z)
+		surface->obj.axis = (t_vec4){0, 1, 0, 0};
+	else if (p.w.x != p.w.y && p.w.x != p.w.z)
+		surface->obj.axis = (t_vec4){1, 0, 0, 0};
+	else
+		surface->obj.axis = (t_vec4){0, 1, 0, 0};
+}
+
 t_surface	create_surface(t_surface_parameters p)
 {
 	t_surface	res;
@@ -47,6 +59,10 @@ t_surface	create_surface(t_surface_parameters p)
 	q44 -= 2.0 * (p.l.x * p.c.x + p.l.y * p.c.y + p.l.z * p.c.z);
 	q44 += p.k;
 	res.obj.mat[3][3] = q44;
+	set_surface_axis(&res, p);
+	res.obj.center = p.c;
+	res.obj.min = -p.height / 2;
+	res.obj.max = p.height / 2;
 	return (res);
 }
 
@@ -54,6 +70,7 @@ t_vec4	get_surface_normal(t_surface s, t_vec4 hit_point)
 {
 	t_vec4	n;
 
+	ft_memset(&n, 0, sizeof(t_vec4));
 	n = vec4_mat4_mul(hit_point, s.obj.mat);
 	return (vec4_normalize(n));
 }
