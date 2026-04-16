@@ -17,7 +17,7 @@ SRC = main.c \
 	  $(MATH_DIR)/rt_math3.c \
 	  $(MATH_DIR)/rt_math4.c \
 	  $(MATH_DIR)/rt_math_intersection.c \
-	  $(MATH_DIR)/surface.c
+	  $(MATH_DIR)/surface.c \
 	  $(VALIDATION_DIR)/input.c \
 	  $(VALIDATION_DIR)/validate_objects.c \
 	  $(VALIDATION_DIR)/validate_scene.c \
