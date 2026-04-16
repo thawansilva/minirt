@@ -6,7 +6,7 @@
 /*   By: thaperei <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/05 10:11:05 by thaperei          #+#    #+#             */
-/*   Updated: 2026/04/13 22:12:07 by thaperei         ###   ########.fr       */
+/*   Updated: 2026/04/15 20:47:18 by thaperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,24 +18,11 @@
 #include <stdio.h>
 #include <unistd.h>
 
-int	is_valid_extension(char *file)
+void	show_error(char *msg)
 {
-	int		len;
-	char	*extension;
-
-	if (!file)
-	{
-		show_error("Invalid file");
-		return (0);
-	}
-	len = ft_strlen(file);
-	extension = ft_strrchr(file, '.');
-	if (!extension || len <= 3 || ft_strcmp(".rt", extension) != 0)
-	{
-		show_error("Invalid extension");
-		return (0);
-	}
-	return (1);
+	ft_putstr_fd("Error\n", 2);
+	ft_putstr_fd(msg, 2);
+	ft_putstr_fd("\n", 2);
 }
 
 int	read_file(char *file, t_scene *scene)
@@ -44,20 +31,17 @@ int	read_file(char *file, t_scene *scene)
 	char	*line;
 
 	if (!file || !scene)
-	{
-		show_error("Missing file or invalid scene");
-		return (0);
-	}
+		return (show_error("Missing file or invalid scene"), 0);
 	fd = open(file, O_RDONLY);
 	if (fd < 0)
-	{
-		show_error(strerror(errno));
-		return (0);
-	}
+		return (show_error(strerror(errno)), 0);
 	line = get_next_line(fd);
 	while (line != NULL)
 	{
-		ft_lstadd_back(&(scene->objs), ft_lstnew(line));
+		if (ft_strcmp(line, "\n") == 0)
+			free(line);
+		else
+			ft_lstadd_back(&(scene->objs), ft_lstnew(line));
 		line = get_next_line(fd);
 	}
 	close(fd);
@@ -66,8 +50,9 @@ int	read_file(char *file, t_scene *scene)
 
 int	is_allowed_object(char **arr, int idx)
 {
-	const t_hash_item	func_objs[] = {{"A", &is_valid_ambient,
-	"Invalid ambient"}, {"C", &is_valid_camera, "Invalid camera"},
+	const t_hash_item	func_objs[] = {
+	{"A", &is_valid_ambient, "Invalid ambient"},
+	{"C", &is_valid_camera, "Invalid camera"},
 	{"L", &is_valid_light, "Invalid light"},
 	{"sp", &is_valid_sphere, "Invalid sphere"},
 	{"pl", &is_valid_plane, "Invalid plane"},
@@ -118,10 +103,10 @@ int	is_valid_input(char *file, t_scene *scene)
 	t_list		*aux;
 	t_obj_count	obj_count;
 
-	if (!is_valid_extension(file) || read_file(file, scene) == 0 ||
-			!scene->objs)
+	if (!is_valid_extension(file) || read_file(file, scene) == 0
+		|| !scene->objs)
 		return (0);
-	obj_count = (t_obj_count) {.ambient = 0, .camera = 0 , .light = 0};
+	obj_count = (t_obj_count){.ambient = 0, .camera = 0, .light = 0};
 	aux = scene->objs;
 	while (aux)
 	{
@@ -130,7 +115,7 @@ int	is_valid_input(char *file, t_scene *scene)
 		aux = aux->next;
 	}
 	if (obj_count.ambient != 1 || obj_count.camera != 1
-			|| obj_count.light != 1)
+		|| obj_count.light != 1)
 		return (0);
 	return (1);
 }

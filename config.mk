@@ -13,5 +13,6 @@ SRC = main.c \
 	  free_memory.c \
 	  $(VALIDATION_DIR)/input.c \
 	  $(VALIDATION_DIR)/validate_objects.c \
+	  $(VALIDATION_DIR)/validate_scene.c \
 	  $(VALIDATION_DIR)/validate_properties.c \
-	  $(VALIDATION_DIR)/utils_validation.c \
+	  $(VALIDATION_DIR)/validate_number_values.c \
