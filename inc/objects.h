@@ -6,7 +6,7 @@
 /*   By: hermarti <hermarti@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/31 09:18:26 by hermarti          #+#    #+#             */
-/*   Updated: 2026/04/15 17:13:25 by hermarti         ###   ########.fr       */
+/*   Updated: 2026/04/16 15:37:35 by hermarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ typedef struct s_surface_parameters
 	t_vec4			orientation;
 	t_vec4			w;
 	t_vec4			l;
-	double			k;
+	double			diameter;
 	double			height;
 	t_surface_type	type;
 }					t_surface_parameters;
