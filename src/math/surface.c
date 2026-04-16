@@ -6,7 +6,7 @@
 /*   By: hermarti <hermarti@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/01 13:49:34 by hermarti          #+#    #+#             */
-/*   Updated: 2026/04/15 17:19:19 by hermarti         ###   ########.fr       */
+/*   Updated: 2026/04/16 15:38:07 by hermarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ t_surface_parameters	set_surface_parameters(t_vec4 coordinates, t_vec4 w,
 	vec4_copy(&parameters.coordinate, coordinates);
 	vec4_copy(&parameters.w, w);
 	vec4_copy(&parameters.l, l);
-	parameters.k = k;
+	parameters.diameter = k;
 	return (parameters);
 }
 
@@ -44,7 +44,7 @@ void	set_surface_matrix(t_surface_parameters p, t_mat4 *m)
 			* p.coordinate.y) + (p.w.z * p.coordinate.z * p.coordinate.z);
 	q44 -= 2.0 * (p.l.x * p.coordinate.x + p.l.y * p.coordinate.y + p.l.z
 			* p.coordinate.z);
-	q44 += p.k;
+	q44 += p.diameter;
 	m->m[3][3] = q44;
 }
 
