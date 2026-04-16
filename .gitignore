@@ -1,3 +1,6 @@
+# Ignoring compile_flags
+compile_flags.txt
+
 miniRT
 *.swp
 *.pdf
