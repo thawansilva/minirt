@@ -6,7 +6,7 @@
 /*   By: hermarti <hermarti@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/31 13:43:13 by hermarti          #+#    #+#             */
-/*   Updated: 2026/04/08 16:17:59 by hermarti         ###   ########.fr       */
+/*   Updated: 2026/04/15 17:05:34 by hermarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ static double	check_hit(double x, t_ray *ray, t_surface *surf)
 	if (x <= 0.0001)
 		return (NAN);
 	hit_p = vec4_add(ray->orig, vec4_scale(ray->dir, x));
-	cp = vec4_sub(hit_p, surf->obj.center);
-	h = vec4_dot_prod(cp, surf->obj.axis);
+	cp = vec4_sub(hit_p, surf->obj.coordinate);
+	h = vec4_dot_prod(cp, surf->obj.orientation);
 	if (surf->is_bounded && (h >= surf->obj.min && h <= surf->obj.max))
 		return (x);
 	else if (!surf->is_bounded)
