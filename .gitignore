@@ -1,3 +1,6 @@
+# Ignoring compile_flags
+compile_flags.txt
+
 miniRT
 run_tests
 *.swp
