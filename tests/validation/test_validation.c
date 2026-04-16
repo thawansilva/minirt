@@ -6,7 +6,7 @@
 /*   By: thaperei <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/11 08:54:51 by thaperei          #+#    #+#             */
-/*   Updated: 2026/04/13 21:33:50 by thaperei         ###   ########.fr       */
+/*   Updated: 2026/04/15 19:42:09 by thaperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -1257,6 +1257,22 @@ void	test_valid_input_valid_scene(void **state)
 	FILE	*f = fopen(path, "w");
 	fputs("A 0.5 255,255,255\n", f);
 	fputs("C 0,0,0 0.0,0.0,1.0 90\n", f);
+	fputs("L 0,5,0 0.8 255,255,255\n", f);
+	fclose(f);
+	assert_int_equal(is_valid_input(path, scene), 1);
+	free_scene(scene);
+	unlink(path);
+	free(path);
+}
+
+void	test_valid_input_valid_scene_with_more_newline(void **state)
+{
+	(void)state;
+	t_scene	*scene = make_scene();
+	char	*path = strdup("/tmp/valid_scene.rt");
+	FILE	*f = fopen(path, "w");
+	fputs("A 0.5 255,255,255\n", f);
+	fputs("C 0,0,0 0.0,0.0,1.0 90\n\n\n", f);
 	fputs("L 0,5,0 0.8 255,255,255\n", f);
 	fclose(f);
 	assert_int_equal(is_valid_input(path, scene), 1);

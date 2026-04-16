@@ -6,7 +6,7 @@
 /*   By: thaperei <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/11 08:54:40 by thaperei          #+#    #+#             */
-/*   Updated: 2026/04/13 21:34:06 by thaperei         ###   ########.fr       */
+/*   Updated: 2026/04/15 19:43:24 by thaperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -190,6 +190,7 @@ static int	run_validation_tests(void)
 		cmocka_unit_test(test_valid_cylinder_color_wrong_slot),
 		// Input
 		cmocka_unit_test(test_valid_input_valid_scene),
+		cmocka_unit_test(test_valid_input_valid_scene_with_more_newline),
 		cmocka_unit_test(test_valid_input_null_file),
 		cmocka_unit_test(test_valid_input_invalid_extension),
 		cmocka_unit_test(test_valid_input_no_extension),

@@ -6,7 +6,7 @@
 /*   By: thaperei <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/11 08:54:36 by thaperei          #+#    #+#             */
-/*   Updated: 2026/04/13 21:22:34 by thaperei         ###   ########.fr       */
+/*   Updated: 2026/04/15 19:42:50 by thaperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,6 @@ void test_valid_normalized_vector_out_of_range(void **state);
 void test_valid_normalized_vector_boundary_min(void **state);
 void test_valid_normalized_vector_boundary_max(void **state);
 void test_valid_normalized_vector_non_numeric(void **state);
-
 // Validate fov
 void test_valid_fov_valid(void **state);
 void test_valid_fov_null(void **state);
@@ -196,6 +195,7 @@ void test_valid_cylinder_vector_out_of_range(void **state);
 void test_valid_cylinder_vector_wrong_count(void **state);
 void test_valid_cylinder_color_wrong_slot(void **state);
 // Validate input
+void test_valid_input_valid_scene_with_more_newline(void **state);
 void test_valid_input_valid_scene(void **state);
 void test_valid_input_null_file(void **state);
 void test_valid_input_invalid_extension(void **state);
