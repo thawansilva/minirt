@@ -6,77 +6,26 @@
 /*   By: thaperei <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/15 16:00:03 by thaperei          #+#    #+#             */
-/*   Updated: 2026/04/13 22:00:35 by thaperei         ###   ########.fr       */
+/*   Updated: 2026/04/18 15:21:43 by thaperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef VALIDATION_H
 # define VALIDATION_H
 # include "libft.h"
-
-typedef struct s_vec3
-{
-	float	x;
-	float	y;
-	float	z;
-}	t_vec3;
-
-typedef struct s_color
-{
-	unsigned char	r;
-	unsigned char	g;
-	unsigned char	b;
-}	t_color;
-
-typedef struct s_obj
-{
-	float	matrix[4][4];
-	t_color	color;
-}	t_obj;
-
-typedef struct s_ambient
-{
-	float	lightness;
-	t_color	color;
-}	t_ambient;
-
-typedef struct s_camera
-{
-	t_vec3			coordinate;
-	t_vec3			norm_vector;
-	unsigned char	fov;
-}	t_camera;
-
-typedef struct s_light
-{
-	t_vec3	coordinate;
-	t_color	color;
-	float	brightness;
-}	t_light;
-
-typedef struct s_sphere
-{
-	t_obj	obj;
-	int		diameter;
-}	t_sphere;
-
-typedef struct s_plane
-{
-	t_obj	obj;
-	t_vec3	norm_vector;
-}	t_plane;
-
-typedef struct s_cylinder
-{
-	t_obj	obj;
-	t_vec3	norm_vector;
-	float	diameter;
-	float	height;
-}	t_cylinder;
+# include "objects.h"
+# include "scene.h"
 
 typedef struct s_scene
 {
 	t_list			*objs;
+	t_camera		camera;
+	t_ambient		ambient;
+	t_light			*light;
+	t_surface		*surfaces;
+	t_specular		*specular;
+	unsigned int	num_objs;
+	unsigned int	num_lights;
 }	t_scene;
 
 typedef struct s_obj_count
