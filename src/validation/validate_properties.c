@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "validation.h"
+#include "free_memory.h"
 #include "libft.h"
 
 int	is_valid_extension(char *file)

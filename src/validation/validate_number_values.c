@@ -12,6 +12,7 @@
 
 #include "libft.h"
 #include "validation.h"
+#include "free_memory.h"
 
 int	is_valid_float(const char *str)
 {

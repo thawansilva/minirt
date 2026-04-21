@@ -12,8 +12,8 @@
 
 #ifndef SCENE_H
 # define SCENE_H
-
 # include "objects.h"
+# include "libft.h"
 
 typedef struct s_ambient
 {
@@ -42,4 +42,14 @@ typedef struct s_specular
 	t_vec4			reflect_coordinate;
 }				t_specular;
 
+typedef struct s_scene {
+	t_list			*objs;
+	t_camera		camera;
+	t_ambient		ambient;
+	t_light			*light;
+	t_surface		*surfaces;
+	t_specular		specular;
+	unsigned int	num_objs;
+	unsigned int	num_lights;
+}				t_scene;
 #endif

@@ -7,8 +7,9 @@ OBJ_DIR = obj
 SRC_BONUS_DIR = src_bonus
 OBJ_BONUS_DIR = obj_bonus
 
-VALIDATION_DIR = validation
 MATH_DIR = math
+VALIDATION_DIR = validation
+PARSER_DIR = parser
 
 SRC = main.c \
 	  free_memory.c \
@@ -23,3 +24,6 @@ SRC = main.c \
 	  $(VALIDATION_DIR)/validate_scene.c \
 	  $(VALIDATION_DIR)/validate_properties.c \
 	  $(VALIDATION_DIR)/validate_number_values.c \
+	  $(PARSER_DIR)/parse_scene.c \
+	  $(PARSER_DIR)/parse_objects.c \
+	  $(PARSER_DIR)/parse_values.c \

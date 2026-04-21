@@ -12,6 +12,7 @@
 
 #include "libft.h"
 #include "validation.h"
+#include "free_memory.h"
 #include <string.h>
 #include <fcntl.h>
 #include <errno.h>
@@ -94,6 +95,8 @@ int	is_valid_object(t_list *objs, t_obj_count *obj_count)
 		obj_count->camera++;
 	else if (ft_strcmp(arr[0], "L") == 0)
 		obj_count->light++;
+	else
+		obj_count->obj++;
 	free_arr(arr);
 	return (1);
 }
@@ -106,7 +109,7 @@ int	is_valid_input(char *file, t_scene *scene)
 	if (!is_valid_extension(file) || read_file(file, scene) == 0
 		|| !scene->objs)
 		return (0);
-	obj_count = (t_obj_count){.ambient = 0, .camera = 0, .light = 0};
+	obj_count = (t_obj_count){.ambient = 0, .camera = 0, .light = 0, .obj = 0};
 	aux = scene->objs;
 	while (aux)
 	{
@@ -117,5 +120,7 @@ int	is_valid_input(char *file, t_scene *scene)
 	if (obj_count.ambient != 1 || obj_count.camera != 1
 		|| obj_count.light != 1)
 		return (0);
+	scene->num_lights = obj_count.light;
+	scene->num_objs = obj_count.obj;
 	return (1);
 }

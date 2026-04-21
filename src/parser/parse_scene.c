@@ -10,11 +10,54 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "parser.h"
+#include "libft.h"
+#include "validation.h"
+#include "free_memory.h"
+
+void	parse_ambient(char **arr, t_scene *scene)
+{
+	scene->ambient.lightness = ft_atod(arr[1]);
+	save_color(arr[2], &scene->ambient.color);
+}
+
+void	parse_camera(char **arr, t_scene *scene)
+{
+	save_vec4(arr[1], &scene->camera.coordinate);
+	save_vec4(arr[2], &scene->camera.norm_vector);
+	scene->camera.fov = (unsigned char)ft_atoi(arr[3]);
+}
+
+void	parse_light(char **arr, t_scene *scene)
+{
+	save_vec4(arr[1], &scene->light->coordinate);
+	scene->light->brightness = ft_atod(arr[2]);
+	save_color(arr[3], &scene->light->color);
+}
+
 void	parse_elements(t_scene *scene)
 {
-	t_list	*aux = scene->objs;
+	int							i;
+	t_list						*aux;
+	char						**arr;
+	const t_hash_item_parser	parse_objs[] = {{"A", &parse_ambient},
+		{"C", &parse_camera}, {"L", &parse_light}, {"sp", &parse_sphere},
+		{"pl", &parse_plane}, {"cy", &parse_cylinder}, {NULL, NULL}};
+
+	aux = scene->objs;
+	scene->light = (t_light *)ft_calloc(sizeof(t_light), scene->num_lights);
+	scene->surfaces = (t_surface *)ft_calloc(sizeof(t_surface), scene->num_objs);
 	while (aux)
 	{
-
+		i = 0;
+		arr = ft_split(aux->content, ' ');
+		while (parse_objs[i].key)
+		{
+			if (ft_strcmp(parse_objs[i].key, arr[0]) == 0)
+				parse_objs[i].parse(arr, scene);
+			i++;
+		}
+		free_arr(arr);
+		aux = aux->next;
 	}
 }

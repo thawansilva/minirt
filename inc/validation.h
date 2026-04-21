@@ -13,26 +13,14 @@
 #ifndef VALIDATION_H
 # define VALIDATION_H
 # include "libft.h"
-# include "objects.h"
 # include "scene.h"
-
-typedef struct s_scene
-{
-	t_list			*objs;
-	t_camera		camera;
-	t_ambient		ambient;
-	t_light			*light;
-	t_surface		*surfaces;
-	t_specular		*specular;
-	unsigned int	num_objs;
-	unsigned int	num_lights;
-}	t_scene;
 
 typedef struct s_obj_count
 {
 	unsigned char	camera;
 	unsigned char	ambient;
 	unsigned char	light;
+	int				obj;
 }	t_obj_count;
 
 typedef struct s_hash_item
@@ -63,7 +51,4 @@ int		is_valid_light(char **arr);
 int		is_valid_sphere(char **arr);
 int		is_valid_plane(char **arr);
 int		is_valid_cylinder(char **arr);
-// Free Memory
-void	free_arr(char **arr);
-void	free_content(void *content);
 #endif

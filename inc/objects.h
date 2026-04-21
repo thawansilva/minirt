@@ -70,9 +70,11 @@ typedef struct s_surface_parameters
 	t_vec4			orientation;
 	t_vec4			w;
 	t_vec4			l;
+	t_color			color;
 	double			diameter;
 	double			height;
 	t_surface_type	type;
+	int				is_bounded;
 }					t_surface_parameters;
 
 t_surface			create_surface(t_surface_parameters p);
