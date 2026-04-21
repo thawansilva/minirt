@@ -26,7 +26,8 @@ CMOCKA_VERSION = 1.1.7
 INCLUDES += -I$(CMOCKA_INCLUDE) -I$(TEST_INC_DIR)
 
 TEST_FILES = test_main.c \
-			 $(TEST_VALIDATION_DIR)/test_validation.c
+			 $(TEST_VALIDATION_DIR)/test_validation.c \
+			 parser/test_parser.c
 
 TEST_OBJ = $(TEST_FILES:%.c=$(TEST_OBJ_DIR)/%.o)
 TEST_BIN = run_tests

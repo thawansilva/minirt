@@ -67,6 +67,7 @@ static void	free_scene(t_scene *scene)
 		free(node);
 		node = next;
 	}
+	free(scene);
 }
 
 /* EXTENSION VALIDATION TESTS */

@@ -17,6 +17,7 @@
 
 #include "libft.h"
 #include "test_validation.h"
+#include "test_parser.h"
 #include <stdio.h>
 #include <string.h>
 
@@ -215,12 +216,83 @@ static int	run_validation_tests(void)
 	return (cmocka_run_group_tests(tests, NULL, NULL));
 }
 
+static int	run_parser_tests(void)
+{
+	const struct CMUnitTest tests[] = {
+		// save_color tests
+		cmocka_unit_test(test_save_color_basic),
+		cmocka_unit_test(test_save_color_black),
+		cmocka_unit_test(test_save_color_white),
+		cmocka_unit_test(test_save_color_red),
+		cmocka_unit_test(test_save_color_green),
+		cmocka_unit_test(test_save_color_blue),
+		cmocka_unit_test(test_save_color_mid_values),
+		// save_vec4 tests
+		cmocka_unit_test(test_save_vec4_basic),
+		cmocka_unit_test(test_save_vec4_integers),
+		cmocka_unit_test(test_save_vec4_zeros),
+		cmocka_unit_test(test_save_vec4_negative),
+		cmocka_unit_test(test_save_vec4_unit_vector),
+		cmocka_unit_test(test_save_vec4_normalized_diagonal),
+		cmocka_unit_test(test_save_vec4_large_values),
+		// parse_ambient tests
+		cmocka_unit_test(test_parse_ambient_basic),
+		cmocka_unit_test(test_parse_ambient_zero_lightness),
+		cmocka_unit_test(test_parse_ambient_full_lightness),
+		cmocka_unit_test(test_parse_ambient_mid_values),
+		cmocka_unit_test(test_parse_ambient_different_colors),
+		// parse_camera tests
+		cmocka_unit_test(test_parse_camera_basic),
+		cmocka_unit_test(test_parse_camera_different_position),
+		cmocka_unit_test(test_parse_camera_different_direction),
+		cmocka_unit_test(test_parse_camera_min_fov),
+		cmocka_unit_test(test_parse_camera_max_fov),
+		cmocka_unit_test(test_parse_camera_negative_coordinates),
+		// parse_light tests
+		cmocka_unit_test(test_parse_light_basic),
+		cmocka_unit_test(test_parse_light_different_position),
+		cmocka_unit_test(test_parse_light_zero_brightness),
+		cmocka_unit_test(test_parse_light_full_brightness),
+		cmocka_unit_test(test_parse_light_different_color),
+		cmocka_unit_test(test_parse_light_negative_coordinates),
+		// parse_sphere tests
+		cmocka_unit_test(test_parse_sphere_basic),
+		cmocka_unit_test(test_parse_sphere_different_position),
+		cmocka_unit_test(test_parse_sphere_different_diameter),
+		cmocka_unit_test(test_parse_sphere_red_color),
+		cmocka_unit_test(test_parse_sphere_not_bounded),
+		cmocka_unit_test(test_parse_sphere_large_diameter),
+		cmocka_unit_test(test_parse_sphere_small_diameter),
+		// parse_plane tests
+		cmocka_unit_test(test_parse_plane_basic),
+		cmocka_unit_test(test_parse_plane_different_position),
+		cmocka_unit_test(test_parse_plane_different_orientation),
+		cmocka_unit_test(test_parse_plane_diagonal_orientation),
+		cmocka_unit_test(test_parse_plane_red_color),
+		cmocka_unit_test(test_parse_plane_not_bounded),
+		cmocka_unit_test(test_parse_plane_negative_coordinates),
+		// parse_cylinder tests
+		cmocka_unit_test(test_parse_cylinder_basic),
+		cmocka_unit_test(test_parse_cylinder_different_position),
+		cmocka_unit_test(test_parse_cylinder_different_orientation),
+		cmocka_unit_test(test_parse_cylinder_large_dimensions),
+		cmocka_unit_test(test_parse_cylinder_small_dimensions),
+		cmocka_unit_test(test_parse_cylinder_diagonal_orientation),
+		cmocka_unit_test(test_parse_cylinder_is_bounded),
+		cmocka_unit_test(test_parse_cylinder_red_color),
+		cmocka_unit_test(test_parse_cylinder_negative_coordinates),
+	};
+	printf("\n--- Parser Tests ---\n");
+	return (cmocka_run_group_tests(tests, NULL, NULL));
+}
+
 static void	print_usage(void)
 {
 	printf("Usage: ./run_tests [OPTIONS]\n");
 	printf("Options:\n");
 	printf("  (no args)    Run all tests\n");
 	printf("  validation   Run file validation tests only\n");
+	printf("  parser       Run parser tests only\n");
 	printf("  -h, --help   Show this help message\n");
 }
 
@@ -241,13 +313,21 @@ int	main(int argc, char *argv[])
 			printf("\n=== Running validation Tests ===\n");
 			return (run_validation_tests());
 		}
+		if (strcmp(argv[1], "parser") == 0)
+		{
+			printf("\n=== Running parser Tests ===\n");
+			return (run_parser_tests());
+		}
 		printf("Unknown option: %s\n", argv[1]);
 		print_usage();
 		return (1);
 	}
-	printf("\n=== Running Minishell Tests ===\n");
+	printf("\n=== Running MiniRT Tests ===\n");
 	failed = 0;
 	result = run_validation_tests();
+	if (result != 0)
+		failed += result;
+	result = run_parser_tests();
 	if (result != 0)
 		failed += result;
 	printf("\n=== Test Suite Complete ===\n");
