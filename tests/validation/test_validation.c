@@ -6,7 +6,7 @@
 /*   By: thaperei <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/11 08:54:51 by thaperei          #+#    #+#             */
-/*   Updated: 2026/04/15 19:42:09 by thaperei         ###   ########.fr       */
+/*   Updated: 2026/04/22 20:30:26 by thaperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -1259,6 +1259,7 @@ void	test_valid_input_valid_scene(void **state)
 	fputs("A 0.5 255,255,255\n", f);
 	fputs("C 0,0,0 0.0,0.0,1.0 90\n", f);
 	fputs("L 0,5,0 0.8 255,255,255\n", f);
+	fputs("sp 0,0,5 2.0 255,0,0\n", f);
 	fclose(f);
 	assert_int_equal(is_valid_input(path, scene), 1);
 	free_scene(scene);
@@ -1275,6 +1276,7 @@ void	test_valid_input_valid_scene_with_more_newline(void **state)
 	fputs("A 0.5 255,255,255\n", f);
 	fputs("C 0,0,0 0.0,0.0,1.0 90\n\n\n", f);
 	fputs("L 0,5,0 0.8 255,255,255\n", f);
+	fputs("sp 0,0,5 2.0 255,0,0\n", f);
 	fclose(f);
 	assert_int_equal(is_valid_input(path, scene), 1);
 	free_scene(scene);
@@ -1331,6 +1333,7 @@ void	test_valid_input_missing_camera_and_light(void **state)
 	t_scene	*scene = make_scene();
 	FILE	*f = fopen("/tmp/missing_camera_and_light.rt", "w");
 	fputs("A 0.5 255,255,255\n", f);
+	fputs("sp 0,0,5 2.0 255,0,0\n", f);
 	fclose(f);
 	assert_int_equal(is_valid_input("/tmp/missing_camera_and_light.rt", scene), 0);
 	free_scene(scene);
@@ -1346,6 +1349,7 @@ void	test_valid_input_duplicate_ambient(void **state)
 	fputs("A 0.5 255,0,0\n", f);
 	fputs("C 0,0,0 0.0,0.0,1.0 90\n", f);
 	fputs("L 0,5,0 0.8 255,255,255\n", f);
+	fputs("sp 0,0,5 2.0 255,0,0\n", f);
 	fclose(f);
 	assert_int_equal(is_valid_input("/tmp/missing_camera_and_light.rt", scene), 0);
 	free_scene(scene);
@@ -1358,6 +1362,7 @@ void	test_valid_input_missing_ambient_and_light(void **state)
 	t_scene	*scene = make_scene();
 	FILE	*f = fopen("/tmp/invalid_scene.rt", "w");
 	fputs("C 0,0,0 0.0,0.0,1.0 90\n", f);
+	fputs("sp 0,0,5 2.0 255,0,0\n", f);
 	fclose(f);
 	assert_int_equal(is_valid_input("/tmp/invalid_scene.rt", scene), 0);
 	free_scene(scene);
@@ -1373,6 +1378,7 @@ void	test_valid_input_duplicate_camera(void **state)
 	fputs("C 0,0,0 0.0,0.0,1.0 90\n", f);
 	fputs("C 0,0,0 0.0,0.5,1.0 90\n", f);
 	fputs("L 0,5,0 0.8 255,255,255\n", f);
+	fputs("sp 0,0,5 2.0 255,0,0\n", f);
 	fclose(f);
 	assert_int_equal(is_valid_input("/tmp/missing_camera_and_light.rt", scene), 0);
 	free_scene(scene);
@@ -1385,6 +1391,7 @@ void	test_valid_input_missing_ambient_and_camera(void **state)
 	t_scene	*scene = make_scene();
 	FILE	*f = fopen("/tmp/invalid_scene.rt", "w");
 	fputs("L 0,5,0 0.8 255,255,255\n", f);
+	fputs("sp 0,0,5 2.0 255,0,0\n", f);
 	fclose(f);
 	assert_int_equal(is_valid_input("/tmp/invalid_scene.rt", scene), 0);
 	free_scene(scene);
@@ -1400,6 +1407,7 @@ void	test_valid_input_duplicate_light(void **state)
 	fputs("C 0,0,0 0.0,0.0,1.0 90\n", f);
 	fputs("L 0,3,0 0.8 0,0,255\n", f);
 	fputs("L 0,5,0 0.8 255,255,255\n", f);
+	fputs("sp 0,0,5 2.0 255,0,0\n", f);
 	fclose(f);
 	assert_int_equal(is_valid_input("/tmp/missing_camera_and_light.rt", scene), 0);
 	free_scene(scene);
@@ -1414,6 +1422,7 @@ void	test_valid_input_invalid_ambient(void **state)
 	fputs("A 2.0 255,255,255\n", f);
 	fputs("C 0,0,0 0.0,0.0,1.0 90\n", f);
 	fputs("L 0,5,0 0.8 255,255,255\n", f);
+	fputs("sp 0,0,5 abc 255,0,0\n", f);
 	fclose(f);
 	assert_int_equal(is_valid_input("/tmp/ambient_invalid.rt", scene), 0);
 	free_scene(scene);

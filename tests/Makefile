@@ -15,6 +15,7 @@ INCLUDES = -I$(ROOT_DIR)/$(INC_MINIRT) -I$(LIBFT_PATH)/inc
 TEST_OBJ_DIR = obj
 TEST_INC_DIR = inc
 TEST_VALIDATION_DIR = validation
+TEST_PARSER_DIR = parser
 
 # CMocka
 CMOCKA_DIR = $(ROOT_DIR)/lib/cmocka
@@ -27,7 +28,8 @@ INCLUDES += -I$(CMOCKA_INCLUDE) -I$(TEST_INC_DIR)
 
 TEST_FILES = test_main.c \
 			 $(TEST_VALIDATION_DIR)/test_validation.c \
-			 parser/test_parser.c
+			 $(TEST_PARSER_DIR)/test_parser.c \
+			 $(TEST_PARSER_DIR)/test_parse_elements.c
 
 TEST_OBJ = $(TEST_FILES:%.c=$(TEST_OBJ_DIR)/%.o)
 TEST_BIN = run_tests

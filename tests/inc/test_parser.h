@@ -6,7 +6,7 @@
 /*   By: thaperei <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/21 10:00:00 by thaperei          #+#    #+#             */
-/*   Updated: 2026/04/21 10:00:00 by thaperei         ###   ########.fr       */
+/*   Updated: 2026/04/22 20:23:42 by thaperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,5 +82,9 @@ void	test_parse_cylinder_diagonal_orientation(void **state);
 void	test_parse_cylinder_is_bounded(void **state);
 void	test_parse_cylinder_red_color(void **state);
 void	test_parse_cylinder_negative_coordinates(void **state);
+
+/* parse_elements integration test */
+void	test_parse_elements_integration(void **state);
+void test_parse_elements_multiple_objects(void **state);
 
 #endif

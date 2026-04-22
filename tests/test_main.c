@@ -6,7 +6,7 @@
 /*   By: thaperei <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/11 08:54:40 by thaperei          #+#    #+#             */
-/*   Updated: 2026/04/15 19:43:24 by thaperei         ###   ########.fr       */
+/*   Updated: 2026/04/22 20:23:26 by thaperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -281,6 +281,8 @@ static int	run_parser_tests(void)
 		cmocka_unit_test(test_parse_cylinder_is_bounded),
 		cmocka_unit_test(test_parse_cylinder_red_color),
 		cmocka_unit_test(test_parse_cylinder_negative_coordinates),
+		cmocka_unit_test(test_parse_elements_integration),
+		cmocka_unit_test(test_parse_elements_multiple_objects),
 	};
 	printf("\n--- Parser Tests ---\n");
 	return (cmocka_run_group_tests(tests, NULL, NULL));
