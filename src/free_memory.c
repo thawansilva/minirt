@@ -6,11 +6,12 @@
 /*   By: thaperei <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/08 18:14:25 by thaperei          #+#    #+#             */
-/*   Updated: 2026/04/13 22:07:47 by thaperei         ###   ########.fr       */
+/*   Updated: 2026/04/22 20:33:35 by thaperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
+#include "scene.h"
 
 void	free_content(void *content)
 {
@@ -30,4 +31,11 @@ void	free_arr(char **arr)
 	}
 	free(arr);
 	arr = NULL;
+}
+
+void	free_scene(t_scene *scene)
+{
+	free(scene->light);
+	free(scene->surfaces);
+	ft_lstclear(&(scene->objs), &free_content);
 }

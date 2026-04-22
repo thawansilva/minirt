@@ -49,6 +49,7 @@ typedef struct s_scene {
 	t_light			*light;
 	t_surface		*surfaces;
 	t_specular		specular;
+	unsigned int	idx_obj;
 	unsigned int	num_objs;
 	unsigned int	num_lights;
 }				t_scene;
