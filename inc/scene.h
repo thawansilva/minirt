@@ -42,7 +42,8 @@ typedef struct s_specular
 	t_vec4			reflect_coordinate;
 }				t_specular;
 
-typedef struct s_scene {
+typedef struct s_scene
+{
 	t_list			*objs;
 	t_camera		camera;
 	t_ambient		ambient;
