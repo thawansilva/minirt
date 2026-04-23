@@ -1,32 +1,43 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   free_memory.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: thaperei <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/15 16:00:03 by thaperei          #+#    #+#             */
-/*   Updated: 2026/04/22 19:34:13 by thaperei         ###   ########.fr       */
+/*   Created: 2026/04/08 18:14:25 by thaperei          #+#    #+#             */
+/*   Updated: 2026/04/22 20:33:35 by thaperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "validation.h"
-#include "free_memory.h"
-#include "parser.h"
-#include "libft.h"
+#include <stdlib.h>
+#include "scene.h"
 
-int	main(int argc, char *argv[])
+void	free_content(void *content)
 {
-	t_scene	scene;
+	free(content);
+}
 
-	scene = (t_scene){};
-	if (argc != 2)
+void	free_arr(char **arr)
+{
+	int	i;
+
+	i = 0;
+	while (arr[i])
 	{
-		show_error("Usage: ./miniRT <file>");
-		return (0);
+		free(arr[i]);
+		arr[i] = NULL;
+		i++;
 	}
-	if (is_valid_input(argv[1], &scene))
-		parse_elements(&scene);
-	free_scene(&scene);
-	return (0);
+	free(arr);
+	arr = NULL;
+}
+
+void	free_scene(t_scene *scene)
+{
+	if (scene->light)
+		free(scene->light);
+	if (scene->surfaces)
+		free(scene->surfaces);
+	ft_lstclear(&(scene->objs), &free_content);
 }

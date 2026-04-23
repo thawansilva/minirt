@@ -5,16 +5,17 @@ include $(ROOT_DIR)/config.mk
 INC_MINIRT = inc
 
 LIBFT_DIR := lib/libft
-LIBFT = $(LIBFT_DIR)/libft.a
 CFLAGS += -g2 -O0
 
 LIBFT_PATH := $(ROOT_DIR)/$(LIBFT_DIR)
 SRC_PATH := $(ROOT_DIR)/$(SRC_DIR)
 LIBFT_LIB := $(LIBFT_PATH)/libft.a
-INCLUDES := -I$(ROOT_DIR)/$(INC_MINIRT) -I$(LIBFT_PATH)/inc
+INCLUDES = -I$(ROOT_DIR)/$(INC_MINIRT) -I$(LIBFT_PATH)/inc
 
 TEST_OBJ_DIR = obj
 TEST_INC_DIR = inc
+TEST_VALIDATION_DIR = validation
+TEST_PARSER_DIR = parser
 
 # CMocka
 CMOCKA_DIR = $(ROOT_DIR)/lib/cmocka
@@ -26,14 +27,17 @@ CMOCKA_VERSION = 1.1.7
 INCLUDES += -I$(CMOCKA_INCLUDE) -I$(TEST_INC_DIR)
 
 TEST_FILES = test_main.c \
+			 $(TEST_VALIDATION_DIR)/test_validation.c \
+			 $(TEST_PARSER_DIR)/test_parser.c \
+			 $(TEST_PARSER_DIR)/test_parse_elements.c
 
 TEST_OBJ = $(TEST_FILES:%.c=$(TEST_OBJ_DIR)/%.o)
 TEST_BIN = run_tests
 
-PROJECT_OBJ = $(SRC_FILES:%.c=$(TEST_OBJ_DIR)/project/%.o)
+PROJECT_OBJ = $(SRC:%.c=$(TEST_OBJ_DIR)/project/%.o)
 PROJECT_OBJ := $(filter-out $(TEST_OBJ_DIR)/project/main.o, $(PROJECT_OBJ))
 
-TEST_LIBS = -L$(CMOCKA_BUILD)/src -lcmocka -L$(LIBFT_PATH) -lft
+TEST_LIBS = -L$(CMOCKA_BUILD)/src -lcmocka -L$(LIBFT_PATH) -lft -lm
 
 GREEN = \033[0;32m
 YELLOW = \033[0;33m
@@ -110,7 +114,6 @@ clean:
 
 fclean: clean
 	@rm -f $(TEST_BIN)
-	@rm -rf $(CMOCKA_DIR)
 	@echo "$(GREEN)[OK] Test files removed$(RESET)"
 
 re: fclean all

@@ -69,6 +69,7 @@ t_surface	create_surface(t_surface_parameters p)
 	res.obj.mat = mat4_mat4_mult(mat4_mat4_mult(rot_mat, base_mat), rot_mat_t);
 	res.obj.orientation = vec4_normalize(p.orientation);
 	res.type = p.type;
+	res.obj.color = p.color;
 	return (res);
 }
 
