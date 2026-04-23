@@ -35,7 +35,9 @@ void	free_arr(char **arr)
 
 void	free_scene(t_scene *scene)
 {
-	free(scene->light);
-	free(scene->surfaces);
+	if (scene->light)
+		free(scene->light);
+	if (scene->surfaces)
+		free(scene->surfaces);
 	ft_lstclear(&(scene->objs), &free_content);
 }

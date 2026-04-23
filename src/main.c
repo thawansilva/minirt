@@ -25,12 +25,8 @@ int	main(int argc, char *argv[])
 		show_error("Usage: ./miniRT <file>");
 		return (0);
 	}
-	if (!is_valid_input(argv[1], &scene))
-	{
-		ft_lstclear(&(scene.objs), &free_content);
-		return (0);
-	}
-	parse_elements(&scene);
+	if (is_valid_input(argv[1], &scene))
+		parse_elements(&scene);
 	free_scene(&scene);
 	return (0);
 }

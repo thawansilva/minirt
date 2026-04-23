@@ -118,8 +118,10 @@ int	is_valid_input(char *file, t_scene *scene)
 		aux = aux->next;
 	}
 	if (obj_count.ambient != 1 || obj_count.camera != 1
-		|| obj_count.light != 1 || obj_count.obj == 0)
+		|| obj_count.light != 1)
 		return (0);
+	if (obj_count.obj == 0)
+		return (show_error("No objects in the scene"), 0);
 	scene->num_lights = obj_count.light;
 	scene->num_objs = obj_count.obj;
 	return (1);
