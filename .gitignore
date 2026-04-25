@@ -2,7 +2,9 @@
 compile_flags.txt
 
 miniRT
+miniRT_bonus
 run_tests
+run_tests_bonus
 *.swp
 *.pdf
 
