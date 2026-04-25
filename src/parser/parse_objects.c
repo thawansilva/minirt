@@ -23,7 +23,7 @@ void	parse_sphere(char **arr, t_scene *scene)
 	save_vec4(arr[1], &s_params.coordinate);
 	s_params.diameter = ft_atof(arr[2]);
 	save_color(arr[3], &s_params.color);
-	s->type = SPHERE;
+	s_params.type = SPHERE;
 	s_params.is_bounded = 0;
 	*s = create_surface(s_params);
 }
