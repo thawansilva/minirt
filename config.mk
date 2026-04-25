@@ -4,6 +4,7 @@ NAME_BONUS = miniRT_bonus
 INC_DIR = inc lib/libft/inc lib/minilibx-linux/
 SRC_DIR = src
 OBJ_DIR = obj
+INC_BONUS_DIR = inc_bonus lib/libft/inc lib/minilibx-linux/
 SRC_BONUS_DIR = src_bonus
 OBJ_BONUS_DIR = obj_bonus
 
@@ -27,3 +28,21 @@ SRC = main.c \
 	  $(PARSER_DIR)/parse_scene.c \
 	  $(PARSER_DIR)/parse_objects.c \
 	  $(PARSER_DIR)/parse_values.c \
+
+SRC_BONUS = main_bonus.c \
+	  free_memory_bonus.c \
+	  $(MATH_DIR)/rt_math_bonus.c \
+	  $(MATH_DIR)/rt_math2_bonus.c \
+	  $(MATH_DIR)/rt_math3_bonus.c \
+	  $(MATH_DIR)/rt_math4_bonus.c \
+	  $(MATH_DIR)/rt_math_intersection_bonus.c \
+	  $(MATH_DIR)/surface_bonus.c \
+	  $(VALIDATION_DIR)/input_bonus.c \
+	  $(VALIDATION_DIR)/validate_objects_bonus.c \
+	  $(VALIDATION_DIR)/validate_scene_bonus.c \
+	  $(VALIDATION_DIR)/validate_properties_bonus.c \
+	  $(VALIDATION_DIR)/validate_number_values_bonus.c \
+	  $(PARSER_DIR)/parse_scene_bonus.c \
+	  $(PARSER_DIR)/parse_objects_bonus.c \
+	  $(PARSER_DIR)/parse_values_bonus.c \
+
