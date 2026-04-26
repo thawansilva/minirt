@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse_objects.c                                    :+:      :+:    :+:   */
+/*   parse_objects_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: thaperei <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/22 18:48:34 by thaperei          #+#    #+#             */
-/*   Updated: 2026/04/22 18:51:10 by thaperei         ###   ########.fr       */
+/*   Updated: 2026/04/26 13:18:15 by thaperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,10 @@ void	parse_sphere(char **arr, t_scene *scene)
 	save_vec4(arr[1], &s_params.coordinate);
 	s_params.diameter = ft_atof(arr[2]);
 	save_color(arr[3], &s_params.color);
-	if	(ft_strcmp("co", arr[0]) == 0)
+	if (ft_strcmp("co", arr[0]) == 0)
 		s_params.type = CONE;
 	else
 		s_params.type = SPHERE;
-	s_params.is_bounded = 0;
 	*s = create_surface(s_params);
 }
 
@@ -41,13 +40,12 @@ void	parse_plane(char **arr, t_scene *scene)
 	save_vec4(arr[1], &s_params.coordinate);
 	save_vec4(arr[2], &s_params.orientation);
 	save_color(arr[3], &s_params.color);
-	if	(ft_strcmp("hy", arr[0]) == 0)
+	if (ft_strcmp("hy", arr[0]) == 0)
 		s_params.type = HYPERBOLOID;
 	else if (ft_strcmp("pa", arr[0]) == 0)
 		s_params.type = PARABOLOID;
 	else
 		s_params.type = PLANE;
-	s_params.is_bounded = 0;
 	*s = create_surface(s_params);
 }
 
@@ -66,5 +64,4 @@ void	parse_cylinder(char **arr, t_scene *scene)
 	s_params.type = CYLINDER;
 	s_params.is_bounded = 1;
 	*s = create_surface(s_params);
-	s->is_bounded = 1;
 }

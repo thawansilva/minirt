@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   objects.h                                          :+:      :+:    :+:   */
+/*   objects_bonus.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hermarti <hermarti@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/31 09:18:26 by hermarti          #+#    #+#             */
-/*   Updated: 2026/04/16 15:37:35 by hermarti         ###   ########.fr       */
+/*   Updated: 2026/04/26 13:08:14 by thaperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,9 @@ typedef struct s_color
 
 typedef struct s_obj
 {
+	t_mat4			mat;
 	t_vec4			coordinate;
 	t_vec4			orientation;
-	t_mat4			mat;
 	double			min;
 	double			max;
 	t_color			color;
@@ -63,8 +63,8 @@ typedef enum e_surface_type
 typedef struct s_surface
 {
 	t_obj			obj;
-	unsigned char	is_bounded;
 	t_surface_type	type;
+	unsigned char	is_bounded : 1;
 }					t_surface;
 
 typedef struct s_surface_parameters
@@ -77,7 +77,7 @@ typedef struct s_surface_parameters
 	double			height;
 	t_surface_type	type;
 	t_color			color;
-	unsigned char	is_bounded;
+	unsigned char	is_bounded : 1;
 }					t_surface_parameters;
 
 t_surface			create_surface(t_surface_parameters p);

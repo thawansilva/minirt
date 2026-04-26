@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   surface.c                                          :+:      :+:    :+:   */
+/*   surface_bonus.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hermarti <hermarti@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/01 13:49:34 by hermarti          #+#    #+#             */
-/*   Updated: 2026/04/16 15:38:07 by hermarti         ###   ########.fr       */
+/*   Updated: 2026/04/26 11:08:42 by thaperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ t_surface	create_surface(t_surface_parameters p)
 	res.obj.mat = mat4_mat4_mult(mat4_mat4_mult(rot_mat, base_mat), rot_mat_t);
 	res.obj.orientation = vec4_normalize(p.orientation);
 	res.type = p.type;
+	res.is_bounded = p.is_bounded;
 	res.obj.color = p.color;
 	return (res);
 }

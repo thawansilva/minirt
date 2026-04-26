@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   validation.h                                       :+:      :+:    :+:   */
+/*   validation_bonus.h                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: thaperei <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/15 16:00:03 by thaperei          #+#    #+#             */
-/*   Updated: 2026/04/18 15:21:43 by thaperei         ###   ########.fr       */
+/*   Updated: 2026/04/26 09:44:23 by thaperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,10 @@
 
 typedef struct s_obj_count
 {
+	unsigned int	obj;
 	unsigned char	camera;
 	unsigned char	ambient;
 	unsigned char	light;
-	int				obj;
 }	t_obj_count;
 
 typedef struct s_hash_item
