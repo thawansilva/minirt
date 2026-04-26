@@ -1,6 +1,7 @@
 # Ignoring compile_flags
 compile_flags.txt
 
+tags
 miniRT
 miniRT_bonus
 run_tests
