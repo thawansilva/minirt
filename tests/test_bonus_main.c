@@ -66,6 +66,27 @@ static int  run_bonus_validation_tests(void)
         cmocka_unit_test(test_valid_input_bonus_multiple_hyperboloids),
         cmocka_unit_test(test_valid_input_bonus_multiple_paraboloids),
         cmocka_unit_test(test_valid_input_bonus_any_order),
+        /* light validation tests */
+        cmocka_unit_test(test_valid_input_light_exactly_one),
+        cmocka_unit_test(test_valid_input_light_multiple_lights),
+        cmocka_unit_test(test_valid_input_light_many_lights),
+        cmocka_unit_test(test_invalid_input_light_missing),
+        cmocka_unit_test(test_invalid_input_light_completely_absent),
+        cmocka_unit_test(test_valid_input_light_with_all_objects),
+        cmocka_unit_test(test_valid_input_light_multiple_with_all_objects),
+        cmocka_unit_test(test_valid_input_light_different_positions),
+        cmocka_unit_test(test_valid_input_light_different_brightnesses),
+        cmocka_unit_test(test_valid_input_light_different_colors),
+        cmocka_unit_test(test_valid_input_light_minimum_brightness),
+        cmocka_unit_test(test_valid_input_light_maximum_brightness),
+        cmocka_unit_test(test_valid_input_light_light_first),
+        cmocka_unit_test(test_valid_input_light_light_middle),
+        cmocka_unit_test(test_valid_input_light_light_last),
+        cmocka_unit_test(test_invalid_input_light_negative_brightness),
+        cmocka_unit_test(test_invalid_input_light_over_max_brightness),
+        cmocka_unit_test(test_invalid_input_light_invalid_coordinates),
+        cmocka_unit_test(test_invalid_input_light_invalid_color),
+        cmocka_unit_test(test_invalid_input_light_missing_among_objects),
     };
     printf("\n--- Bonus Validation Tests ---\n");
     return (cmocka_run_group_tests(tests, NULL, NULL));

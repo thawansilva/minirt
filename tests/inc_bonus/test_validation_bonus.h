@@ -59,4 +59,26 @@ void    test_valid_input_bonus_multiple_cones(void **state);
 void    test_valid_input_bonus_multiple_hyperboloids(void **state);
 void    test_valid_input_bonus_multiple_paraboloids(void **state);
 void    test_valid_input_bonus_any_order(void **state);
+
+/* light validation tests */
+void    test_valid_input_light_exactly_one(void **state);
+void    test_valid_input_light_multiple_lights(void **state);
+void    test_valid_input_light_many_lights(void **state);
+void    test_invalid_input_light_missing(void **state);
+void    test_invalid_input_light_completely_absent(void **state);
+void    test_valid_input_light_with_all_objects(void **state);
+void    test_valid_input_light_multiple_with_all_objects(void **state);
+void    test_valid_input_light_different_positions(void **state);
+void    test_valid_input_light_different_brightnesses(void **state);
+void    test_valid_input_light_different_colors(void **state);
+void    test_valid_input_light_minimum_brightness(void **state);
+void    test_valid_input_light_maximum_brightness(void **state);
+void    test_valid_input_light_light_first(void **state);
+void    test_valid_input_light_light_middle(void **state);
+void    test_valid_input_light_light_last(void **state);
+void    test_invalid_input_light_negative_brightness(void **state);
+void    test_invalid_input_light_over_max_brightness(void **state);
+void    test_invalid_input_light_invalid_coordinates(void **state);
+void    test_invalid_input_light_invalid_color(void **state);
+void    test_invalid_input_light_missing_among_objects(void **state);
 #endif

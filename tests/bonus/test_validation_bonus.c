@@ -6,7 +6,7 @@
 /*   By: thaperei <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/26 13:40:48 by thaperei          #+#    #+#             */
-/*   Updated: 2026/04/26 13:40:48 by thaperei         ###   ########.fr       */
+/*   Updated: 2026/04/26 13:58:38 by thaperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -422,4 +422,317 @@ void    test_valid_input_bonus_any_order(void **state)
     assert_int_equal(is_valid_input("/tmp/bonus_any_order.rt", scene), 1);
     free_scene(scene);
     unlink("/tmp/bonus_any_order.rt");
+}
+
+/* =========================================================
+   LIGHT VALIDATION TESTS
+   Tests for: minimum 1 light required, multiple lights allowed,
+   absence of light is invalid
+   ========================================================= */
+
+void    test_valid_input_light_exactly_one(void **state)
+{
+    (void)state;
+    t_scene *scene = make_scene();
+    write_rt("/tmp/light_exactly_one.rt",
+        "A 0.5 255,255,255\n"
+        "C 0,0,0 0.0,0.0,1.0 90\n"
+        "L 0,5,0 0.8 255,255,255\n"
+        "sp 0,0,5 2.0 128,128,128\n");
+    assert_int_equal(is_valid_input("/tmp/light_exactly_one.rt", scene), 1);
+    free_scene(scene);
+    unlink("/tmp/light_exactly_one.rt");
+}
+
+void    test_valid_input_light_multiple_lights(void **state)
+{
+    (void)state;
+    t_scene *scene = make_scene();
+    write_rt("/tmp/light_multiple.rt",
+        "A 0.5 255,255,255\n"
+        "C 0,0,0 0.0,0.0,1.0 90\n"
+        "L 0,5,0 0.8 255,255,255\n"
+        "L 10,10,10 0.5 200,200,200\n"
+        "L -5,3,8 0.6 100,150,200\n"
+        "sp 0,0,5 2.0 128,128,128\n");
+    assert_int_equal(is_valid_input("/tmp/light_multiple.rt", scene), 1);
+    free_scene(scene);
+    unlink("/tmp/light_multiple.rt");
+}
+
+void    test_valid_input_light_many_lights(void **state)
+{
+    (void)state;
+    t_scene *scene = make_scene();
+    write_rt("/tmp/light_many.rt",
+        "A 0.5 255,255,255\n"
+        "C 0,0,0 0.0,0.0,1.0 90\n"
+        "L 0,5,0 0.8 255,0,0\n"
+        "L 5,5,5 0.6 0,255,0\n"
+        "L 10,0,0 0.7 0,0,255\n"
+        "L -5,-5,-5 0.5 255,255,0\n"
+        "sp 0,0,5 2.0 128,128,128\n");
+    assert_int_equal(is_valid_input("/tmp/light_many.rt", scene), 1);
+    free_scene(scene);
+    unlink("/tmp/light_many.rt");
+}
+
+void    test_invalid_input_light_missing(void **state)
+{
+    (void)state;
+    t_scene *scene = make_scene();
+    write_rt("/tmp/light_missing.rt",
+        "A 0.5 255,255,255\n"
+        "C 0,0,0 0.0,0.0,1.0 90\n"
+        "sp 0,0,5 2.0 255,0,0\n"
+        "pl 0,0,0 0.0,1.0,0.0 0,255,0\n");
+    assert_int_equal(is_valid_input("/tmp/light_missing.rt", scene), 0);
+    free_scene(scene);
+    unlink("/tmp/light_missing.rt");
+}
+
+void    test_invalid_input_light_completely_absent(void **state)
+{
+    (void)state;
+    t_scene *scene = make_scene();
+    write_rt("/tmp/light_absent.rt",
+        "A 0.5 255,255,255\n"
+        "sp 0,0,5 2.0 255,0,0\n"
+        "C 0,0,0 0.0,0.0,1.0 90\n");
+    assert_int_equal(is_valid_input("/tmp/light_absent.rt", scene), 0);
+    free_scene(scene);
+    unlink("/tmp/light_absent.rt");
+}
+
+void    test_valid_input_light_with_all_objects(void **state)
+{
+    (void)state;
+    t_scene *scene = make_scene();
+    write_rt("/tmp/light_all_objects.rt",
+        "A 0.5 255,255,255\n"
+        "C 0,0,0 0.0,0.0,1.0 90\n"
+        "L 0,5,0 0.8 255,255,255\n"
+        "sp 0,0,5 2.0 255,0,0\n"
+        "pl 0,0,0 0.0,1.0,0.0 0,255,0\n"
+        "cy 5,0,0 0.0,1.0,0.0 1.0 3.0 0,0,255\n"
+        "co 10,0,0 1.5 255,128,0\n"
+        "hy 15,0,0 1.0,0.0,0.0 128,255,0\n"
+        "pa 20,0,0 0.0,1.0,0.0 0,128,255\n");
+    assert_int_equal(is_valid_input("/tmp/light_all_objects.rt", scene), 1);
+    free_scene(scene);
+    unlink("/tmp/light_all_objects.rt");
+}
+
+void    test_valid_input_light_multiple_with_all_objects(void **state)
+{
+    (void)state;
+    t_scene *scene = make_scene();
+    write_rt("/tmp/light_multi_all_objects.rt",
+        "A 0.5 255,255,255\n"
+        "C 0,0,0 0.0,0.0,1.0 90\n"
+        "L 0,5,0 0.8 255,255,255\n"
+        "L 10,10,10 0.5 200,200,200\n"
+        "L -5,-5,-5 0.6 100,100,100\n"
+        "sp 0,0,5 2.0 255,0,0\n"
+        "pl 0,0,0 0.0,1.0,0.0 0,255,0\n"
+        "cy 5,0,0 0.0,1.0,0.0 1.0 3.0 0,0,255\n"
+        "co 10,0,0 1.5 255,128,0\n"
+        "hy 15,0,0 1.0,0.0,0.0 128,255,0\n"
+        "pa 20,0,0 0.0,1.0,0.0 0,128,255\n");
+    assert_int_equal(is_valid_input("/tmp/light_multi_all_objects.rt", scene), 1);
+    free_scene(scene);
+    unlink("/tmp/light_multi_all_objects.rt");
+}
+
+void    test_valid_input_light_different_positions(void **state)
+{
+    (void)state;
+    t_scene *scene = make_scene();
+    write_rt("/tmp/light_diff_pos.rt",
+        "A 0.5 255,255,255\n"
+        "C 0,0,0 0.0,0.0,1.0 90\n"
+        "L 0,0,0 0.8 255,255,255\n"
+        "L 100,100,100 0.5 200,200,200\n"
+        "L -100,-100,-100 0.6 100,100,100\n"
+        "L 0.5,0.5,0.5 0.7 50,50,50\n"
+        "sp 0,0,5 2.0 255,0,0\n");
+    assert_int_equal(is_valid_input("/tmp/light_diff_pos.rt", scene), 1);
+    free_scene(scene);
+    unlink("/tmp/light_diff_pos.rt");
+}
+
+void    test_valid_input_light_different_brightnesses(void **state)
+{
+    (void)state;
+    t_scene *scene = make_scene();
+    write_rt("/tmp/light_diff_bright.rt",
+        "A 0.5 255,255,255\n"
+        "C 0,0,0 0.0,0.0,1.0 90\n"
+        "L 0,5,0 0.0 255,255,255\n"
+        "L 0,6,0 0.5 255,255,255\n"
+        "L 0,7,0 1.0 255,255,255\n"
+        "sp 0,0,5 2.0 255,0,0\n");
+    assert_int_equal(is_valid_input("/tmp/light_diff_bright.rt", scene), 1);
+    free_scene(scene);
+    unlink("/tmp/light_diff_bright.rt");
+}
+
+void    test_valid_input_light_different_colors(void **state)
+{
+    (void)state;
+    t_scene *scene = make_scene();
+    write_rt("/tmp/light_diff_color.rt",
+        "A 0.5 255,255,255\n"
+        "C 0,0,0 0.0,0.0,1.0 90\n"
+        "L 0,5,0 0.8 255,0,0\n"
+        "L 0,6,0 0.8 0,255,0\n"
+        "L 0,7,0 0.8 0,0,255\n"
+        "L 0,8,0 0.8 255,255,0\n"
+        "L 0,9,0 0.8 0,255,255\n"
+        "sp 0,0,5 2.0 255,0,0\n");
+    assert_int_equal(is_valid_input("/tmp/light_diff_color.rt", scene), 1);
+    free_scene(scene);
+    unlink("/tmp/light_diff_color.rt");
+}
+
+void    test_valid_input_light_minimum_brightness(void **state)
+{
+    (void)state;
+    t_scene *scene = make_scene();
+    write_rt("/tmp/light_min_bright.rt",
+        "A 0.5 255,255,255\n"
+        "C 0,0,0 0.0,0.0,1.0 90\n"
+        "L 0,5,0 0.0 128,128,128\n"
+        "sp 0,0,5 2.0 255,0,0\n");
+    assert_int_equal(is_valid_input("/tmp/light_min_bright.rt", scene), 1);
+    free_scene(scene);
+    unlink("/tmp/light_min_bright.rt");
+}
+
+void    test_valid_input_light_maximum_brightness(void **state)
+{
+    (void)state;
+    t_scene *scene = make_scene();
+    write_rt("/tmp/light_max_bright.rt",
+        "A 0.5 255,255,255\n"
+        "C 0,0,0 0.0,0.0,1.0 90\n"
+        "L 0,5,0 1.0 255,255,255\n"
+        "sp 0,0,5 2.0 255,0,0\n");
+    assert_int_equal(is_valid_input("/tmp/light_max_bright.rt", scene), 1);
+    free_scene(scene);
+    unlink("/tmp/light_max_bright.rt");
+}
+
+void    test_valid_input_light_light_first(void **state)
+{
+    (void)state;
+    t_scene *scene = make_scene();
+    write_rt("/tmp/light_first.rt",
+        "L 0,5,0 0.8 255,255,255\n"
+        "A 0.5 255,255,255\n"
+        "C 0,0,0 0.0,0.0,1.0 90\n"
+        "sp 0,0,5 2.0 255,0,0\n"
+        "sp 0,0,5 2.0 255,0,0\n");
+    assert_int_equal(is_valid_input("/tmp/light_first.rt", scene), 1);
+    free_scene(scene);
+    unlink("/tmp/light_first.rt");
+}
+
+void    test_valid_input_light_light_middle(void **state)
+{
+    (void)state;
+    t_scene *scene = make_scene();
+    write_rt("/tmp/light_middle.rt",
+        "A 0.5 255,255,255\n"
+        "L 0,5,0 0.8 255,255,255\n"
+        "C 0,0,0 0.0,0.0,1.0 90\n"
+        "sp 0,0,5 2.0 255,0,0\n");
+    assert_int_equal(is_valid_input("/tmp/light_middle.rt", scene), 1);
+    free_scene(scene);
+    unlink("/tmp/light_middle.rt");
+}
+
+void    test_valid_input_light_light_last(void **state)
+{
+    (void)state;
+    t_scene *scene = make_scene();
+    write_rt("/tmp/light_last.rt",
+        "A 0.5 255,255,255\n"
+        "C 0,0,0 0.0,0.0,1.0 90\n"
+        "sp 0,0,5 2.0 255,0,0\n"
+        "L 0,5,0 0.8 255,255,255\n");
+    assert_int_equal(is_valid_input("/tmp/light_last.rt", scene), 1);
+    free_scene(scene);
+    unlink("/tmp/light_last.rt");
+}
+
+void    test_invalid_input_light_negative_brightness(void **state)
+{
+    (void)state;
+    t_scene *scene = make_scene();
+    write_rt("/tmp/light_neg_bright.rt",
+        "A 0.5 255,255,255\n"
+        "C 0,0,0 0.0,0.0,1.0 90\n"
+        "L 0,5,0 -0.5 255,255,255\n"
+        "sp 0,0,5 2.0 255,0,0\n");
+    assert_int_equal(is_valid_input("/tmp/light_neg_bright.rt", scene), 0);
+    free_scene(scene);
+    unlink("/tmp/light_neg_bright.rt");
+}
+
+void    test_invalid_input_light_over_max_brightness(void **state)
+{
+    (void)state;
+    t_scene *scene = make_scene();
+    write_rt("/tmp/light_over_bright.rt",
+        "A 0.5 255,255,255\n"
+        "C 0,0,0 0.0,0.0,1.0 90\n"
+        "L 0,5,0 1.5 255,255,255\n"
+        "sp 0,0,5 2.0 255,0,0\n");
+    assert_int_equal(is_valid_input("/tmp/light_over_bright.rt", scene), 0);
+    free_scene(scene);
+    unlink("/tmp/light_over_bright.rt");
+}
+
+void    test_invalid_input_light_invalid_coordinates(void **state)
+{
+    (void)state;
+    t_scene *scene = make_scene();
+    write_rt("/tmp/light_inv_coord.rt",
+        "A 0.5 255,255,255\n"
+        "C 0,0,0 0.0,0.0,1.0 90\n"
+        "L abc,def,ghi 0.8 255,255,255\n"
+        "sp 0,0,5 2.0 255,0,0\n");
+    assert_int_equal(is_valid_input("/tmp/light_inv_coord.rt", scene), 0);
+    free_scene(scene);
+    unlink("/tmp/light_inv_coord.rt");
+}
+
+void    test_invalid_input_light_invalid_color(void **state)
+{
+    (void)state;
+    t_scene *scene = make_scene();
+    write_rt("/tmp/light_inv_color.rt",
+        "A 0.5 255,255,255\n"
+        "C 0,0,0 0.0,0.0,1.0 90\n"
+        "L 0,5,0 0.8 256,0,0\n"
+        "sp 0,0,5 2.0 255,0,0\n");
+    assert_int_equal(is_valid_input("/tmp/light_inv_color.rt", scene), 0);
+    free_scene(scene);
+    unlink("/tmp/light_inv_color.rt");
+}
+
+void    test_invalid_input_light_missing_among_objects(void **state)
+{
+    (void)state;
+    t_scene *scene = make_scene();
+    write_rt("/tmp/light_missing_objects.rt",
+        "A 0.5 255,255,255\n"
+        "C 0,0,0 0.0,0.0,1.0 90\n"
+        "sp 0,0,5 2.0 255,0,0\n"
+        "pl 0,0,0 0.0,1.0,0.0 0,255,0\n"
+        "cy 5,0,0 0.0,1.0,0.0 1.0 3.0 0,0,255\n");
+    assert_int_equal(is_valid_input("/tmp/light_missing_objects.rt", scene), 0);
+    free_scene(scene);
+    unlink("/tmp/light_missing_objects.rt");
 }
