@@ -47,7 +47,8 @@ PROJECT_OBJ := $(filter-out $(TEST_OBJ_DIR)/project/main.o, $(PROJECT_OBJ))
 # Bonus tests
 BONUS_TEST_FILES = test_bonus_main.c \
 				   $(TEST_BONUS_DIR)/test_validation_bonus.c \
-				   $(TEST_BONUS_DIR)/test_parser_bonus.c
+				   $(TEST_BONUS_DIR)/test_parser_bonus.c \
+				   $(TEST_BONUS_DIR)/test_parse_elements_integration.c
 
 BONUS_TEST_OBJ = $(BONUS_TEST_FILES:%.c=$(TEST_OBJ_BONUS_DIR)/%.o)
 BONUS_TEST_BIN = run_tests_bonus

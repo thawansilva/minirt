@@ -6,7 +6,7 @@
 /*   By: thaperei <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/25 10:00:00 by thaperei          #+#    #+#             */
-/*   Updated: 2026/04/25 10:00:00 by thaperei         ###   ########.fr       */
+/*   Updated: 2026/04/26 11:09:07 by thaperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,4 +49,26 @@ void	test_parse_paraboloid_blue_color(void **state);
 void	test_parse_mixed_bonus_objects(void **state);
 void	test_parse_bonus_objects_color_variation(void **state);
 
+/* parse_elements integration tests */
+void	test_parse_elements_single_ambient(void **state);
+void	test_parse_elements_single_camera(void **state);
+void	test_parse_elements_single_light(void **state);
+void	test_parse_elements_single_sphere(void **state);
+void	test_parse_elements_single_plane(void **state);
+void	test_parse_elements_single_cylinder(void **state);
+void	test_parse_elements_complete_basic_scene(void **state);
+void	test_parse_elements_all_bonus_objects(void **state);
+void	test_parse_elements_multiple_lights(void **state);
+void	test_parse_elements_multiple_spheres(void **state);
+void	test_parse_elements_mixed_objects(void **state);
+void	test_parse_elements_negative_coordinates(void **state);
+void	test_parse_elements_decimal_values(void **state);
+void	test_parse_elements_large_values(void **state);
+void	test_parse_elements_zero_values(void **state);
+void	test_parse_elements_scene_ordering(void **state);
+void	test_parse_elements_initializes_light_array(void **state);
+void	test_parse_elements_initializes_surfaces_array(void **state);
+void	test_parse_elements_realistic_scene(void **state);
+void	test_parse_elements_all_types_mixed(void **state);
+void	test_parse_elements_color_preservation(void **state);
 #endif

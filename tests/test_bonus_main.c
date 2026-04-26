@@ -99,6 +99,35 @@ static int  run_bonus_parser_tests(void)
     return (cmocka_run_group_tests(tests, NULL, NULL));
 }
 
+static int run_parse_elements_integration_tests(void)
+{
+    const struct CMUnitTest tests[] = {
+        cmocka_unit_test(test_parse_elements_single_ambient),
+        cmocka_unit_test(test_parse_elements_single_camera),
+        cmocka_unit_test(test_parse_elements_single_light),
+        cmocka_unit_test(test_parse_elements_single_sphere),
+        cmocka_unit_test(test_parse_elements_single_plane),
+        cmocka_unit_test(test_parse_elements_single_cylinder),
+        cmocka_unit_test(test_parse_elements_complete_basic_scene),
+        cmocka_unit_test(test_parse_elements_all_bonus_objects),
+        cmocka_unit_test(test_parse_elements_multiple_lights),
+        cmocka_unit_test(test_parse_elements_multiple_spheres),
+        cmocka_unit_test(test_parse_elements_mixed_objects),
+        cmocka_unit_test(test_parse_elements_negative_coordinates),
+        cmocka_unit_test(test_parse_elements_decimal_values),
+        cmocka_unit_test(test_parse_elements_large_values),
+        cmocka_unit_test(test_parse_elements_zero_values),
+        cmocka_unit_test(test_parse_elements_scene_ordering),
+        cmocka_unit_test(test_parse_elements_initializes_light_array),
+        cmocka_unit_test(test_parse_elements_initializes_surfaces_array),
+        cmocka_unit_test(test_parse_elements_realistic_scene),
+        cmocka_unit_test(test_parse_elements_all_types_mixed),
+        cmocka_unit_test(test_parse_elements_color_preservation),
+    };
+    printf("\n--- Bonus Integration parser Tests ---\n");
+    return (cmocka_run_group_tests(tests, NULL, NULL));
+}
+
 static void	print_usage(void)
 {
 	printf("Usage: ./run_tests_bonus [OPTIONS]\n");
@@ -106,6 +135,7 @@ static void	print_usage(void)
 	printf("  (no args)              Run all tests\n");
 	printf("  validation             Run validation tests only\n");
 	printf("  parser                 Run parser tests only\n");
+	printf("  integration            Run parse_elements integration tests only\n");
 	printf("  -h, --help             Show this help message\n");
 }
 
@@ -131,6 +161,11 @@ int	main(int argc, char *argv[])
 			printf("\n=== Running bonus parser Tests ===\n");
 			return (run_bonus_parser_tests());
 		}
+		if (strcmp(argv[1], "integration") == 0)
+		{
+			printf("\n=== Running parse_elements Integration Tests ===\n");
+			return (run_parse_elements_integration_tests());
+		}
 		printf("Unknown option: %s\n", argv[1]);
 		print_usage();
 		return (1);
@@ -141,6 +176,9 @@ int	main(int argc, char *argv[])
 	if (result != 0)
 		failed += result;
 	result = run_bonus_parser_tests();
+	if (result != 0)
+		failed += result;
+	result = run_parse_elements_integration_tests();
 	if (result != 0)
 		failed += result;
 	printf("\n=== Test Suite Complete ===\n");
