@@ -6,12 +6,12 @@
 /*   By: hermarti <hermarti@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/31 09:18:26 by hermarti          #+#    #+#             */
-/*   Updated: 2026/04/26 13:08:14 by thaperei         ###   ########.fr       */
+/*   Updated: 2026/04/26 13:32:50 by thaperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef OBJECTS_H
-# define OBJECTS_H
+#ifndef OBJECTS_BONUS_H
+# define OBJECTS_BONUS_H
 
 typedef struct s_vec4
 {

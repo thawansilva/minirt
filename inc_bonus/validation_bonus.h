@@ -6,12 +6,12 @@
 /*   By: thaperei <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/15 16:00:03 by thaperei          #+#    #+#             */
-/*   Updated: 2026/04/26 09:44:23 by thaperei         ###   ########.fr       */
+/*   Updated: 2026/04/26 13:34:34 by thaperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef VALIDATION_H
-# define VALIDATION_H
+#ifndef VALIDATION_BONUS_H
+# define VALIDATION_BONUS_H
 # include "libft.h"
 # include "scene_bonus.h"
 

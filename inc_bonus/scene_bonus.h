@@ -6,12 +6,12 @@
 /*   By: hermarti <hermarti@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/31 09:18:18 by hermarti          #+#    #+#             */
-/*   Updated: 2026/04/26 11:13:23 by thaperei         ###   ########.fr       */
+/*   Updated: 2026/04/26 13:32:29 by thaperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SCENE_H
-# define SCENE_H
+#ifndef SCENE_BONUS_H
+# define SCENE_BONUS_H
 # include "objects_bonus.h"
 # include "libft.h"
 

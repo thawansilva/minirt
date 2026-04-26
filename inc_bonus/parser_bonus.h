@@ -6,12 +6,12 @@
 /*   By: thaperei <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/22 20:00:23 by thaperei          #+#    #+#             */
-/*   Updated: 2026/04/22 20:00:26 by thaperei         ###   ########.fr       */
+/*   Updated: 2026/04/26 13:31:54 by thaperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PARSER_H
-# define PARSER_H
+#ifndef PARSER_BONUS_H
+# define PARSER_BONUS_H
 # include "scene_bonus.h"
 
 typedef struct s_hash_item_parser

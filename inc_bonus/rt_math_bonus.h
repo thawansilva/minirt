@@ -6,12 +6,12 @@
 /*   By: hermarti <hermarti@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/31 09:16:25 by hermarti          #+#    #+#             */
-/*   Updated: 2026/04/15 17:16:57 by hermarti         ###   ########.fr       */
+/*   Updated: 2026/04/26 13:33:26 by thaperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef RT_MATH_H
-# define RT_MATH_H
+#ifndef RT_MATH_BONUS_H
+# define RT_MATH_BONUS_H
 
 # include "objects_bonus.h"
 
