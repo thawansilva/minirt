@@ -6,7 +6,7 @@
 /*   By: hermarti <hermarti@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/31 09:18:26 by hermarti          #+#    #+#             */
-/*   Updated: 2026/04/26 09:51:38 by thaperei         ###   ########.fr       */
+/*   Updated: 2026/04/26 10:40:12 by thaperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ typedef struct s_surface_parameters
 	double			height;
 	t_surface_type	type;
 	t_color			color;
-	unsigned char	is_bounded;
+	unsigned char	is_bounded : 1;
 }					t_surface_parameters;
 
 t_surface			create_surface(t_surface_parameters p);
