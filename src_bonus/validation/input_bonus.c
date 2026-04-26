@@ -6,7 +6,7 @@
 /*   By: thaperei <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/05 10:11:05 by thaperei          #+#    #+#             */
-/*   Updated: 2026/04/22 20:26:01 by thaperei         ###   ########.fr       */
+/*   Updated: 2026/04/26 13:50:24 by thaperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ int	is_valid_input(char *file, t_scene *scene)
 		aux = aux->next;
 	}
 	if (obj_count.ambient != 1 || obj_count.camera != 1
-		|| obj_count.light != 1)
+		|| obj_count.light == 0)
 		return (0);
 	if (obj_count.obj == 0)
 		return (show_error("No objects in the scene"), 0);
