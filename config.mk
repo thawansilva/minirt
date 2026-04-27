@@ -9,6 +9,7 @@ SRC_BONUS_DIR = src_bonus
 OBJ_BONUS_DIR = obj_bonus
 
 MATH_DIR = math
+MINIRT_DIR = minirt
 VALIDATION_DIR = validation
 PARSER_DIR = parser
 
@@ -20,6 +21,9 @@ SRC = main.c \
 	  $(MATH_DIR)/rt_math4.c \
 	  $(MATH_DIR)/rt_math_intersection.c \
 	  $(MATH_DIR)/surface.c \
+	  $(MINIRT_DIR)/env.c \
+	  $(MINIRT_DIR)/window.c \
+	  $(MINIRT_DIR)/img_buffer.c \
 	  $(VALIDATION_DIR)/input.c \
 	  $(VALIDATION_DIR)/validate_objects.c \
 	  $(VALIDATION_DIR)/validate_scene.c \
