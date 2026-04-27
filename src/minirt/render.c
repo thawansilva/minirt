@@ -1,27 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   render.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: thaperei <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hermarti <hermarti@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/15 16:00:03 by thaperei          #+#    #+#             */
-/*   Updated: 2026/04/27 14:57:35 by hermarti         ###   ########.fr       */
+/*   Created: 2026/04/27 14:58:02 by hermarti          #+#    #+#             */
+/*   Updated: 2026/04/27 15:17:12 by hermarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
-#include <stdlib.h>
+#include "mlx.h"
 
-int	main(int argc, char *argv[])
+void	render_loop(t_env *env)
 {
-	t_env	env;
-
-	if (!init_env(&env, argc, argv))
-		return (EXIT_FAILURE);
-	init_window(&env.window, 800, 700, "MINIRT");
-	set_window_hooks(&env);
-	render_loop(&env);
-	destroy_env(&env);
-	return (EXIT_SUCCESS);
+	mlx_loop(env->window.mlx);
 }

@@ -6,7 +6,7 @@
 /*   By: thaperei <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/15 16:00:03 by thaperei          #+#    #+#             */
-/*   Updated: 2026/04/27 10:24:51 by hermarti         ###   ########.fr       */
+/*   Updated: 2026/04/27 15:16:52 by hermarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,10 +47,15 @@ void				*init_window(t_window *window, int width,
 void				*destroy_window(t_window *window);
 int					close_window(t_env *env);
 
-int					mouse_handler(int mousecode, int x, int y, t_env *env);
-int					key_handler(int keycode, t_env *env);
+void				set_window_hooks(t_env *env);
+
+int					mouse_hook(int mousecode, int x, int y, t_env *env);
+int					key_hook(int keycode, t_env *env);
 
 void				*init_img_buffer(t_window *window);
 void				*destroy_img_buffer(t_window *window);
+
+
+void				render_loop(t_env *env);
 
 #endif

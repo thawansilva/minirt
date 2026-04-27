@@ -24,6 +24,10 @@ SRC = main.c \
 	  $(MINIRT_DIR)/env.c \
 	  $(MINIRT_DIR)/window.c \
 	  $(MINIRT_DIR)/img_buffer.c \
+	  $(MINIRT_DIR)/key_hook.c \
+	  $(MINIRT_DIR)/mouse_hook.c \
+	  $(MINIRT_DIR)/raytrace.c \
+	  $(MINIRT_DIR)/render.c \
 	  $(VALIDATION_DIR)/input.c \
 	  $(VALIDATION_DIR)/validate_objects.c \
 	  $(VALIDATION_DIR)/validate_scene.c \

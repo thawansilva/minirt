@@ -6,7 +6,7 @@
 /*   By: hermarti <hermarti@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/27 09:36:51 by hermarti          #+#    #+#             */
-/*   Updated: 2026/04/27 09:52:50 by hermarti         ###   ########.fr       */
+/*   Updated: 2026/04/27 14:54:59 by hermarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,13 @@ void	*destroy_window(t_window *window)
 	free(window->mlx);
 	window = NULL;
 	return (NULL);
+}
+
+void	set_window_hooks(t_env *env)
+{
+	mlx_mouse_hook(env->window.x_window, mouse_hook, env);
+	mlx_key_hook(env->window.x_window, key_hook, env);
+	mlx_hook(env->window.x_window, 17, 1L << 0, close_window, env);
 }
 
 int	close_window(t_env *env)

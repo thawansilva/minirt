@@ -1,27 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   mouse_hook.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: thaperei <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hermarti <hermarti@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/15 16:00:03 by thaperei          #+#    #+#             */
-/*   Updated: 2026/04/27 14:57:35 by hermarti         ###   ########.fr       */
+/*   Created: 2026/04/27 14:54:02 by hermarti          #+#    #+#             */
+/*   Updated: 2026/04/27 15:18:21 by hermarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
-#include <stdlib.h>
 
-int	main(int argc, char *argv[])
+int	mouse_hook(int mousecode, int x, int y, t_env *env)
 {
-	t_env	env;
-
-	if (!init_env(&env, argc, argv))
-		return (EXIT_FAILURE);
-	init_window(&env.window, 800, 700, "MINIRT");
-	set_window_hooks(&env);
-	render_loop(&env);
-	destroy_env(&env);
-	return (EXIT_SUCCESS);
+	(void) mousecode;
+	(void) x;
+	(void) y;
+	(void) env;
+	return (0);
 }
