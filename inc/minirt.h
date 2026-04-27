@@ -6,14 +6,14 @@
 /*   By: thaperei <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/15 16:00:03 by thaperei          #+#    #+#             */
-/*   Updated: 2026/04/27 09:50:53 by hermarti         ###   ########.fr       */
+/*   Updated: 2026/04/27 10:24:51 by hermarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINIRT_H
 # define MINIRT_H
 
-#include "scene.h"
+# include "scene.h"
 
 typedef struct s_img_buffer
 {
@@ -42,7 +42,8 @@ typedef struct s_env
 void				*init_env(t_env *env, int argc, char **argv);
 void				*destroy_env(t_env *env);
 
-void				*init_window(t_window *window, int width, int height, char *window_name);
+void				*init_window(t_window *window, int width,
+						int height, char *window_name);
 void				*destroy_window(t_window *window);
 int					close_window(t_env *env);
 
