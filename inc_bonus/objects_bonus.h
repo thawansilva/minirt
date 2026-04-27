@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   objects.h                                          :+:      :+:    :+:   */
+/*   objects_bonus.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hermarti <hermarti@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/31 09:18:26 by hermarti          #+#    #+#             */
-/*   Updated: 2026/04/26 10:40:12 by thaperei         ###   ########.fr       */
+/*   Updated: 2026/04/26 13:32:50 by thaperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef OBJECTS_H
-# define OBJECTS_H
+#ifndef OBJECTS_BONUS_H
+# define OBJECTS_BONUS_H
 
 typedef struct s_vec4
 {
@@ -54,14 +54,17 @@ typedef enum e_surface_type
 {
 	SPHERE,
 	PLANE,
-	CYLINDER
+	CYLINDER,
+	CONE,
+	HYPERBOLOID,
+	PARABOLOID
 }					t_surface_type;
 
 typedef struct s_surface
 {
 	t_obj			obj;
 	t_surface_type	type;
-	unsigned char	is_bounded;
+	unsigned char	is_bounded : 1;
 }					t_surface;
 
 typedef struct s_surface_parameters

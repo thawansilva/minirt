@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse_objects.c                                    :+:      :+:    :+:   */
+/*   parse_objects_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: thaperei <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/22 18:48:34 by thaperei          #+#    #+#             */
-/*   Updated: 2026/04/26 10:49:51 by thaperei         ###   ########.fr       */
+/*   Updated: 2026/04/26 13:18:15 by thaperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "free_memory.h"
-#include "parser.h"
+#include "free_memory_bonus.h"
+#include "parser_bonus.h"
 
 void	parse_sphere(char **arr, t_scene *scene)
 {
@@ -23,7 +23,10 @@ void	parse_sphere(char **arr, t_scene *scene)
 	save_vec4(arr[1], &s_params.coordinate);
 	s_params.diameter = ft_atof(arr[2]);
 	save_color(arr[3], &s_params.color);
-	s_params.type = SPHERE;
+	if (ft_strcmp("co", arr[0]) == 0)
+		s_params.type = CONE;
+	else
+		s_params.type = SPHERE;
 	*s = create_surface(s_params);
 }
 
@@ -37,7 +40,12 @@ void	parse_plane(char **arr, t_scene *scene)
 	save_vec4(arr[1], &s_params.coordinate);
 	save_vec4(arr[2], &s_params.orientation);
 	save_color(arr[3], &s_params.color);
-	s_params.type = PLANE;
+	if (ft_strcmp("hy", arr[0]) == 0)
+		s_params.type = HYPERBOLOID;
+	else if (ft_strcmp("pa", arr[0]) == 0)
+		s_params.type = PARABOLOID;
+	else
+		s_params.type = PLANE;
 	*s = create_surface(s_params);
 }
 

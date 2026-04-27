@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   scene.h                                            :+:      :+:    :+:   */
+/*   scene_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hermarti <hermarti@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/31 09:18:18 by hermarti          #+#    #+#             */
-/*   Updated: 2026/04/26 09:46:14 by thaperei         ###   ########.fr       */
+/*   Updated: 2026/04/26 13:32:29 by thaperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SCENE_H
-# define SCENE_H
-# include "objects.h"
+#ifndef SCENE_BONUS_H
+# define SCENE_BONUS_H
+# include "objects_bonus.h"
 # include "libft.h"
 
 typedef struct s_ambient
@@ -51,6 +51,7 @@ typedef struct s_scene
 	t_light			*light;
 	t_surface		*surfaces;
 	unsigned int	idx_obj;
+	unsigned int	idx_light;
 	unsigned int	num_objs;
 	unsigned int	num_lights;
 }				t_scene;

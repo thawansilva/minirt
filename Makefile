@@ -4,7 +4,7 @@ include config.mk
 SRC := $(SRC:%=$(SRC_DIR)/%)
 SRC_BONUS := $(SRC_BONUS:%=$(SRC_BONUS_DIR)/%)
 OBJS := $(SRC:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
-OBJ_BONUS := $(SRC_BONUS:$(SRC_BONUS_DIR)/%.c=$(OBJ_BONUS_DIR)/%.o)
+OBJS_BONUS := $(SRC_BONUS:$(SRC_BONUS_DIR)/%.c=$(OBJ_BONUS_DIR)/%.o)
 
 # Libs
 LIBS := ft mlx m Xext X11
@@ -14,6 +14,7 @@ LIBS_TARGET := lib/libft/libft.a lib/minilibx-linux/libmlx.a
 CC := cc
 CFLAGS = -Wall -Wextra -Werror
 CPPFLAGS := $(addprefix -I, $(INC_DIR))
+CPPFLAGS_BONUS := $(addprefix -I, $(INC_BONUS_DIR))
 LDFLAGS := $(addprefix -L, $(dir $(LIBS_TARGET)))
 LDLIBS := $(addprefix -l, $(LIBS))
 
@@ -41,21 +42,21 @@ $(LIBS_TARGET):
 bonus: $(NAME_BONUS)
 
 $(NAME_BONUS): $(OBJS_BONUS) $(LIBS_TARGET)
-	$(CC) $(OBJS_BONUS) $(LDFLAGS) $(LDLIBS) -o $(NAME)
+	$(CC) $(OBJS_BONUS) $(CFLAGS) $(LDFLAGS) $(LDLIBS) -o $(NAME_BONUS)
 
 $(OBJ_BONUS_DIR)/%.o: $(SRC_BONUS_DIR)/%.c
 	$(DUP_DIR)
-	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) $(CPPFLAGS_BONUS) -c $< -o $@
 
 valgrind-run:
-	@valgrind -q\
+	@valgrind \
 		--leak-check=full \
 		--show-leak-kinds=all \
 		--track-origins=yes \
 		--track-fds=yes \
 		--trace-children=yes \
 		--trace-children-skip='*/bin/*,*/sbin/*,/usr/bin/*' \
-		./$(NAME)
+		./$(NAME) $(INPUT)
 
 clean:
 	$(RMDIR) $(OBJ_DIR) $(OBJ_BONUS_DIR)
@@ -63,7 +64,7 @@ clean:
 fclean: clean
 	make -C lib/libft/ fclean
 	$(RM) lib/minilibx-linux/libmlx.a
-	$(RM) $(NAME)
+	$(RM) $(NAME) $(NAME_BONUS)
 
 test:
 	make -C tests run

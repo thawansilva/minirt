@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   surface.c                                          :+:      :+:    :+:   */
+/*   surface_bonus.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hermarti <hermarti@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/01 13:49:34 by hermarti          #+#    #+#             */
-/*   Updated: 2026/04/26 10:48:07 by thaperei         ###   ########.fr       */
+/*   Updated: 2026/04/26 11:08:42 by thaperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include "objects.h"
-#include "rt_math.h"
+#include "objects_bonus.h"
+#include "rt_math_bonus.h"
 
 t_surface_parameters	set_surface_parameters(t_vec4 coordinates, t_vec4 w,
 		t_vec4 l, double k)
