@@ -8,10 +8,12 @@ LIBFT_DIR := lib/libft
 CFLAGS += -g2 -O0
 
 LIBFT_PATH := $(ROOT_DIR)/$(LIBFT_DIR)
+MLX_PATH := $(ROOT_DIR)/lib/minilibx-linux
 SRC_PATH := $(ROOT_DIR)/$(SRC_DIR)
 SRC_BONUS_PATH := $(ROOT_DIR)/$(SRC_BONUS_DIR)
 LIBFT_LIB := $(LIBFT_PATH)/libft.a
-INCLUDES = -I$(ROOT_DIR)/$(INC_MINIRT) -I$(LIBFT_PATH)/inc
+MLX_LIB := $(MLX_PATH)/libmlx.a
+INCLUDES = -I$(ROOT_DIR)/$(INC_MINIRT) -I$(LIBFT_PATH)/inc -I$(MLX_PATH)
 
 TEST_OBJ_DIR = obj
 TEST_OBJ_BONUS_DIR = obj_bonus
@@ -56,7 +58,8 @@ BONUS_TEST_BIN = run_tests_bonus
 PROJECT_OBJ_BONUS = $(SRC_BONUS:%.c=$(TEST_OBJ_BONUS_DIR)/project/%.o)
 PROJECT_OBJ_BONUS := $(filter-out $(TEST_OBJ_BONUS_DIR)/project/main_bonus.o, $(PROJECT_OBJ_BONUS))
 
-TEST_LIBS = -L$(CMOCKA_BUILD)/src -lcmocka -L$(LIBFT_PATH) -lft -lm
+TEST_LIBS = -L$(CMOCKA_BUILD)/src -lcmocka -L$(LIBFT_PATH) -lft \
+			-L$(MLX_PATH) -lmlx -lm -lXext -lX11
 
 GREEN = \033[0;32m
 YELLOW = \033[0;33m
@@ -70,6 +73,9 @@ bonus: $(BONUS_TEST_BIN)
 
 $(LIBFT_LIB):
 	@make -C $(LIBFT_PATH) DEBUG=1
+
+$(MLX_LIB):
+	@make -C $(MLX_PATH)
 
 $(CMOCKA_LIB):
 	@if [ -f "$(CMOCKA_LIB)" ]; then \
@@ -98,7 +104,8 @@ $(TEST_OBJ_DIR)/project/%.o: $(SRC_PATH)/%.c
 	@mkdir -p $(@D)
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
-$(TEST_BIN): $(CMOCKA_LIB) $(LIBFT_LIB) $(TEST_OBJ) $(PROJECT_OBJ)
+
+$(TEST_BIN): $(CMOCKA_LIB) $(LIBFT_LIB) $(MLX_LIB) $(TEST_OBJ) $(PROJECT_OBJ)
 	$(CC) $(CFLAGS) $(TEST_OBJ) $(PROJECT_OBJ) $(TEST_LIBS) -o $(TEST_BIN)
 	@echo "$(GREEN)[OK] Tests compiled$(RESET)"
 
