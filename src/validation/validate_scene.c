@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   validate_scene.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: thaperei <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: thaperei <thaperei@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/05 12:48:47 by thaperei          #+#    #+#             */
-/*   Updated: 2026/04/15 20:43:16 by thaperei         ###   ########.fr       */
+/*   Updated: 2026/04/28 18:08:55 by thaperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,5 +54,5 @@ int	has_enough_elements(t_obj_count obj_count)
 		show_error("It should have one light");
 	else if (obj_count.obj == 0 && has_error++)
 		show_error("No objects in the scene");
-	return has_error == 0;
+	return (has_error == 0);
 }
