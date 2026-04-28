@@ -17,10 +17,10 @@
 
 typedef struct s_obj_count
 {
+	unsigned int	obj;
 	unsigned char	camera;
 	unsigned char	ambient;
 	unsigned char	light;
-	int				obj;
 }	t_obj_count;
 
 typedef struct s_hash_item
