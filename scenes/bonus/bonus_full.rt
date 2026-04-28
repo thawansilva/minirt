@@ -28,6 +28,3 @@ pl 0,0,30 0,0,-1 80,80,160 0.3 0.6 0.6 8 0.0 200,200,255 3.0 0.0 none
 
 # Cilindro metalico: checker prata/escuro, bump forte (aspecto rugoso)
 cy 0,-2,8 0,1,0 1.5 5.0 180,180,200 0.6 0.6 0.6 96 0.4 60,60,80 3.0 0.25 none
-
-# Cone amarelo: checker amarelo/vermelho, bump medio
-cn -8,2,5 0,1,0 2.0 4.0 255,220,0 0.5 0.7 0.4 50 0.2 200,50,0 5.0 0.2 none
