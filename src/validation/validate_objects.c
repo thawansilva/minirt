@@ -14,7 +14,7 @@
 
 int	is_valid_sphere(char **arr)
 {
-	if (!arr || !arr[1] || !arr[2] || !arr[3])
+	if (!arr || !arr[1] || !arr[2] || !arr[3] || arr[4])
 		return (0);
 	if (!is_valid_coordinates(arr[1]))
 		return (0);
@@ -27,7 +27,7 @@ int	is_valid_sphere(char **arr)
 
 int	is_valid_plane(char **arr)
 {
-	if (!arr || !arr[1] || !arr[2] || !arr[3])
+	if (!arr || !arr[1] || !arr[2] || !arr[3] || arr[4])
 		return (0);
 	if (!is_valid_coordinates(arr[1]) || !is_valid_normalized_vector(arr[2])
 		|| !is_valid_color(arr[3]))
@@ -37,7 +37,7 @@ int	is_valid_plane(char **arr)
 
 int	is_valid_cylinder(char **arr)
 {
-	if (!arr || !arr[1] || !arr[2] || !arr[3] || !arr[4] || !arr[5])
+	if (!arr || !arr[1] || !arr[2] || !arr[3] || !arr[4] || !arr[5] || arr[6])
 		return (0);
 	if (!is_valid_coordinates(arr[1]) || !is_valid_normalized_vector(arr[2]))
 		return (0);

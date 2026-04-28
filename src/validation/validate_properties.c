@@ -41,7 +41,7 @@ int	is_valid_coordinates(char *str)
 
 	if (str == NULL)
 		return (0);
-	coordinates = ft_split(str, ',');
+	coordinates = ft_split_charset(str, ",");
 	if (coordinates == NULL)
 		return (0);
 	i = 0;
@@ -69,7 +69,7 @@ int	is_valid_normalized_vector(char *str)
 	if (str == NULL || str[0] == '\0')
 		return (0);
 	i = -1;
-	vectors = ft_split(str, ',');
+	vectors = ft_split_charset(str, ",");
 	if (vectors == NULL)
 		return (0);
 	while (vectors[++i])
@@ -97,4 +97,13 @@ int	is_valid_fov(char *str)
 	if (fov < 0 || fov > 180)
 		return (0);
 	return (1);
+}
+
+int	has_comment_or_spaces(char *line)
+{
+	if (line[0] == '#')
+		return (1);
+	while (ft_isspace(*line))
+		line++;
+	return (*line == '\0');
 }

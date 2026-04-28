@@ -40,3 +40,19 @@ int	is_valid_light(char **arr)
 		return (0);
 	return (1);
 }
+
+int	has_enough_elements(t_obj_count obj_count)
+{
+	char	has_error;
+
+	has_error = 0;
+	if (obj_count.ambient != 1 && has_error++)
+		show_error("It should have one ambient");
+	else if (obj_count.camera != 1 && has_error++)
+		show_error("It should have one camera");
+	else if (obj_count.light != 1 && has_error++)
+		show_error("It should have one light");
+	else if (obj_count.obj == 0 && has_error++)
+		show_error("No objects in the scene");
+	return has_error == 0;
+}
