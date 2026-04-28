@@ -1,0 +1,17 @@
+# Spot vertical, esfera e plano - camera de lado para ver sombra
+# Luz acima da esfera projetando sombra no chao
+# Camera posicionada de lado para ver esfera + plano + sombra
+
+A 0.15 255,255,255
+
+# Camera de lado para ver a sombra no plano
+C -10,4,0 1,-0.2,0 65
+
+# Luz vertical acima da esfera
+L 0,10,0 1.0 255,255,255
+
+# Esfera acima do plano
+sp 0,2,0 2.0 255,100,100
+
+# Plano chao
+pl 0,-1,0 0,1,0 200,200,200

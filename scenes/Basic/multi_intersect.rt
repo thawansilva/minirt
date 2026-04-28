@@ -1,0 +1,12 @@
+
+A 0.3 255,255,255
+
+C 0,3,-12 0,-0.1,1 70
+
+L -8,8,-3 0.8 255,255,255
+
+# Esfera no centro
+sp 0,0,5 3.0 255,80,80
+
+# Cilindro vertical passando pela esfera (intersectando)
+cy 0,-3,5 0,1,0 1.0 8.0 80,80,255

@@ -1,0 +1,32 @@
+# Camera e Luz
+A 0.2 255,255,255
+C 0,5,20 0,-0.2,-1 70
+L -5,15,10 0.7 255,255,255
+L 5,15,10 0.5 255,255,255
+
+# Chao
+pl 0,0,0 0,1,0 100,100,100
+
+# Uma parede de cilindros (Intersecao de cilindro e muito cara)
+cy -6,5,-2  0,1,0  1.5  10  255,0,0
+cy -3,5,-2  0,1,0  1.5  10  0,255,0
+cy 0,5,-2   0,1,0  1.5  10  0,0,255
+cy 3,5,-2   0,1,0  1.5  10  255,255,0
+cy 6,5,-2   0,1,0  1.5  10  255,0,255
+
+# Cilindros deitados cruzando os verticais (Stress de profundidade)
+cy 0,2,-1   1,0,0  0.8  20  255,255,255
+cy 0,5,-1   1,0,0  0.8  20  255,255,255
+cy 0,8,-1   1,0,0  0.8  20  255,255,255
+
+# Esferas em volta para gerar sombras complexas
+sp -8,2,5   3   255,100,0
+sp 8,2,5    3   0,100,255
+sp 0,12,0   4   150,150,150
+sp -15,5,-5 5   50,50,50
+sp 15,5,-5  5   50,50,50
+
+# Esferas pequenas flutuando (mais raios de sombra)
+sp -3,1,8   1   255,255,255
+sp 0,1,8    1   255,255,255
+sp 3,1,8    1   255,255,255

@@ -1,0 +1,21 @@
+A 0.15 255,255,255
+
+C 0,6,-16 0,-0.25,1 65
+
+# Luz principal acima e a esquerda
+L -8,12,-4 0.9 255,255,255
+
+# Esfera vermelha grande - projeta sombra
+sp -2,1,8 3.0 255,60,60
+
+# Esfera azul menor - projeta sombra propria
+sp 4,0,6 2.0 60,60,255
+
+# Cilindro vertical - projeta sombra longa no chao
+cy 0,-2,12 0,1,0 1.0 6.0 255,200,0
+
+# Plano chao - recebe todas as sombras
+pl 0,-2,0 0,1,0 180,180,180
+
+# Parede ao fundo - recebe sombra do cilindro
+pl 0,0,20 0,0,-1 160,160,200

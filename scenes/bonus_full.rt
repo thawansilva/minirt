@@ -1,0 +1,33 @@
+# Cena completa - testa tudo: iluminacao, sombra, especular, reflexao,
+# checkerboard e bump mapping
+# Duas luzes para testar acumulacao de contribuicoes
+
+A 0.15 255,255,255
+
+C 0,4,-14 0,-0.2,1 65
+
+L -10,15,-5 0.8 255,255,255
+L 10,8,0 0.5 180,220,255
+
+# ks kd ka shininess reflectivity color2 checker_scale bump_scale
+
+# Esfera espelhada: checker verde/branco, bump ondulado
+sp -4,0,10 3.0 0,200,0 0.5 0.3 1 128 0.5 255,255,255 0.5 0.3 none
+
+# Esfera vermelha: checker vermelho/escuro, bump suave
+sp 4,0,10 3.0 255,60,60 0.6 0.8 1 64 0.1 120,10,10 3.0 0.15 none
+
+# Esfera azul atras: checker azul/ciano, sem bump
+sp 0,5,18 2.5 80,200,255 0.4 0.4 1 32 0.0 10,60,140 4.0 0.0 none
+
+# Chao reflexivo: checker cinza/preto, bump leve (simula aspereza)
+pl 0,-2,0 0,1,0 180,180,180 0.5 0.7 0.7 16 0.6 0,0,0 2.0 0.08 none
+
+# Parede ao fundo: checker azul/branco, sem bump
+pl 0,0,30 0,0,-1 80,80,160 0.3 0.6 0.6 8 0.0 200,200,255 3.0 0.0 none
+
+# Cilindro metalico: checker prata/escuro, bump forte (aspecto rugoso)
+cy 0,-2,8 0,1,0 1.5 5.0 180,180,200 0.6 0.6 0.6 96 0.4 60,60,80 3.0 0.25 none
+
+# Cone amarelo: checker amarelo/vermelho, bump medio
+cn -8,2,5 0,1,0 2.0 4.0 255,220,0 0.5 0.7 0.4 50 0.2 200,50,0 5.0 0.2 none
