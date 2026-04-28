@@ -24,6 +24,27 @@
 static int	run_validation_tests(void)
 {
 	const struct CMUnitTest tests[] = {
+		// ft_split_charset
+		cmocka_unit_test(test_split_charset_basic),
+		cmocka_unit_test(test_split_charset_single_word),
+		cmocka_unit_test(test_split_charset_no_delimiter_in_string),
+		cmocka_unit_test(test_split_charset_only_delimiters),
+		cmocka_unit_test(test_split_charset_empty_string),
+		cmocka_unit_test(test_split_charset_empty_charset),
+		cmocka_unit_test(test_split_charset_null_string),
+		cmocka_unit_test(test_split_charset_null_charset),
+		cmocka_unit_test(test_split_charset_leading_delimiters),
+		cmocka_unit_test(test_split_charset_trailing_delimiters),
+		cmocka_unit_test(test_split_charset_consecutive_delimiters),
+		cmocka_unit_test(test_split_charset_multiple_delimiters_in_charset),
+		cmocka_unit_test(test_split_charset_single_char_words),
+		cmocka_unit_test(test_split_charset_result_null_terminated),
+		cmocka_unit_test(test_split_charset_word_count),
+		cmocka_unit_test(test_split_charset_delimiter_space_and_tab),
+		cmocka_unit_test(test_split_charset_delimiter_comma_and_semicolon),
+		cmocka_unit_test(test_split_charset_single_char_string),
+		cmocka_unit_test(test_split_charset_single_char_is_delimiter),
+		cmocka_unit_test(test_split_charset_all_same_delimiter),
 		// Validation setup tests
 		cmocka_unit_test(test_valid_extension),
 		cmocka_unit_test(test_invalid_extension),
@@ -191,6 +212,7 @@ static int	run_validation_tests(void)
 		cmocka_unit_test(test_valid_cylinder_color_wrong_slot),
 		// Input
 		cmocka_unit_test(test_valid_input_valid_scene),
+		cmocka_unit_test(test_valid_real_inputs),
 		cmocka_unit_test(test_valid_input_valid_scene_with_more_newline),
 		cmocka_unit_test(test_valid_input_null_file),
 		cmocka_unit_test(test_valid_input_invalid_extension),
