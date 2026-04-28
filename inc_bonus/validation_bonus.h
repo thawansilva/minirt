@@ -44,6 +44,7 @@ int		is_valid_normalized_vector(char *str);
 int		is_valid_coordinates(char *str);
 int		is_valid_float(const char *str);
 int		is_valid_int(const char *str);
+int		has_comment_or_spaces(char *line);
 // Validate objects
 int		is_valid_ambient(char **arr);
 int		is_valid_camera(char **arr);
@@ -51,4 +52,5 @@ int		is_valid_light(char **arr);
 int		is_valid_sphere(char **arr);
 int		is_valid_plane(char **arr);
 int		is_valid_cylinder(char **arr);
+int		has_enough_elements(t_obj_count obj_count);
 #endif
