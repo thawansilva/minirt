@@ -1,0 +1,35 @@
+# ============================================================
+# CENA: Bola caindo na agua criando ondas
+# Bump procedural simula as ondas na superficie da agua
+# Reflexo alto na agua, bola metalica brilhante
+# ============================================================
+
+A 0.15 100,140,200
+
+# Camera levemente inclinada olhando para o impacto
+C 0,5,-8 0,-0.35,1 65
+
+# Luz solar principal (quente, forte, alto)
+L 10,20,-2 0.9 255,235,180
+
+# Luz de preenchimento (azul celeste, lateral)
+L -8,8,6 0.3 150,200,255
+
+# --- AGUA ---
+# Plano da agua com bump ondulado forte (simula ondas do impacto)
+# checker azul escuro/azul medio, bump_scale alto para ondas visiveis
+# ks kd ka shininess reflectivity color2 checker_scale bump_scale path
+pl 0,-1,0 0,1,0 10,80,160 0.9 0.5 0.3 128 0.75 5,50,120 0.8 0.5 none
+
+# --- BOLA METALICA (no impacto, meio submersa) ---
+# Esfera espelhada/metalica, checker prata/cinza escuro, bump rugoso leve
+sp 0,0.2,6 2.0 200,210,220 0.9 0.5 0.3 256 0.65 80,90,100 4.0 0.1 none
+
+# --- ANEL DE ONDA (cilindro achatado em volta do impacto) ---
+# Simula o anel de agua levantado pelo impacto
+# checker agua clara/agua escura, bump medio (superficie irregular)
+cy 0,-0.8,6 0,1,0 4.5 0.6 30,120,200 0.7 0.5 0.35 96 0.4 10,70,150 1.5 0.35 none
+
+# --- PAREDE DE FUNDO (reflexo do ceu) ---
+# Plano vertical ao fundo, azul suave com bump leve (distancia)
+pl 0,0,25 0,0,-1 60,100,160 0.4 0.6 0.4 16 0.15 30,60,110 3.0 0.05 none

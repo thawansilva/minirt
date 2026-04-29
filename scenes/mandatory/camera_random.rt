@@ -1,0 +1,15 @@
+# Camera em posicao aleatoria (nao em nenhum eixo nem diagonal), apontando para {0,0,0}
+# Posicao: (5, 3, -8)
+# Direcao normalizada de (5,3,-8) para (0,0,0) = (-5,-3,8) / |(-5,-3,8)|
+# |v| = sqrt(25+9+64) = sqrt(98) ~= 9.899
+# Direcao: (-0.505, -0.303, 0.808) ~= -5,-3,8 normalizado
+
+A 0.3 255,255,255
+
+C 5,3,-8 -0.505,-0.303,0.808 70
+
+L -5,8,-3 0.8 255,255,255
+
+sp 0,0,0 2.0 255,100,0
+cy 0,-3,0 0,1,0 1.0 6.0 0,180,255
+pl 0,-4,0 0,1,0 150,150,150

@@ -18,7 +18,7 @@ void	save_color(const char *token, t_color *dst)
 {
 	char	**rgb;
 
-	rgb = ft_split(token, ',');
+	rgb = ft_split_charset((char *)token, ",");
 	dst->r = (unsigned char)ft_atoi(rgb[0]);
 	dst->g = (unsigned char)ft_atoi(rgb[1]);
 	dst->b = (unsigned char)ft_atoi(rgb[2]);
@@ -29,7 +29,7 @@ void	save_vec4(const char *token, t_vec4 *dst)
 {
 	char	**coordinates;
 
-	coordinates = ft_split(token, ',');
+	coordinates = ft_split_charset((char *)token, ",");
 	dst->x = ft_atof(coordinates[0]);
 	dst->y = ft_atof(coordinates[1]);
 	dst->z = ft_atof(coordinates[2]);

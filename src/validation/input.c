@@ -39,7 +39,7 @@ int	read_file(char *file, t_scene *scene)
 	line = get_next_line(fd);
 	while (line != NULL)
 	{
-		if (ft_strcmp(line, "\n") == 0)
+		if (has_comment_or_spaces(line))
 			free(line);
 		else
 			ft_lstadd_back(&(scene->objs), ft_lstnew(line));
@@ -80,7 +80,7 @@ int	is_valid_object(t_list *objs, t_obj_count *obj_count)
 	char	**arr;
 	int		i;
 
-	arr = ft_split(objs->content, ' ');
+	arr = ft_split_charset(objs->content, " 	\r\n\f\v");
 	if (!arr)
 		return (0);
 	i = 0;
@@ -117,11 +117,8 @@ int	is_valid_input(char *file, t_scene *scene)
 			return (0);
 		aux = aux->next;
 	}
-	if (obj_count.ambient != 1 || obj_count.camera != 1
-		|| obj_count.light != 1)
+	if (!has_enough_elements(obj_count))
 		return (0);
-	if (obj_count.obj == 0)
-		return (show_error("No objects in the scene"), 0);
 	scene->num_lights = obj_count.light;
 	scene->num_objs = obj_count.obj;
 	return (1);
