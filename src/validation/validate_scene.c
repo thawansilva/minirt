@@ -6,7 +6,7 @@
 /*   By: thaperei <thaperei@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/05 12:48:47 by thaperei          #+#    #+#             */
-/*   Updated: 2026/04/28 18:08:55 by thaperei         ###   ########.fr       */
+/*   Updated: 2026/04/29 18:52:22 by thaperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,13 +46,13 @@ int	has_enough_elements(t_obj_count obj_count)
 	char	has_error;
 
 	has_error = 0;
-	if (obj_count.ambient != 1 && has_error++)
+	if (obj_count.ambient != 1 && ++has_error)
 		show_error("It should have one ambient");
-	else if (obj_count.camera != 1 && has_error++)
+	else if (obj_count.camera != 1 && ++has_error)
 		show_error("It should have one camera");
-	else if (obj_count.light != 1 && has_error++)
+	else if (obj_count.light != 1 && ++has_error)
 		show_error("It should have one light");
-	else if (obj_count.obj == 0 && has_error++)
+	else if (obj_count.obj == 0 && ++has_error)
 		show_error("No objects in the scene");
 	return (has_error == 0);
 }
