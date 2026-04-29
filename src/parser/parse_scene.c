@@ -56,7 +56,7 @@ void	parse_elements(t_scene *scene)
 	while (aux)
 	{
 		i = 0;
-		arr = ft_split(aux->content, ' ');
+		arr = ft_split_charset(aux->content, " 	\n\r\f\v");
 		while (parse_objs[i].key)
 		{
 			if (ft_strcmp(parse_objs[i].key, arr[0]) == 0)

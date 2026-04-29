@@ -1,0 +1,11 @@
+# Esfera em {0,0,0}, camera apontando para ela
+# Luz posicionada ao LADO (esquerda/direita) para iluminar lateralmente
+
+A 0.1 255,255,255
+
+C 0,0,-8 0,0,1 70
+
+# Luz ao lado esquerdo da camera, mais acima, para iluminar esfera de lado
+L -8,2,0 0.9 255,255,255
+
+sp 0,0,0 2.5 255,200,50

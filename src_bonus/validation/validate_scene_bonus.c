@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   validate_scene.c                                   :+:      :+:    :+:   */
+/*   validate_scene_bonus.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: thaperei <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: thaperei <thaperei@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/05 12:48:47 by thaperei          #+#    #+#             */
-/*   Updated: 2026/04/15 20:43:16 by thaperei         ###   ########.fr       */
+/*   Updated: 2026/04/28 18:09:17 by thaperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,4 +39,20 @@ int	is_valid_light(char **arr)
 		|| !is_valid_color(arr[3]))
 		return (0);
 	return (1);
+}
+
+int	has_enough_elements(t_obj_count obj_count)
+{
+	char	has_error;
+
+	has_error = 0;
+	if (obj_count.ambient != 1 && has_error++)
+		show_error("It should have one ambient");
+	else if (obj_count.camera != 1 && has_error++)
+		show_error("It should have one camera");
+	else if (obj_count.light == 0 && has_error++)
+		show_error("It should have one light");
+	else if (obj_count.obj == 0 && has_error++)
+		show_error("No objects in the scene");
+	return (has_error == 0);
 }

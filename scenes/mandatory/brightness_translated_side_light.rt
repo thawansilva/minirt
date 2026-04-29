@@ -1,0 +1,13 @@
+# Esfera em posicao resultante de translacao {3, 2, 5}
+# Camera apontando para ela, luz ao lado
+# O halo de luz deve ser calculado DEPOIS da translacao, nao antes
+
+A 0.1 255,255,255
+
+C 3,2,-5 0,0,1 70
+
+# Luz ao lado direito da camera, para iluminar esfera lateralmente
+L 10,3,5 0.9 255,255,255
+
+# Esfera em posicao transladada
+sp 3,2,5 2.5 100,200,255

@@ -70,6 +70,281 @@ static void	free_scene(t_scene *scene)
 	free(scene);
 }
 
+static void free_split(char **arr)
+{
+    size_t  i;
+
+	if (!arr)
+		return ;
+	i = 0;
+	while (arr[i])
+	{
+		free(arr[i]);
+		i++;
+	}
+	free(arr);
+}
+
+static size_t   count_results(char **arr)
+{
+    size_t  i;
+
+    if (!arr)
+        return (0);
+    i = 0;
+    while (arr[i])
+        i++;
+    return (i);
+}
+
+/* FT_SPLIT_CHARSET TESTS */
+
+void    test_split_charset_basic(void **state)
+{
+    (void)state;
+    char    **res;
+
+    res = ft_split_charset("hello world foo", " ");
+    assert_non_null(res);
+    assert_int_equal(count_results(res), 3);
+    assert_string_equal(res[0], "hello");
+    assert_string_equal(res[1], "world");
+    assert_string_equal(res[2], "foo");
+    free_split(res);
+}
+
+void    test_split_charset_single_word(void **state)
+{
+    (void)state;
+    char    **res;
+
+    res = ft_split_charset("hello", " ");
+    assert_non_null(res);
+    assert_int_equal(count_results(res), 1);
+    assert_string_equal(res[0], "hello");
+    free_split(res);
+}
+
+void    test_split_charset_no_delimiter_in_string(void **state)
+{
+    (void)state;
+    char    **res;
+
+    res = ft_split_charset("hello", ",;");
+    assert_non_null(res);
+    assert_int_equal(count_results(res), 1);
+    assert_string_equal(res[0], "hello");
+    free_split(res);
+}
+
+void    test_split_charset_only_delimiters(void **state)
+{
+    (void)state;
+    char    **res;
+
+    res = ft_split_charset(",,,,", ",");
+    assert_non_null(res);
+    assert_int_equal(count_results(res), 0);
+    assert_null(res[0]);
+    free_split(res);
+}
+
+void    test_split_charset_empty_string(void **state)
+{
+    (void)state;
+    char    **res;
+
+    res = ft_split_charset("", " ");
+    assert_non_null(res);
+    assert_int_equal(count_results(res), 0);
+    assert_null(res[0]);
+    free_split(res);
+}
+
+void    test_split_charset_empty_charset(void **state)
+{
+    (void)state;
+    char    **res;
+
+    res = ft_split_charset("hello world", "");
+    assert_non_null(res);
+    assert_int_equal(count_results(res), 1);
+    assert_string_equal(res[0], "hello world");
+    free_split(res);
+}
+
+void    test_split_charset_null_string(void **state)
+{
+    (void)state;
+    char **res = ft_split_charset(NULL, " ");
+    assert_null(res);
+}
+
+void    test_split_charset_null_charset(void **state)
+{
+    (void)state;
+    char **res = ft_split_charset("hello", NULL);
+    assert_null(res);
+}
+
+void    test_split_charset_leading_delimiters(void **state)
+{
+    (void)state;
+    char    **res;
+
+    res = ft_split_charset("   hello world", " ");
+    assert_non_null(res);
+    assert_int_equal(count_results(res), 2);
+    assert_string_equal(res[0], "hello");
+    assert_string_equal(res[1], "world");
+    free_split(res);
+}
+
+void    test_split_charset_trailing_delimiters(void **state)
+{
+    (void)state;
+    char    **res;
+
+    res = ft_split_charset("hello world   ", " ");
+    assert_non_null(res);
+    assert_int_equal(count_results(res), 2);
+    assert_string_equal(res[0], "hello");
+    assert_string_equal(res[1], "world");
+    free_split(res);
+}
+
+void    test_split_charset_consecutive_delimiters(void **state)
+{
+    (void)state;
+    char    **res;
+
+    res = ft_split_charset("hello,,,,world", ",");
+    assert_non_null(res);
+    assert_int_equal(count_results(res), 2);
+    assert_string_equal(res[0], "hello");
+    assert_string_equal(res[1], "world");
+    free_split(res);
+}
+
+void    test_split_charset_multiple_delimiters_in_charset(void **state)
+{
+    (void)state;
+    char    **res;
+
+    res = ft_split_charset("hello,world;foo:bar", ",;:");
+    assert_non_null(res);
+    assert_int_equal(count_results(res), 4);
+    assert_string_equal(res[0], "hello");
+    assert_string_equal(res[1], "world");
+    assert_string_equal(res[2], "foo");
+    assert_string_equal(res[3], "bar");
+    free_split(res);
+}
+
+void    test_split_charset_single_char_words(void **state)
+{
+    (void)state;
+    char    **res;
+
+    res = ft_split_charset("a,b,c,d", ",");
+    assert_non_null(res);
+    assert_int_equal(count_results(res), 4);
+    assert_string_equal(res[0], "a");
+    assert_string_equal(res[1], "b");
+    assert_string_equal(res[2], "c");
+    assert_string_equal(res[3], "d");
+    free_split(res);
+}
+
+void    test_split_charset_result_null_terminated(void **state)
+{
+    (void)state;
+    char    **res;
+
+    res = ft_split_charset("hello world", " ");
+    assert_non_null(res);
+    assert_string_equal(res[0], "hello");
+    assert_string_equal(res[1], "world");
+    assert_null(res[2]);
+    free_split(res);
+}
+
+void    test_split_charset_word_count(void **state)
+{
+    (void)state;
+    char    **res;
+
+    res = ft_split_charset("one two three four five", " ");
+    assert_non_null(res);
+    assert_int_equal(count_results(res), 5);
+    free_split(res);
+}
+
+void    test_split_charset_delimiter_space_and_tab(void **state)
+{
+    (void)state;
+    char    **res;
+
+    res = ft_split_charset("hello\tworld foo", " \t");
+    assert_non_null(res);
+    assert_int_equal(count_results(res), 3);
+    assert_string_equal(res[0], "hello");
+    assert_string_equal(res[1], "world");
+    assert_string_equal(res[2], "foo");
+    free_split(res);
+}
+
+void    test_split_charset_delimiter_comma_and_semicolon(void **state)
+{
+    (void)state;
+    char    **res;
+
+    res = ft_split_charset("key1=val1;key2=val2;key3=val3", ";");
+    assert_non_null(res);
+    assert_int_equal(count_results(res), 3);
+    assert_string_equal(res[0], "key1=val1");
+    assert_string_equal(res[1], "key2=val2");
+    assert_string_equal(res[2], "key3=val3");
+    free_split(res);
+}
+
+void    test_split_charset_single_char_string(void **state)
+{
+    (void)state;
+    char    **res;
+
+    res = ft_split_charset("a", ",");
+    assert_non_null(res);
+    assert_int_equal(count_results(res), 1);
+    assert_string_equal(res[0], "a");
+    free_split(res);
+}
+
+void    test_split_charset_single_char_is_delimiter(void **state)
+{
+    (void)state;
+    char    **res;
+
+    res = ft_split_charset(",", ",");
+    assert_non_null(res);
+    assert_int_equal(count_results(res), 0);
+    assert_null(res[0]);
+    free_split(res);
+}
+
+/* String where every character is the same delimiter repeated */
+void    test_split_charset_all_same_delimiter(void **state)
+{
+    (void)state;
+    char    **res;
+
+    res = ft_split_charset("......", ".");
+    assert_non_null(res);
+    assert_int_equal(count_results(res), 0);
+    assert_null(res[0]);
+    free_split(res);
+}
+
 /* EXTENSION VALIDATION TESTS */
 void test_valid_extension(void **state)
 {
@@ -1071,30 +1346,6 @@ void    test_valid_plane_vector_wrong_count(void **state)
 /* ---------- CYLINDER ---------- */
 
 
-/* =========================================================
-   is_valid_cylinder integration tests
-
-   BUG: color is validated against arr[2] (the vector slot)
-   instead of arr[5]. This means:
-   - A valid vector that is also a valid color format will pass
-   - The actual color at arr[5] is never validated
-   - An invalid color at arr[5] will never be caught
-   Fix: change `!is_valid_color(arr[2])` to `!is_valid_color(arr[5])`
-
-   Array layout (intended):
-     arr[0] = identifier ("cy")
-     arr[1] = coordinates
-     arr[2] = normalized vector
-     arr[3] = diameter
-     arr[4] = height
-     arr[5] = color
-   ========================================================= */
-
-/* Fully valid cylinder — must return 1.
-   NOTE: due to the bug, arr[2] ("0.0,1.0,0.0") is passed to
-   is_valid_color. ft_split on ',' gives ["0.0","1.0","0.0"],
-   all parse to 0 via ft_atoi, all in 0-255 range, count == 3 → passes.
-   So valid input coincidentally returns 1 for the wrong reason. */
 void    test_valid_cylinder_valid(void **state)
 {
     (void)state;
@@ -1265,6 +1516,50 @@ void	test_valid_input_valid_scene(void **state)
 	free_scene(scene);
 	unlink(path);
 	free(path);
+}
+
+void	test_valid_real_inputs(void **state)
+{
+	(void)state;
+	t_scene	*scene = make_scene();
+	assert_int_equal(is_valid_input("../scenes/mandatory/basic_cylinder.rt", scene), 1);
+	free_scene(scene);
+	scene = make_scene();
+	assert_int_equal(is_valid_input("../scenes/mandatory/basic_sphere.rt", scene), 1);
+	free_scene(scene);
+	scene = make_scene();
+	assert_int_equal(is_valid_input("../scenes/mandatory/basic_sphere.rt", scene), 1);
+	free_scene(scene);
+	scene = make_scene();
+	assert_int_equal(is_valid_input("../scenes/mandatory/brightness_shadow_complex.rt", scene), 1);
+	free_scene(scene);
+	scene = make_scene();
+	assert_int_equal(is_valid_input("../scenes/mandatory/brightness_shadow_simple.rt", scene), 1);
+	free_scene(scene);
+	scene = make_scene();
+	assert_int_equal(is_valid_input("../scenes/mandatory/brightness_side_light.rt", scene), 1);
+	free_scene(scene);
+	scene = make_scene();
+	assert_int_equal(is_valid_input("../scenes/mandatory/camera_random.rt", scene), 1);
+	free_scene(scene);
+	scene = make_scene();
+	assert_int_equal(is_valid_input("../scenes/mandatory/mandatory.rt", scene), 1);
+	free_scene(scene);
+	scene = make_scene();
+	assert_int_equal(is_valid_input("../scenes/mandatory/multi_intersect.rt", scene), 1);
+	free_scene(scene);
+	scene = make_scene();
+	assert_int_equal(is_valid_input("../scenes/mandatory/multi_various.rt", scene), 1);
+	free_scene(scene);
+	scene = make_scene();
+	assert_int_equal(is_valid_input("../scenes/mandatory/simple.rt", scene), 1);
+	free_scene(scene);
+	scene = make_scene();
+	assert_int_equal(is_valid_input("../scenes/mandatory/test.rt", scene), 1);
+	free_scene(scene);
+	scene = make_scene();
+	assert_int_equal(is_valid_input("../scenes/mandatory/test2.rt", scene), 1);
+	free_scene(scene);
 }
 
 void	test_valid_input_valid_scene_with_more_newline(void **state)

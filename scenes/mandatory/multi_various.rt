@@ -1,0 +1,22 @@
+# Mesmo objeto repetido: 2 cilindros, 2 esferas e 1 plano
+
+A 0.3 255,255,255
+
+C 0,4,-14 0,-0.2,1 65
+
+L -8,10,-3 0.8 255,255,255
+
+# Esfera vermelha
+sp -4,0,8 2.0 255,60,60
+
+# Esfera azul
+sp 4,0,8 2.0 60,60,255
+
+# Cilindro amarelo (vertical)
+cy -6,0,12 0,1,0 1.0 5.0 255,220,0
+
+# Cilindro verde (vertical)
+cy 6,0,12 0,1,0 1.0 5.0 60,200,80
+
+# Plano chao
+pl 0,-2,0 0,1,0 150,150,150

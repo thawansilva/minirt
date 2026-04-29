@@ -1,0 +1,20 @@
+# Teste de bump mapping PROCEDURAL (sem imagem PNG)
+# Objetos com bump_scale > 0 e bump_map = none (path ignorado quando bump=0)
+# Formato extra args: ks kd ka shininess reflectivity color2 checker_scale bump_scale png_path
+# Para bump procedural: qualquer string que nao seja PNG valido e bump_scale > 0
+
+A 0.2 255,255,255
+
+C 0,3,-10 0,-0.2,1 70
+
+L -8,10,-3 0.8 255,255,255
+L 8,6,0 0.5 200,220,255
+
+# Esfera com bump ondulado forte
+sp 0,0,8 2.5 180,100,50 0.5 0.6 0.3 64 0.0 255,255,255 2.0 0.4 none
+
+# Chao com bump leve
+pl 0,-3,0 0,1,0 150,150,150 0.3 0.7 0.5 16 0.0 50,50,50 3.0 0.15 none
+
+# Cilindro com bump medio
+cy 0,-3,8 0,1,0 1.2 4.0 100,160,200 0.5 0.5 0.5 48 0.0 30,60,90 2.0 0.25 none

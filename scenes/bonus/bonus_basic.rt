@@ -1,0 +1,23 @@
+# Cena basica para testar iluminacao, sombra e especular
+# Sem reflexao - facil de validar visualmente
+
+A 0.2 255,255,255
+
+C 0,3,-10 0,-0.2,1 60
+
+L -8,10,-5 0.9 255,255,255
+
+# Esfera vermelha brilhante (ks=0.8, kd=0.7, ka=0.2, shininess=64, reflectivity=0)
+sp -3,0,8 3.0 255,50,50 0.8 0.7 0.2 64 0.0 255,255,255 1.0 0.0 none
+
+# Esfera azul fosca (ks=0.1, kd=0.7, ka=0.2, shininess=8, reflectivity=0)
+sp 3,0,8 3.0 50,50,255 0.1 0.7 0.2 8 0.0 255,255,255 1.0 0.0 none
+
+# Esfera verde com defaults (sem extras)
+sp 0,3,12 2.0 50,200,50
+
+# Chao cinza (sem reflexao)
+pl 0,-2,0 0,1,0 150,150,150 0.3 0.7 0.2 16 0.0 80,80,80 2.0 0.0 none
+
+# Cilindro amarelo
+cy 0,-2,6 0,1,0 1.5 4.0 255,200,0 0.3 0.7 0.2 32 0.0 200,150,0 2.0 0.0 none
